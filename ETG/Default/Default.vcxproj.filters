@@ -37,14 +37,8 @@
     <Filter Include="01. Obj\02. Monster">
       <UniqueIdentifier>{e0ab47df-43ed-4ed6-be54-3523b7b16a3a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01. Obj\03. Mouse">
-      <UniqueIdentifier>{8a388e49-470b-4695-bcb9-a7ce03e5c47d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="98. Design\CollisionMgr">
       <UniqueIdentifier>{fa05d23f-9bed-4d57-a264-a1373a4d93d9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01. Obj\04. Shield">
-      <UniqueIdentifier>{b37fefac-d240-4ede-b8d0-52e5a644078d}</UniqueIdentifier>
     </Filter>
     <Filter Include="01. Obj\01. Bullet\00. ScrewBullet">
       <UniqueIdentifier>{cbfea3ae-fe2b-4fef-87c4-fd8ace5f6f34}</UniqueIdentifier>
@@ -91,17 +85,20 @@
     <Filter Include="98. Design\SceneMgr">
       <UniqueIdentifier>{ec002d72-ac40-4e76-9806-1de9a10dc77c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01. Obj\05. MyButton">
-      <UniqueIdentifier>{5d174640-d014-46b2-ba40-d8af134d665a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01. Obj\06. Tile">
-      <UniqueIdentifier>{0df1c99a-4be2-4da8-b1e7-b092f0b0256e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="98. Design\TIleMgr">
       <UniqueIdentifier>{92d5923c-8bff-42f8-abb2-626a50c74159}</UniqueIdentifier>
     </Filter>
     <Filter Include="98. Design\SoundMgr">
       <UniqueIdentifier>{0cac99f0-bdb5-437d-a525-ae3a2ecbc1e3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Obj\03. MyButton">
+      <UniqueIdentifier>{5d174640-d014-46b2-ba40-d8af134d665a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Obj\04. Tile">
+      <UniqueIdentifier>{0df1c99a-4be2-4da8-b1e7-b092f0b0256e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Obj\Mouse">
+      <UniqueIdentifier>{c41eb597-3731-424b-a8c0-42bf9c53e9f9}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -153,14 +150,8 @@
     <ClInclude Include="Monster.h">
       <Filter>01. Obj\02. Monster</Filter>
     </ClInclude>
-    <ClInclude Include="Mouse.h">
-      <Filter>01. Obj\03. Mouse</Filter>
-    </ClInclude>
     <ClInclude Include="CollisionMgr.h">
       <Filter>98. Design\CollisionMgr</Filter>
-    </ClInclude>
-    <ClInclude Include="Shield.h">
-      <Filter>01. Obj\04. Shield</Filter>
     </ClInclude>
     <ClInclude Include="ScrewBullet.h">
       <Filter>01. Obj\01. Bullet\00. ScrewBullet</Filter>
@@ -202,7 +193,7 @@
       <Filter>02. Scene\01. MyMenu</Filter>
     </ClInclude>
     <ClInclude Include="MyButton.h">
-      <Filter>01. Obj\05. MyButton</Filter>
+      <Filter>01. Obj\03. MyButton</Filter>
     </ClInclude>
     <ClInclude Include="Stage.h">
       <Filter>02. Scene\03. Stage</Filter>
@@ -211,13 +202,16 @@
       <Filter>02. Scene\02. MyEdit</Filter>
     </ClInclude>
     <ClInclude Include="Tile.h">
-      <Filter>01. Obj\06. Tile</Filter>
+      <Filter>01. Obj\04. Tile</Filter>
     </ClInclude>
     <ClInclude Include="TileMgr.h">
       <Filter>98. Design\TIleMgr</Filter>
     </ClInclude>
     <ClInclude Include="SoundMgr.h">
       <Filter>98. Design\SoundMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="Mouse.h">
+      <Filter>01. Obj\Mouse</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -242,14 +236,8 @@
     <ClCompile Include="Monster.cpp">
       <Filter>01. Obj\02. Monster</Filter>
     </ClCompile>
-    <ClCompile Include="Mouse.cpp">
-      <Filter>01. Obj\03. Mouse</Filter>
-    </ClCompile>
     <ClCompile Include="CollisionMgr.cpp">
       <Filter>98. Design\CollisionMgr</Filter>
-    </ClCompile>
-    <ClCompile Include="Shield.cpp">
-      <Filter>01. Obj\04. Shield</Filter>
     </ClCompile>
     <ClCompile Include="ScrewBullet.cpp">
       <Filter>01. Obj\01. Bullet\00. ScrewBullet</Filter>
@@ -291,7 +279,7 @@
       <Filter>02. Scene\01. MyMenu</Filter>
     </ClCompile>
     <ClCompile Include="MyButton.cpp">
-      <Filter>01. Obj\05. MyButton</Filter>
+      <Filter>01. Obj\03. MyButton</Filter>
     </ClCompile>
     <ClCompile Include="Stage.cpp">
       <Filter>02. Scene\03. Stage</Filter>
@@ -300,13 +288,16 @@
       <Filter>02. Scene\02. MyEdit</Filter>
     </ClCompile>
     <ClCompile Include="Tile.cpp">
-      <Filter>01. Obj\06. Tile</Filter>
+      <Filter>01. Obj\04. Tile</Filter>
     </ClCompile>
     <ClCompile Include="TileMgr.cpp">
       <Filter>98. Design\TIleMgr</Filter>
     </ClCompile>
     <ClCompile Include="SoundMgr.cpp">
       <Filter>98. Design\SoundMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="Mouse.cpp">
+      <Filter>01. Obj\Mouse</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

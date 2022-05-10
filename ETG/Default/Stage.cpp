@@ -7,7 +7,7 @@
 #include "ScrollMgr.h"
 #include "TileMgr.h"
 #include "Monster.h"
-
+#include "Mouse.h"
 
 CStage::CStage()
 {
@@ -31,8 +31,9 @@ void CStage::Initialize(void)
 	//CTileMgr::Get_Instance()->Load_Tile();
 
 	CObjMgr::Get_Instance()->Add_Object(OBJ_PLAYER, CAbstractFactory<CPlayer>::Create());
+	CObjMgr::Get_Instance()->Add_Object(OBJ_MOUSE, CAbstractFactory<CMouse>::Create());
 	CObjMgr::Get_Instance()->Add_Object(OBJ_MONSTER, CAbstractFactory<CMonster>::Create());
-	CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Ground.bmp", L"Ground");
+	CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Back/Ground.bmp", L"Ground");
 }	
 
 
@@ -56,7 +57,7 @@ void CStage::Render(HDC hDC)
 	int		iScrollY = (int)CScrollMgr::Get_Instance()->Get_ScrollY();
 
 	HDC		hGroundMemDC = CBmpMgr::Get_Instance()->Find_Image(L"Ground");
-	BitBlt(hDC, iScrollX, iScrollY, 1920, 1280, hGroundMemDC, 0, 0, SRCCOPY);
+	BitBlt(hDC, iScrollX, iScrollY, 1200, 680, hGroundMemDC, 0, 0, SRCCOPY);
 
 	//CTileMgr::Get_Instance()->Render(hDC);
 

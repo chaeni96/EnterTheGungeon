@@ -176,7 +176,6 @@
     <ClInclude Include="SceneMgr.h" />
     <ClInclude Include="ScrewBullet.h" />
     <ClInclude Include="ScrollMgr.h" />
-    <ClInclude Include="Shield.h" />
     <ClInclude Include="SoundMgr.h" />
     <ClInclude Include="Stage.h" />
     <ClInclude Include="stdafx.h" />
@@ -209,7 +208,6 @@
     <ClCompile Include="SceneMgr.cpp" />
     <ClCompile Include="ScrewBullet.cpp" />
     <ClCompile Include="ScrollMgr.cpp" />
-    <ClCompile Include="Shield.cpp" />
     <ClCompile Include="SoundMgr.cpp" />
     <ClCompile Include="Stage.cpp" />
     <ClCompile Include="stdafx.cpp">

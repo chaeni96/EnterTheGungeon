@@ -1,0 +1,23 @@
+플레이어 
+20* 25
+
+다 180 125
+
+1. Idle
+2. walk
+3. dodge
+4. dead
+5. break
+
+1장추가
+DOWN_LEFT
+DOWN_RIGHT 
+
+DOWN
+
+3장추가
+UPLEFT 
+UPRIGHT
+
+
+30 37.5
