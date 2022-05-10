@@ -33,6 +33,8 @@ private:
 	STATE					m_ePreState;
 	STATE					m_eCurState;
 
+	bool					m_bStretch = true;
+
 };
 
 // 1. 플레이어 쉴드 구현(플레이어 중심으로 공전하는 위성 구현하기)

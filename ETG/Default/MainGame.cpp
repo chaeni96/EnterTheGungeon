@@ -33,6 +33,20 @@ void CMainGame::Initialize(void)
 
 	CSoundMgr::Get_Instance()->Initialize(); 
 	CSceneMgr::Get_Instance()->Scene_Change(SC_STAGE);
+
+#ifdef _DEBUG
+
+	if (::AllocConsole() == TRUE)
+	{
+		FILE* nfp[3];
+		freopen_s(nfp + 0, "CONOUT$", "rb", stdin);
+		freopen_s(nfp + 1, "CONOUT$", "wb", stdout);
+		freopen_s(nfp + 2, "CONOUT$", "wb", stderr);
+		std::ios::sync_with_stdio();
+	}
+
+#endif // _DEBUG
+
 }
 
 void CMainGame::Update(void)
@@ -60,6 +74,7 @@ void CMainGame::Render(void)
 	
 	CSceneMgr::Get_Instance()->Render(hMemDC);
 
+#ifdef _DEBUG
 	++m_iFPS;
 
 	if (m_dwTime + 1000 < GetTickCount())
@@ -71,10 +86,20 @@ void CMainGame::Render(void)
 		m_dwTime = GetTickCount();
 	}
 
+#endif // _DEBUG
+
+	
 }
 
 void CMainGame::Release(void)
 {
+#ifdef _DEBUG
+
+	FreeConsole();
+
+#endif // _DEBUG
+
+
 	CSoundMgr::Get_Instance()->Destroy_Instance();
 	CSceneMgr::Get_Instance()->Destroy_Instance();
 	CBmpMgr::Get_Instance()->Destroy_Instance();

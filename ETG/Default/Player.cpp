@@ -53,6 +53,8 @@ void CPlayer::Initialize(void)
 	CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Player/Player_LD.bmp", L"Player_LD");
 	CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Player/Player_RD.bmp", L"Player_RD");
 
+	CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Player/Stretch.bmp", L"Stretch");
+
 	m_pFrameKey = L"Player_DOWN";
 
 	m_tFrame.iFrameStart = 0;
@@ -87,6 +89,15 @@ void CPlayer::Late_Update(void)
 {
 	Motion_Change();
 	Move_Frame();
+
+
+#ifdef _DEBUG
+
+	//system("cls");
+	cout << "플레이어 좌표 : " << m_tInfo.fX << "\t" << m_tInfo.fY << endl;
+
+
+#endif // _DEBUG
 }
 
 void CPlayer::Render(HDC hDC)
@@ -95,6 +106,8 @@ void CPlayer::Render(HDC hDC)
 	int		iScrollY = (int)CScrollMgr::Get_Instance()->Get_ScrollY();
 
 	HDC		hMemDC = CBmpMgr::Get_Instance()->Find_Image(m_pFrameKey);
+	HDC		hStretchDC = CBmpMgr::Get_Instance()->Find_Image(L"Stretch");
+
 	
 	/*BitBlt(hDC,							// 복사 받을, 최종적으로 그림을 그릴 DC
 		int(m_tRect.left + iScrollX),	// 2,3 인자 :  복사받을 위치 X, Y
@@ -106,7 +119,9 @@ void CPlayer::Render(HDC hDC)
 		0, 
 		SRCCOPY);*/						// 출력효과, 그대로 복사 출력
 
-	GdiTransparentBlt(hDC, 					// 복사 받을, 최종적으로 그림을 그릴 DC
+	if (m_bStretch)
+	{
+		GdiTransparentBlt(hDC, 					// 복사 받을, 최종적으로 그림을 그릴 DC
 			int(m_tRect.left + iScrollX),	// 2,3 인자 :  복사받을 위치 X, Y
 			int(m_tRect.top + iScrollY),
 			int(m_tInfo.fCX),				// 4,5 인자 : 복사받을 가로, 세로 길이
@@ -117,6 +132,34 @@ void CPlayer::Render(HDC hDC)
 			(int)m_tInfo.fCX,				// 복사할 비트맵의 가로, 세로 길이
 			(int)m_tInfo.fCY,
 			RGB(0, 0, 0));			// 제거하고자 하는 색상
+	}
+
+	else
+	{
+		StretchBlt(hStretchDC,		// 출력할 이미지 핸들
+					0,				// 복사 받을 이미지 시작 좌표(Left, Top 좌표)
+					0, 
+					m_tInfo.fCX,	// 출력할 이미지 가로 세로 사이즈	
+					m_tInfo.fCY, 
+					hMemDC,			// 반전해서 출력하고자 하는 텍스처 이미지
+					m_tFrame.iFrameStart * (int)m_tInfo.fCX + m_tInfo.fCX,	// 가져올 이미지의 시작점 x,y좌표							// 비트맵 출력 시작 좌표, X,Y
+					m_tFrame.iMotion * (int)m_tInfo.fCY,
+					-m_tInfo.fCX, // 복사할 비트맵의 가로, 세로 길이
+					m_tInfo.fCY, 
+					SRCCOPY);
+
+		GdiTransparentBlt(hDC, 					// 복사 받을, 최종적으로 그림을 그릴 DC
+					int(m_tRect.left + iScrollX),	// 2,3 인자 :  복사받을 위치 X, Y
+					int(m_tRect.top + iScrollY),
+					int(m_tInfo.fCX),				// 4,5 인자 : 복사받을 가로, 세로 길이
+					int(m_tInfo.fCY),
+					hStretchDC,							// 비트맵을 가지고 있는 DC
+					0,								// 비트맵 출력 시작 좌표, X,Y
+					0,
+					(int)m_tInfo.fCX,				// 복사할 비트맵의 가로, 세로 길이
+					(int)m_tInfo.fCY,
+					RGB(0, 0, 0));
+	}
 				
 }
 void CPlayer::Release(void)
@@ -132,8 +175,9 @@ void CPlayer::Key_Input(void)
 	if (GetAsyncKeyState(VK_LEFT))
 	{
 		m_tInfo.fX -= m_fSpeed;
-		m_pFrameKey = L"Player_LEFT";
+		m_pFrameKey = L"Player_RIGHT";
 		m_eCurState = WALK;
+		m_bStretch = false;
 	}
 
 	else if (GetAsyncKeyState(VK_RIGHT))
@@ -141,6 +185,7 @@ void CPlayer::Key_Input(void)
 		m_tInfo.fX += m_fSpeed;
 		m_pFrameKey = L"Player_RIGHT";
 		m_eCurState = WALK;
+		m_bStretch = true;
 	}
 
 	else if (GetAsyncKeyState(VK_UP))
@@ -148,6 +193,7 @@ void CPlayer::Key_Input(void)
 		m_tInfo.fY -= m_fSpeed;
 		m_pFrameKey = L"Player_UP";
 		m_eCurState = WALK;
+
 	}
 
 	else if (GetAsyncKeyState(VK_DOWN))
