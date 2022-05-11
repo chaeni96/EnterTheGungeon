@@ -55,6 +55,12 @@ void CStage::Render(HDC hDC)
 {
 	int		iScrollX = (int)CScrollMgr::Get_Instance()->Get_ScrollX();
 	int		iScrollY = (int)CScrollMgr::Get_Instance()->Get_ScrollY();
+	
+	if (GetAsyncKeyState(VK_SPACE))
+	{
+		iScrollX -= 10;
+		iScrollY += 10;
+	} // TODO 面倒贸府 锭 结冈扁
 
 	HDC		hGroundMemDC = CBmpMgr::Get_Instance()->Find_Image(L"Ground");
 	BitBlt(hDC, iScrollX, iScrollY, 1200, 680, hGroundMemDC, 0, 0, SRCCOPY);

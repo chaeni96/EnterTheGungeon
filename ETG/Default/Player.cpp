@@ -72,6 +72,8 @@ int CPlayer::Update(void)
 
 void CPlayer::Late_Update(void)
 {
+
+
 	Motion_Change();
 	Move_Frame();
 
@@ -89,6 +91,8 @@ void CPlayer::Render(HDC hDC)
 {
 	int		iScrollX = (int)CScrollMgr::Get_Instance()->Get_ScrollX();
 	int		iScrollY = (int)CScrollMgr::Get_Instance()->Get_ScrollY();
+
+
 
 	HDC		hMemDC = CBmpMgr::Get_Instance()->Find_Image(m_pFrameKey);
 
@@ -172,39 +176,36 @@ void CPlayer::Key_Input(void)
 	float	fY = 0.f;
 
 	// GetKeyState
-	if (GetAsyncKeyState('A'))
-	{
-		m_tInfo.fX -= m_fSpeed;
-		m_eCurState = WALK;
 
+		if (GetAsyncKeyState('A'))
+		{
+			m_tInfo.fX -= m_fSpeed;
+			m_eCurState = WALK;
+
+
+		}
+		else if (GetAsyncKeyState('D'))
+		{
+			m_tInfo.fX += m_fSpeed;
+			m_eCurState = WALK;
+
+		}
+		else if (GetAsyncKeyState('W'))
+		{
+			m_tInfo.fY -= m_fSpeed;
+			m_eCurState = WALK;
+
+		}
+		else if (GetAsyncKeyState('S'))
+		{
+			m_tInfo.fY += m_fSpeed;
+			m_eCurState = WALK;
+
+		}
+		else
+			m_eCurState = IDLE;
 	
-	}
-
-	else if (GetAsyncKeyState('D'))
-	{
-		m_tInfo.fX += m_fSpeed;
-		m_eCurState = WALK;
-
 	
-	}
-
-	else if (GetAsyncKeyState('W'))
-	{
-		m_tInfo.fY -= m_fSpeed;
-		m_eCurState = WALK;
-	
-
-	}
-
-	else if (GetAsyncKeyState('S'))
-	{
-		m_tInfo.fY += m_fSpeed;
-		m_eCurState = WALK;
-	
-	
-	}
-	else
-		m_eCurState = IDLE;
 
 }
 
@@ -216,6 +217,8 @@ void CPlayer::Dodge_Roll(void)
 		// 구르기 상태 변수 하나 선언하고 그 상태일때는 몬스터 총알과 충돌처리 X
 		m_bRoll = true;
 	}
+
+	// idle 변하는 조건 하나 추가하기
 
 }
 

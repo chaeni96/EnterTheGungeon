@@ -97,8 +97,11 @@
     <Filter Include="01. Obj\04. Tile">
       <UniqueIdentifier>{0df1c99a-4be2-4da8-b1e7-b092f0b0256e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01. Obj\Mouse">
+    <Filter Include="01. Obj\05.Mouse">
       <UniqueIdentifier>{c41eb597-3731-424b-a8c0-42bf9c53e9f9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Obj\06.Weapon">
+      <UniqueIdentifier>{094bf51f-a0a7-4ba2-8369-686008005f8f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -211,7 +214,10 @@
       <Filter>98. Design\SoundMgr</Filter>
     </ClInclude>
     <ClInclude Include="Mouse.h">
-      <Filter>01. Obj\Mouse</Filter>
+      <Filter>01. Obj\05.Mouse</Filter>
+    </ClInclude>
+    <ClInclude Include="Weapon.h">
+      <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -297,7 +303,10 @@
       <Filter>98. Design\SoundMgr</Filter>
     </ClCompile>
     <ClCompile Include="Mouse.cpp">
-      <Filter>01. Obj\Mouse</Filter>
+      <Filter>01. Obj\05.Mouse</Filter>
+    </ClCompile>
+    <ClCompile Include="Weapon.cpp">
+      <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

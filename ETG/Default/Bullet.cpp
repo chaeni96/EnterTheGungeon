@@ -25,31 +25,6 @@ int CBullet::Update(void)
 	if (m_bDead)
 		return OBJ_DEAD;
 
-#pragma region 복습
-
-/*
-// 	switch (m_eDir)
-// 	{
-// 	case DIR_LEFT:
-// 		m_tInfo.fX -= m_fSpeed;
-// 		break;
-// 	case DIR_UP:
-// 		m_tInfo.fY -= m_fSpeed;
-// 		break;
-// 
-// 	case DIR_RIGHT:
-// 		m_tInfo.fX += m_fSpeed;
-// 		break;
-// 
-// 	case DIR_DOWN:
-// 		m_tInfo.fY += m_fSpeed;
-// 		break;
-// 	}
-*/
-
-#pragma endregion 복습
-
-	
 	m_tInfo.fX += m_fSpeed * cosf((m_fAngle * PI) / 180.f);
 	m_tInfo.fY -= m_fSpeed * sinf((m_fAngle * PI) / 180.f);
 	
