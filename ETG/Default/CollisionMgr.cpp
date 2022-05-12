@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "CollisionMgr.h"
-
+#include "ScrollMgr.h"
 
 CCollisionMgr::CCollisionMgr()
 {

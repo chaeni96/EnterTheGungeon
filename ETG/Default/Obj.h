@@ -58,6 +58,6 @@ protected:
 	TCHAR*		m_pFrameKey;
 
 	RENDERID	m_eRender;
-
+	TYPE		m_eType;
 };
 

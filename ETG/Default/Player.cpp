@@ -2,7 +2,6 @@
 #include "Player.h"
 #include "AbstractFactory.h"
 #include "Shield.h"
-#include "ScrewBullet.h"
 #include "GuideBullet.h"
 #include "ObjMgr.h"
 #include "LineMgr.h"
@@ -11,7 +10,8 @@
 #include "BmpMgr.h"
 #include "SoundMgr.h"
 #include "Mouse.h"
-
+#include "Gun.h"
+#include "Comando.h"
 float	g_fSound = 1.f;
 
 CPlayer::CPlayer()
@@ -27,7 +27,7 @@ CPlayer::~CPlayer()
 void CPlayer::Initialize(void)
 {
 	m_tInfo.fX = WINCX >> 1;
-	m_tInfo.fY = 500.F;
+	m_tInfo.fY = 500.f;
 
 	m_tInfo.fCX = 80.f; // 20 * 25
 	m_tInfo.fCY = 100.f;
@@ -36,10 +36,8 @@ void CPlayer::Initialize(void)
 
 	m_fDiagonal = 100.f;
 
-	m_bJump = false;
 	m_bRoll = false;
-	m_fJumpPower = 15.f;
-	m_fJumpTime = 0.f;
+
 
 	m_eRender = RENDER_GAMEOBJECT;
 
@@ -148,12 +146,12 @@ void CPlayer::Mouse_Sight(void)
 		m_pFrameKey = L"Player_UP";
 
 	}
-	else if ((110 <= m_fAngle &&  m_fAngle < 170))
+	else if ((110 <= m_fAngle &&  m_fAngle < 165))
 	{
 		m_pFrameKey = L"Player_LU";
 
 	}
-	else if ((170 <= m_fAngle &&  m_fAngle < 260))
+	else if ((-145 <= m_fAngle &&  m_fAngle < -90))
 	{
 		m_pFrameKey = L"Player_LEFT";
 	
@@ -205,6 +203,33 @@ void CPlayer::Key_Input(void)
 		else
 			m_eCurState = IDLE;
 	
+		//함수하나 만들기
+		
+		//컨트롤 눌렀을때 무기변환하도록 하고 처음 생성시에 무조건 기본 총 만들게 한다 그다음에 컨트롤 눌렀을때 생성한것가지고 와서 타입 비교
+		if (GetAsyncKeyState(0x31)) // 1번눌렀을때 일반 총
+		{
+			CObjMgr::Get_Instance()->Weapon_Change(TYPE_WEAPON_GUN);
+		}
+		
+		
+		else if (GetAsyncKeyState(0x32)) // 1번눌렀을때 일반 총
+		{
+			CObjMgr::Get_Instance()->Weapon_Change(TYPE_WEAPON_COMANDO);
+		}
+		else if (GetAsyncKeyState(VK_RBUTTON))
+		{
+			m_tInfo.fX -= 2;
+			m_tInfo.fY += 2;
+
+
+			m_tInfo.fX += 2;
+			m_tInfo.fY -= 2;
+
+
+		}
+
+		//2번 눌렀을때 코만도 생성해야하는데 WEAPON이 비었을때? 그리고 코만도를 생성했을때는 일반총을 삭제해줘야한다
+	
 	
 
 }
@@ -216,10 +241,17 @@ void CPlayer::Dodge_Roll(void)
 		m_eCurState = ROLL;
 		// 구르기 상태 변수 하나 선언하고 그 상태일때는 몬스터 총알과 충돌처리 X
 		m_bRoll = true;
+
 	}
 
 	// idle 변하는 조건 하나 추가하기
 
+}
+
+void CPlayer::Weapon_Change(void)
+{
+
+	//선택한 숫자에 따라서 무기 생성해주기
 }
 
 

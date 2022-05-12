@@ -47,16 +47,23 @@ void CTile::Render(HDC hDC)
 	int		iScrollY = (int)CScrollMgr::Get_Instance()->Get_ScrollY();
 
 	HDC		hMemDC = CBmpMgr::Get_Instance()->Find_Image(L"Tile");
-	
-	BitBlt(hDC, 
-		m_tRect.left + iScrollX,
+
+
+
+	GdiTransparentBlt(hDC, 					// 복사 받을, 최종적으로 그림을 그릴 DC
+		m_tRect.left + iScrollX,	// 2,3 인자 :  복사받을 위치 X, Y
 		m_tRect.top + iScrollY,
-		TILECX,
+		TILECX,				// 4,5 인자 : 복사받을 가로, 세로 길이
 		TILECY,
-		hMemDC,
-		TILECX * m_iDrawID,
+		hMemDC,							// 비트맵을 가지고 있는 DC
+		TILECX * m_iDrawID,								// 비트맵 출력 시작 좌표, X,Y
 		0,
-		SRCCOPY);
+		TILECX,				// 복사할 비트맵의 가로, 세로 길이
+		TILECY,
+		RGB(255, 0, 255));			// 제거하고자 하는 색상/ 제거하고자 하는 색상
+
+
+
 }
 
 void CTile::Release(void)

@@ -1,10 +1,14 @@
 #include "stdafx.h"
 #include "ObjMgr.h"
 #include "CollisionMgr.h"
+#include "AbstractFactory.h"
+#include "Gun.h"
+#include "Comando.h"
 
 CObjMgr* CObjMgr::m_pInstance = nullptr;
 
 CObjMgr::CObjMgr()
+	:m_eCurWeapon(TYPE_END), m_ePreWeapon(TYPE_END)
 {
 }
 
@@ -42,12 +46,50 @@ CObj* CObjMgr::Get_Target(OBJID eID, CObj* pObj)
 	return pTarget;
 }
 
+template<typename T>
+bool		CompareY(T Dest, T Sour)
+{
+	return Dest->Get_Info().fY < Sour->Get_Info().fY;
+}
+
+void CObjMgr::Weapon_Change(TYPE _eType)
+{
+	m_eCurWeapon = _eType;
+
+	if (m_ePreWeapon != m_eCurWeapon)
+	{	
+
+		for (auto& iter : m_ObjList[OBJ_WEAPON])
+			Safe_Delete<CObj*>(iter);
+			
+		m_ObjList[OBJ_WEAPON].clear();
+
+		switch (m_eCurWeapon)
+		{
+		case TYPE_WEAPON_GUN:
+			Add_Object(OBJ_WEAPON, CAbstractFactory<CGun>::Create());
+			break;
+
+		case TYPE_WEAPON_COMANDO:
+			Add_Object(OBJ_WEAPON, CAbstractFactory<CComando>::Create());
+			break;
+
+	
+		}
+	}
+
+	m_ePreWeapon = m_eCurWeapon;
+
+}
+
 void CObjMgr::Add_Object(OBJID eID, CObj * pObj)
 {
 	if ((eID >= OBJ_END) || (nullptr == pObj))
 		return;
 
 	m_ObjList[eID].push_back(pObj);
+
+
 }
 
 int CObjMgr::Update(void)
@@ -89,14 +131,11 @@ void CObjMgr::Late_Update(void)
 	}
 
 	//CCollisionMgr::Collision_RectEx(m_ObjList[OBJ_PLAYER], m_ObjList[OBJ_MONSTER]);
-	//CCollisionMgr::Collision_Sphere(m_ObjList[OBJ_MONSTER], m_ObjList[OBJ_BULLET]);
+	
+	CCollisionMgr::Collision_Sphere(m_ObjList[OBJ_BOSS], m_ObjList[OBJ_BULLET]);
 }
 
-template<typename T>
-bool		CompareY(T Dest, T Sour)
-{
-	return Dest->Get_Info().fY < Sour->Get_Info().fY;
-}
+
 
 void CObjMgr::Render(HDC hDC)
 {

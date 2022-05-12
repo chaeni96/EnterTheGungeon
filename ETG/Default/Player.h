@@ -24,12 +24,10 @@ private:
 	void		OffSet(void);
 	void		Motion_Change(void);
 	void		Dodge_Roll(void);
+	void		Weapon_Change(void);
 
 private:
 	float					m_fDiagonal;
-	bool					m_bJump;		// 점프 상태 확인
-	float					m_fJumpPower;	// 점프 힘
-	float					m_fJumpTime;	// 점프 중 진행 시간
 
 	STATE					m_ePreState;
 	STATE					m_eCurState;

@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Bullet.h"
-
+#include "BmpMgr.h"
+#include "ScrollMgr.h"
 
 CBullet::CBullet()
 {
@@ -14,10 +15,14 @@ CBullet::~CBullet()
 
 void CBullet::Initialize(void)
 {
-	m_tInfo.fCX = 30.f;
-	m_tInfo.fCY = 30.f;
+	m_tInfo.fCX = 21.f;
+	m_tInfo.fCY = 19.f;
 
-	m_fSpeed = 5.f;
+	m_fSpeed = 7.f;
+	m_eRender = RENDER_GAMEOBJECT;
+
+	CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Bullet/Normal.bmp", L"Normal");
+
 }
 
 int CBullet::Update(void)
@@ -35,15 +40,30 @@ int CBullet::Update(void)
 
 void CBullet::Late_Update(void)
 {
-	/*if (100 >= m_tRect.left || WINCX - 100 <= m_tRect.right ||
-		100 >= m_tRect.top || WINCY - 100 <= m_tRect.bottom)
-		m_bDead = true; */
+	
 }
 
 void CBullet::Render(HDC hDC)
 {
-	Ellipse(hDC, m_tRect.left, m_tRect.top, m_tRect.right, m_tRect.bottom);
-}
+
+	int		iScrollX = (int)CScrollMgr::Get_Instance()->Get_ScrollX();
+	int		iScrollY = (int)CScrollMgr::Get_Instance()->Get_ScrollY();
+
+	HDC		hMemDC = CBmpMgr::Get_Instance()->Find_Image(L"Normal");
+
+	GdiTransparentBlt(hDC, 					// 복사 받을, 최종적으로 그림을 그릴 DC
+		int(m_tRect.left + iScrollX),	// 2,3 인자 :  복사받을 위치 X, Y
+		int(m_tRect.top + iScrollY),
+		int(m_tInfo.fCX),				// 4,5 인자 : 복사받을 가로, 세로 길이
+		int(m_tInfo.fCY),
+		hMemDC,							// 비트맵을 가지고 있는 DC
+		m_tFrame.iFrameStart * (int)m_tInfo.fCX,								// 비트맵 출력 시작 좌표, X,Y
+		m_tFrame.iMotion * (int)m_tInfo.fCY,
+		(int)m_tInfo.fCX,				// 복사할 비트맵의 가로, 세로 길이
+		(int)m_tInfo.fCY,
+		RGB(255, 0, 255));			// 제거하고자 하는 색상/ 제거하고자 하는 색상
+
+} 
 
 void CBullet::Release(void)
 {

@@ -3,7 +3,8 @@
 #include "TileMgr.h"
 #include "KeyMgr.h"
 #include "ScrollMgr.h"
-
+#include "BmpMgr.h"
+#include "ScrollMgr.h"
 
 CMyEdit::CMyEdit()
 {
@@ -17,6 +18,7 @@ CMyEdit::~CMyEdit()
 
 void CMyEdit::Initialize(void)
 {
+
 	CTileMgr::Get_Instance()->Initialize();
 }
 
@@ -34,6 +36,13 @@ void CMyEdit::Late_Update(void)
 
 void CMyEdit::Render(HDC hDC)
 {
+	int		iScrollX = (int)CScrollMgr::Get_Instance()->Get_ScrollX();
+	int		iScrollY = (int)CScrollMgr::Get_Instance()->Get_ScrollY();
+	CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Back/MapEdit.bmp", L"MapEdit");
+
+	HDC		hGroundMemDC = CBmpMgr::Get_Instance()->Find_Image(L"MapEdit");
+	BitBlt(hDC, iScrollX, iScrollY, 2400, 1400, hGroundMemDC, 0, 0, SRCCOPY);
+
 	CTileMgr::Get_Instance()->Render(hDC);
 }
 
@@ -56,7 +65,7 @@ void CMyEdit::Key_Input(void)
 	if (CKeyMgr::Get_Instance()->Key_Pressing(VK_DOWN))
 		CScrollMgr::Get_Instance()->Set_ScrollY(-m_fSpeed);
 
-	if (CKeyMgr::Get_Instance()->Key_Pressing(VK_LBUTTON))
+	if (CKeyMgr::Get_Instance()->Key_Down(VK_LBUTTON))
 	{
 		POINT		pt;
 		GetCursorPos(&pt);
@@ -71,7 +80,6 @@ void CMyEdit::Key_Input(void)
 	if (CKeyMgr::Get_Instance()->Key_Down('S'))
 		CTileMgr::Get_Instance()->Save_Tile();
 
-	if (CKeyMgr::Get_Instance()->Key_Down('A'))
 		CTileMgr::Get_Instance()->Load_Tile();
 
 }
