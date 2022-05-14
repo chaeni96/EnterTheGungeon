@@ -131,8 +131,11 @@ void CObjMgr::Late_Update(void)
 	}
 
 	//CCollisionMgr::Collision_RectEx(m_ObjList[OBJ_PLAYER], m_ObjList[OBJ_MONSTER]);
-	
-	CCollisionMgr::Collision_Sphere(m_ObjList[OBJ_BOSS], m_ObjList[OBJ_BULLET]);
+	CCollisionMgr::Collision_Rect(m_ObjList[OBJ_MONSTER], m_ObjList[OBJ_BULLET]);
+
+	CCollisionMgr::Collision_Rect(m_ObjList[OBJ_BOSS], m_ObjList[OBJ_BULLET]);
+	CCollisionMgr::Collision_Rect(m_ObjList[OBJ_MONSTER_BULLET], m_ObjList[OBJ_PLAYER]);
+
 }
 
 

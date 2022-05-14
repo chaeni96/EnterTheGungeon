@@ -83,6 +83,10 @@ void CComando::Release(void)
 {
 }
 
+void CComando::OnCollision(void)
+{
+}
+
 void CComando::Mouse_Sight(void)
 {
 	int		iScrollX = (int)CScrollMgr::Get_Instance()->Get_ScrollX();
@@ -177,7 +181,7 @@ void CComando::Mouse_Sight(void)
 	if ((CKeyMgr::Get_Instance()->Key_Down(VK_RBUTTON)))
 	{
 	
-		CObjMgr::Get_Instance()->Add_Object(OBJ_BULLET, CAbstractFactory<CGuideBullet>::Create(300.f, 400.f, m_fAngle));
+		CObjMgr::Get_Instance()->Add_Object(OBJ_BULLET, CAbstractFactory<CGuideBullet>::Create(m_tPosin.x, m_tPosin.y, m_fAngle));
 
 	}
 }

@@ -70,3 +70,7 @@ void CTile::Release(void)
 {
 	
 }
+
+void CTile::OnCollision(void)
+{
+}

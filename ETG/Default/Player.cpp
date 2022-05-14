@@ -35,12 +35,14 @@ void CPlayer::Initialize(void)
 	m_fSpeed = 5.f;
 
 	m_fDiagonal = 100.f;
-
+	m_bDeadEffect = false;
 	m_bRoll = false;
-
-
+	m_bHitEffect = false;
+	m_bGhost = false;
+	m_iHp = 1;
+	m_pFrameKey = L"Player_RIGHT";
 	m_eRender = RENDER_GAMEOBJECT;
-
+	m_delayTime = GetTickCount();
 	CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Player/Player_DOWN.bmp", L"Player_DOWN");
 	CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Player/Player_UP.bmp", L"Player_UP");
 	CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Player/Player_LEFT.bmp", L"Player_LEFT");
@@ -50,19 +52,34 @@ void CPlayer::Initialize(void)
 	CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Player/Player_RU.bmp", L"Player_RU");
 	CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Player/Player_LD.bmp", L"Player_LD");
 	CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Player/Player_RD.bmp", L"Player_RD");
+	CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Player/Player_Ghost.bmp", L"Player_Ghost");
+
 	//CSoundMgr::Get_Instance()->PlaySoundW(L"Success.wav", SOUND_EFFECT, g_fSound);
 
 }
 
 int CPlayer::Update(void)
 {
-	if (m_bDead)
-		return OBJ_DEAD;
+	if (m_bDeadEffect)
+	{
+		m_eCurState = DEAD;
+		if (m_bGhost)
+		{
+			m_pFrameKey = L"Player_Ghost";
+			m_eCurState = GHOST;
 
-	Mouse_Sight();
-	Key_Input();
-	OffSet();
-	Dodge_Roll();
+			if (m_bDead)
+				return OBJ_DEAD;
+
+		}
+		
+	}
+	else
+	{
+		Key_Input();
+		OffSet();
+	}
+
 	Update_Rect();
 
 	return OBJ_NOEVENT;
@@ -70,10 +87,37 @@ int CPlayer::Update(void)
 
 void CPlayer::Late_Update(void)
 {
-
-
 	Motion_Change();
-	Move_Frame();
+
+	if (Move_Frame() == true)
+	{
+
+		switch (m_eCurState)
+		{
+		case IDLE :
+			break;
+		case HIT:
+			m_bHitEffect = true;
+			break;
+		case WALK:
+			break;
+		case ROLL:
+			break;
+		case DEAD:
+			m_bGhost = true;
+			break;
+		case GHOST:
+			m_bDead = true;
+			break;
+
+		default:
+			break;
+		}
+		Mouse_Sight();
+
+	}
+
+	
 
 
 #ifdef _DEBUG
@@ -83,6 +127,8 @@ void CPlayer::Late_Update(void)
 
 
 #endif // _DEBUG
+
+
 }
 
 void CPlayer::Render(HDC hDC)
@@ -113,8 +159,11 @@ void CPlayer::Release(void)
 	
 }
 
+
+
 void CPlayer::Mouse_Sight(void)
 {
+
 	int		iScrollX = (int)CScrollMgr::Get_Instance()->Get_ScrollX();
 	int		iScrollY = (int)CScrollMgr::Get_Instance()->Get_ScrollY();
 	//마우스 실시간 좌표 받아오기
@@ -133,39 +182,59 @@ void CPlayer::Mouse_Sight(void)
 
 	if (pt.y > (m_tInfo.fY + iScrollY))
 		fRadian *= -1.f;
-
+	
 	m_fAngle = fRadian * 180.f / PI; //디그리 각도
 
-	if (25 <= m_fAngle &&  m_fAngle < 70)
+	if (25 <= m_fAngle &&  m_fAngle < 60)
 	{
 		m_pFrameKey = L"Player_RU";
-
+		m_eCurState = IDLE;
 	}
-	else if ((70 <= m_fAngle &&  m_fAngle < 110))
+	else if ((60 <= m_fAngle &&  m_fAngle < 115))
 	{
 		m_pFrameKey = L"Player_UP";
-
+		m_eCurState = IDLE;
 	}
-	else if ((110 <= m_fAngle &&  m_fAngle < 165))
+	else if ((115 <= m_fAngle &&  m_fAngle < 150))
 	{
 		m_pFrameKey = L"Player_LU";
-
+		m_eCurState = IDLE;
 	}
-	else if ((-145 <= m_fAngle &&  m_fAngle < -90))
+	else if ((150 <= m_fAngle &&  m_fAngle < 183))
 	{
 		m_pFrameKey = L"Player_LEFT";
-	
+		m_eCurState = IDLE;
 	}
-	else if ((-90 <= m_fAngle &&  m_fAngle < -40))
+	else if ((-120 <= m_fAngle &&  m_fAngle < -100))
+	{
+		m_pFrameKey = L"Player_LEFT";
+		m_eCurState = IDLE;
+
+	}
+	else if ((-100 <= m_fAngle &&  m_fAngle < -40))
 	{
 		m_pFrameKey = L"Player_DOWN";
-
+		m_eCurState = IDLE;
 	}
 	else if ((-40 <= m_fAngle &&  m_fAngle < 25))
 	{
 		m_pFrameKey = L"Player_RIGHT";	
-
+		m_eCurState = IDLE;
 	}
+	else 
+	{
+		m_eCurState = IDLE;
+	}
+
+
+
+	if (GetAsyncKeyState(VK_LBUTTON))
+	{
+		m_eCurState = ROLL;
+		
+	}
+
+	
 
 }
 
@@ -174,35 +243,44 @@ void CPlayer::Key_Input(void)
 	float	fY = 0.f;
 
 	// GetKeyState
-
+	
 		if (GetAsyncKeyState('A'))
 		{
 			m_tInfo.fX -= m_fSpeed;
-			m_eCurState = WALK;
-
+			if (!m_bHitEffect)
+			{
+				m_eCurState = WALK;
+			}
+		
 
 		}
 		else if (GetAsyncKeyState('D'))
 		{
 			m_tInfo.fX += m_fSpeed;
-			m_eCurState = WALK;
+			if (!m_bHitEffect)
+			{
+				m_eCurState = WALK;
+			}
 
 		}
 		else if (GetAsyncKeyState('W'))
 		{
 			m_tInfo.fY -= m_fSpeed;
-			m_eCurState = WALK;
+			if (!m_bHitEffect)
+			{
+				m_eCurState = WALK;
+			}
 
 		}
 		else if (GetAsyncKeyState('S'))
 		{
 			m_tInfo.fY += m_fSpeed;
-			m_eCurState = WALK;
-
+			if (!m_bHitEffect)
+			{
+				m_eCurState = WALK;
+			}
 		}
-		else
-			m_eCurState = IDLE;
-	
+
 		//함수하나 만들기
 		
 		//컨트롤 눌렀을때 무기변환하도록 하고 처음 생성시에 무조건 기본 총 만들게 한다 그다음에 컨트롤 눌렀을때 생성한것가지고 와서 타입 비교
@@ -212,47 +290,45 @@ void CPlayer::Key_Input(void)
 		}
 		
 		
-		else if (GetAsyncKeyState(0x32)) // 1번눌렀을때 일반 총
+		else if (GetAsyncKeyState(0x32)) // 2번 눌렀을때 코만도
 		{
 			CObjMgr::Get_Instance()->Weapon_Change(TYPE_WEAPON_COMANDO);
 		}
-		else if (GetAsyncKeyState(VK_RBUTTON))
+
+
+		//2번 눌렀을때 코만도 생성해야하는데 WEAPON이 비었을때? 그리고 코만도를 생성했을때는 일반총을 삭제해줘야한다
+		
+		if (GetAsyncKeyState(VK_LBUTTON))
 		{
-			m_tInfo.fX -= 2;
-			m_tInfo.fY += 2;
-
-
-			m_tInfo.fX += 2;
-			m_tInfo.fY -= 2;
-
+			m_eCurState = ROLL;
 
 		}
 
-		//2번 눌렀을때 코만도 생성해야하는데 WEAPON이 비었을때? 그리고 코만도를 생성했을때는 일반총을 삭제해줘야한다
-	
-	
 
 }
 
-void CPlayer::Dodge_Roll(void)
+
+void CPlayer::Hit(void)
 {
-	if (GetAsyncKeyState(VK_LBUTTON))
+	m_eCurState = HIT;
+	m_iHp -= 1;
+	m_bHitEffect = true;
+}
+
+void CPlayer::OnCollision(void)
+{
+	if (m_eCurState != ROLL)
 	{
-		m_eCurState = ROLL;
-		// 구르기 상태 변수 하나 선언하고 그 상태일때는 몬스터 총알과 충돌처리 X
-		m_bRoll = true;
+		Hit();
+
+		if (m_iHp <= 0)
+		{
+			m_bDeadEffect = true;
+		}
 
 	}
-
-	// idle 변하는 조건 하나 추가하기
-
 }
 
-void CPlayer::Weapon_Change(void)
-{
-
-	//선택한 숫자에 따라서 무기 생성해주기
-}
 
 
 void CPlayer::OffSet(void)
@@ -315,12 +391,19 @@ void CPlayer::Motion_Change(void)
 			m_tFrame.dwSpeed = 200;
 			m_tFrame.dwTime = GetTickCount();
 			break;
+		case GHOST:
+			m_tFrame.iFrameStart = 0;
+			m_tFrame.iFrameEnd = 6;
+			m_tFrame.iMotion = 0;
+			m_tFrame.dwSpeed = 200;
+			m_tFrame.dwTime = GetTickCount();
+			break;
 
 		case HIT:
 			m_tFrame.iFrameStart = 0;
-			m_tFrame.iFrameEnd = 2;
+			m_tFrame.iFrameEnd = 3;
 			m_tFrame.iMotion = 4;
-			m_tFrame.dwSpeed = 200;
+			m_tFrame.dwSpeed = 150;
 			m_tFrame.dwTime = GetTickCount();
 			break;
 		}

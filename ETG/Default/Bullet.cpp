@@ -2,7 +2,7 @@
 #include "Bullet.h"
 #include "BmpMgr.h"
 #include "ScrollMgr.h"
-
+#include "Player.h"
 CBullet::CBullet()
 {
 }
@@ -67,5 +67,13 @@ void CBullet::Render(HDC hDC)
 
 void CBullet::Release(void)
 {
+	
+}
+
+void CBullet::OnCollision(void)
+{
+
+		m_bDead = true;
+	
 	
 }

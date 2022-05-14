@@ -5,7 +5,7 @@
 class CPlayer : public CObj
 {
 public:
-	enum STATE  { IDLE, WALK, ROLL, DEAD, HIT, END };
+	enum STATE  { IDLE, WALK, ROLL, DEAD, HIT, GHOST, END };
 
 public:
 	CPlayer();
@@ -17,23 +17,30 @@ public:
 	virtual	void	Late_Update(void);
 	virtual void Render(HDC hDC) override;
 	virtual void Release(void) override;
+	virtual		void	OnCollision(void)	override;
+
+public :
+	bool		Check_Roll(void) { return m_bRoll; }
+	STATE  Get_State(void) { return m_eCurState; }
 
 private:
 	void		Mouse_Sight(void); // 마우스 위치에 따라서 플레이어의 시선방향 움직임
 	void		Key_Input(void);
 	void		OffSet(void);
 	void		Motion_Change(void);
-	void		Dodge_Roll(void);
-	void		Weapon_Change(void);
+	void		Hit(void);
 
 private:
 	float					m_fDiagonal;
-
+	DWORD					m_delayTime;
 	STATE					m_ePreState;
 	STATE					m_eCurState;
-
+	bool					m_bDeadEffect;
+	bool					m_bHitEffect;
 	bool					m_bStretch = true;
 	bool					m_bRoll; // 구르는 상태 확인
+	bool    m_bGhost;
+	int iCount;
 	POINT	pt{};
 
 };

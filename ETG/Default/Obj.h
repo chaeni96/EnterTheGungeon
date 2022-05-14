@@ -38,10 +38,10 @@ public:
 	virtual		void	Late_Update(void)	PURE;
 	virtual		void	Render(HDC hDC)		PURE;
 	virtual		void	Release(void)		PURE;
-
+	virtual		void	OnCollision(void)	PURE;
 protected:
 	void		Update_Rect(void);
-	void		Move_Frame(void);
+	bool		Move_Frame(void);
 
 protected:
 	INFO		m_tInfo;
@@ -50,6 +50,7 @@ protected:
 
 	float		m_fSpeed;
 	float		m_fAngle;
+	int			m_iHp;
 
 	DIRECTION	m_eDir;
 	bool		m_bDead;

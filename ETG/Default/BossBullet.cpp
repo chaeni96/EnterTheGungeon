@@ -4,6 +4,7 @@
 #include "ScrollMgr.h"
 #include "ScrollMgr.h"
 #include "ObjMgr.h"
+#include "Player.h"
 
 BossBullet::BossBullet()
 {
@@ -19,8 +20,7 @@ void BossBullet::Initialize(void)
 
 	m_tInfo.fCX = 48.f;
 	m_tInfo.fCY = 47.f;
-	m_fDiagonal = 10.f;
-	m_fSpeed = 6.f;
+	m_fSpeed = 8.f;
 	m_eRender = RENDER_GAMEOBJECT;
 
 	CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Bullet/BossBullet.bmp", L"BossBullet");
@@ -32,14 +32,10 @@ int BossBullet::Update(void)
 	if (m_bDead)
 		return OBJ_DEAD;
 
-	//플레이어의 각도에 맞춰서 하는것
 
-	//플레이어와 각도를 구해오자
-	m_pTarget = CObjMgr::Get_Instance()->Get_Target(OBJ_PLAYER, this);
-
-	m_tInfo.fX += 10.f;
-	m_tInfo.fY -= 10.f;
-
+	m_tInfo.fX += m_fSpeed * cosf(m_fAngle * PI / 180.f);
+	m_tInfo.fY -= m_fSpeed * sinf(m_fAngle * PI / 180.f);
+	
 	Update_Rect();
 
 	return OBJ_NOEVENT;
@@ -47,6 +43,11 @@ int BossBullet::Update(void)
 
 void BossBullet::Late_Update(void)
 {
+	if (m_tRect.left < 30 || m_tRect.right > 1100 || m_tRect.top < 0 || m_tRect.bottom > 1100 )
+	{
+
+		m_bDead = true;
+	}
 }
 
 void BossBullet::Render(HDC hDC)
@@ -73,4 +74,17 @@ void BossBullet::Render(HDC hDC)
 
 void BossBullet::Release(void)
 {
+}
+
+void BossBullet::OnCollision(void)
+{
+	m_pTarget = CObjMgr::Get_Instance()->Get_Target(OBJ_PLAYER, this);
+
+	if (m_pTarget) {
+
+		if (dynamic_cast<CPlayer*>(m_pTarget)->Get_State() != 2)
+		{
+			m_bDead = true;
+		}
+	}
 }

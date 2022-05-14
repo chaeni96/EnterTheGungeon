@@ -14,7 +14,7 @@ public:
 	virtual		void	Late_Update(void)	override;
 	virtual		void	Render(HDC hDC)		override;
 	virtual		void	Release(void)		override;
-
+	virtual		void	OnCollision(void)	override;
 public :
 	void		Mouse_Sight(void);
 

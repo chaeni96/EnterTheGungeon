@@ -70,3 +70,7 @@ void CMouse::Release(void)
 {
 	
 }
+
+void CMouse::OnCollision(void)
+{
+}

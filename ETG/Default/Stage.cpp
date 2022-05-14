@@ -36,9 +36,6 @@ void CStage::Initialize(void)
 	}
 	CObjMgr::Get_Instance()->Add_Object(OBJ_BOSS, CAbstractFactory<CBossMonster>::Create());
 
-	
-	// 무기를 여기서 말고 objmgr에서 만들자, 성공하면 플레이어의 위치를 알아야하는것들을 다 objmgr에
-
 	CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Back/Map.bmp", L"Map");
 
 	CTileMgr::Get_Instance()->Load_Tile();

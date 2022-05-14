@@ -80,6 +80,5 @@ void CMyEdit::Key_Input(void)
 	if (CKeyMgr::Get_Instance()->Key_Down('S'))
 		CTileMgr::Get_Instance()->Save_Tile();
 
-		CTileMgr::Get_Instance()->Load_Tile();
 
 }

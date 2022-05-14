@@ -87,3 +87,7 @@ void CMyButton::Release(void)
 {
 
 }
+
+void CMyButton::OnCollision(void)
+{
+}

@@ -30,7 +30,7 @@ int CGuideBullet::Update(void)
 	if (m_bDead)
 		return OBJ_DEAD;
 	//건의 위치에 따라서 m_pTarget 바꿔주기
-	m_pTarget = CObjMgr::Get_Instance()->Get_Target(OBJ_BOSS, this);
+	m_pTarget = CObjMgr::Get_Instance()->Get_Target(OBJ_MONSTER, this);
 	
 	if (m_pTarget)
 	{
@@ -47,8 +47,8 @@ int CGuideBullet::Update(void)
 	}
 	m_fSpeed += 0.1f;
 
-	m_tInfo.fX += m_fSpeed * cosf(m_fAngle * PI / 170.f);
-	m_tInfo.fY -= m_fSpeed * sinf(m_fAngle * PI / 170.f);
+	m_tInfo.fX += m_fSpeed * cosf(m_fAngle * PI / 180.f);
+	m_tInfo.fY -= m_fSpeed * sinf(m_fAngle * PI / 180.f);
 	
 	Update_Rect();
 
@@ -84,4 +84,9 @@ void CGuideBullet::Render(HDC hDC)
 void CGuideBullet::Release(void)
 {
 	
+}
+
+void CGuideBullet::OnCollision(void)
+{
+	m_bDead = true;
 }
