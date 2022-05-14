@@ -39,7 +39,7 @@ void CPlayer::Initialize(void)
 	m_bRoll = false;
 	m_bHitEffect = false;
 	m_bGhost = false;
-	m_iHp = 1;
+	m_iHp = 100;
 	m_pFrameKey = L"Player_RIGHT";
 	m_eRender = RENDER_GAMEOBJECT;
 	m_delayTime = GetTickCount();

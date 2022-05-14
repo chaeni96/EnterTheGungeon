@@ -52,8 +52,16 @@ int CBossMonster::Update(void)
 			return OBJ_DEAD;
 	}
 	else {
+
+		switch (m_eCurState)
+		{
+		default:
+			break;
+		}
 		BehaviorUpdate();
+		Monster_Dir();
 	}
+
 	Update_Rect();
 	return OBJ_NOEVENT;
 }
@@ -236,7 +244,7 @@ void CBossMonster::Monster_Dir(void)
 		float	fRadian = acosf(fWidth / fDiagonal); // 라디안 각도
 
 
-		if (m_tInfo.fY < m_pTarget->Get_Info().fY)  //  cos 0도에서 180도 밖에 표현이 안되기때문에
+		if (m_pTarget->Get_Info().fY > m_tInfo.fY + iScrollY)  //  cos 0도에서 180도 밖에 표현이 안되기때문에
 			fRadian *= -1.f;
 
 		m_fAngle = fRadian * 180.f / PI; // 각도
@@ -289,10 +297,7 @@ void CBossMonster::RandomPattern()
 	currentState = PATTERN((rand() % None));
 }
 
-bool CBossMonster::TargetMove()
-{
-	return false;
-}
+
 
 void CBossMonster::BehaviorUpdate()
 {
@@ -316,7 +321,7 @@ void CBossMonster::BehaviorEnter()
 {
 	if (!m_pTarget)
 		return;
-
+	
 	behaviorState = Execute;
 }
 
@@ -324,6 +329,9 @@ void CBossMonster::BehaviorExecute()
 {
 	switch (currentState)
 	{
+	case MOVE:
+			TargetMove();
+		break;
 
 	case LAUNCH1:
 		if (m_dwTime + 1000 < GetTickCount())
@@ -349,6 +357,9 @@ void CBossMonster::BehaviorExecute()
 			
 		}
 		break;
+
+
+
 	}
 
 	behaviorState = Exit;
@@ -362,10 +373,16 @@ void CBossMonster::BehaviorExit()
 		case LAUNCH1:
 		case LAUNCH2:
 		case LAUNCH3 :
+		case RETURN:
 			RandomPattern();
 			currentState = None;
 			break;
+		case MOVE:
+			RandomPattern();
 
+			currentState = None;
+			break;
+	
 		case None:
 			RandomPattern();
 			break;
@@ -373,6 +390,28 @@ void CBossMonster::BehaviorExit()
 
 behaviorState = Enter;
 }
+
+void CBossMonster::TargetMove()
+{
+	m_tInfo.fY -= 10.f;
+	m_eCurState = FLY;
+
+	
+}
+
+void CBossMonster::PatternMoveToUp()
+{
+}
+
+bool CBossMonster::PatternBomb()
+{
+	return false;
+}
+
+void CBossMonster::PatternMoveToOri()
+{
+}
+
 
 void CBossMonster::PatternWideShot()
 {
@@ -415,6 +454,18 @@ void CBossMonster::PatternContinueShot()
 	
 }
 
+
+bool CBossMonster::Ori()
+{
+	m_eCurState = LAND;
+
+	if (m_tInfo.fY == 700.f)
+	{
+		return true;
+	}
+	return false;
+}
+
 void CBossMonster::PatternNormalShot()
 {
 
@@ -445,16 +496,17 @@ void CBossMonster::PatternNormalShot()
 
 }
 
-void CBossMonster::PatternMoveToPlayer()
-{
-	m_eCurState = FLY;
-}
 
 void CBossMonster::Hit()
 {
 	m_iHp -= 1;
 	m_eCurState = HIT;
 }
+
+void CBossMonster::PatternMoveToPlayer()
+{
+}
+
 
 
 void CBossMonster::OnCollision(void)
