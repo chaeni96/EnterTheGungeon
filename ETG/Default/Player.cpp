@@ -72,7 +72,6 @@ int CPlayer::Update(void)
 				return OBJ_DEAD;
 
 		}
-		
 	}
 	else
 	{
@@ -95,11 +94,13 @@ void CPlayer::Late_Update(void)
 		switch (m_eCurState)
 		{
 		case IDLE :
+			m_tFrame.iFrameStart = 0;
 			break;
 		case HIT:
 			m_bHitEffect = true;
 			break;
 		case WALK:
+			m_tFrame.iFrameStart = 0;
 			break;
 		case ROLL:
 			break;
@@ -280,7 +281,7 @@ void CPlayer::Key_Input(void)
 				m_eCurState = WALK;
 			}
 		}
-
+		
 		//함수하나 만들기
 		
 		//컨트롤 눌렀을때 무기변환하도록 하고 처음 생성시에 무조건 기본 총 만들게 한다 그다음에 컨트롤 눌렀을때 생성한것가지고 와서 타입 비교
