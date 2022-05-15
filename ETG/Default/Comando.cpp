@@ -185,7 +185,7 @@ void CComando::Mouse_Sight(void)
 	m_tPosin.x = long(m_tInfo.fX + m_fDiagonal * cosf((m_fAngle * PI) / 180.f));
 	m_tPosin.y = long(m_tInfo.fY - m_fDiagonal * sinf((m_fAngle * PI) / 180.f));
 
-	if ((CKeyMgr::Get_Instance()->Key_Down(VK_RBUTTON)))
+	if ((CKeyMgr::Get_Instance()->Key_Down(VK_LBUTTON)))
 	{
 	
 		CObjMgr::Get_Instance()->Add_Object(OBJ_BULLET, CAbstractFactory<CGuideBullet>::Create(m_tPosin.x, m_tPosin.y, m_fAngle));

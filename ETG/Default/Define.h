@@ -16,8 +16,8 @@
 #define		TILECX		50
 #define		TILECY		50
 
-#define		TILEX		48
-#define		TILEY		28
+#define		TILEX		52	
+#define		TILEY		32
 
 
 extern HWND			g_hWnd;

@@ -97,7 +97,7 @@ void CTileMgr::Picking_Tile(POINT _pt, const int& _iDrawID, const int& _iOption)
 
 void CTileMgr::Save_Tile(void)
 {
-	HANDLE		hFile = CreateFile(L"../Data/Tile.dat", GENERIC_WRITE, NULL, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+	HANDLE		hFile = CreateFile(L"../Data/Tile1.dat", GENERIC_WRITE, NULL, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
 
 	int		iDrawID = 0, iOption = 0;
 	DWORD	dwByte = 0;
@@ -117,7 +117,7 @@ void CTileMgr::Save_Tile(void)
 
 void CTileMgr::Load_Tile(void)
 {
-	HANDLE		hFile = CreateFile(L"../Data/Tile.dat", GENERIC_READ, NULL, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+	HANDLE		hFile = CreateFile(L"../Data/Tile1.dat", GENERIC_READ, NULL, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
 
 	INFO		tInfo{};
 	int			iDrawID = 0, iOption = 0;

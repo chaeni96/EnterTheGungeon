@@ -51,7 +51,7 @@ int CBossBomb::Update(void)
 void CBossBomb::Late_Update(void)
 {
 	
-		if (m_tInfo.fY >  550)
+		if (m_tInfo.fY >  600)
 		{	
 			m_bDeadEffect = true;
 		}

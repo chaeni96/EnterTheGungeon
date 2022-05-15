@@ -11,7 +11,7 @@
 #include "Gun.h"
 #include "Comando.h"
 #include "BossMonster.h"
-
+#include "KeyMgr.h"
 CStage::CStage()
 {
 }
@@ -31,13 +31,12 @@ void CStage::Initialize(void)
 
 	CObjMgr::Get_Instance()->Add_Object(OBJ_MOUSE, CAbstractFactory<CMouse>::Create());
 
-	CObjMgr::Get_Instance()->Add_Object(OBJ_MONSTER, CAbstractFactory<CMonster>::Create(200.f, 200.f));
-
-	//ï¿½ï¿½Ç¥ ï¿½Þ¾Æ¿Í¼ï¿½ ï¿½Ö±ï¿½ ï¿½Ì»ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ì¿¡ï¿½ï¿½
 	CObjMgr::Get_Instance()->Add_Object(OBJ_BOSS, CAbstractFactory<CBossMonster>::Create());
+	//ÁÂÇ¥ ¹Þ¾Æ¿Í¼­ ³Ö±â ¹Ì»çÀÏÀÇ °æ¿ì¿¡´Â
 
 	CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Back/mapSuccess.bmp", L"mapSuccess");
 
+	CTileMgr::Get_Instance()->Initialize();
 	CTileMgr::Get_Instance()->Load_Tile();
 
 }	
@@ -46,15 +45,18 @@ void CStage::Initialize(void)
 
 void CStage::Update(void)
 {
-	CObjMgr::Get_Instance()->Update();	
+
 	CTileMgr::Get_Instance()->Update();
+
+	CObjMgr::Get_Instance()->Update();	
 
 }
 
 void CStage::Late_Update(void)
 {
-	CObjMgr::Get_Instance()->Late_Update();
 	CTileMgr::Get_Instance()->Late_Update();
+
+	CObjMgr::Get_Instance()->Late_Update();
 
 }
 
@@ -63,19 +65,18 @@ void CStage::Render(HDC hDC)
 	int		iScrollX = (int)CScrollMgr::Get_Instance()->Get_ScrollX();
 	int		iScrollY = (int)CScrollMgr::Get_Instance()->Get_ScrollY();
 
-	if (GetAsyncKeyState(VK_RBUTTON))
+	if (GetAsyncKeyState(VK_LBUTTON))
 	{
 		iScrollX -= 10;
 		iScrollY += 10;
 	}
 
-	HDC		hGroundMemDC = CBmpMgr::Get_Instance()->Find_Image(L"Map");
 	HDC		hGroundMemDC = CBmpMgr::Get_Instance()->Find_Image(L"mapSuccess");
 	BitBlt(hDC, iScrollX, iScrollY, 2400, 1400, hGroundMemDC, 0, 0, SRCCOPY);
 
-	//CTileMgr::Get_Instance()->Render(hDC);
+	if(GetAsyncKeyState('C'))
+	CTileMgr::Get_Instance()->Render(hDC);
 
-	//CLineMgr::Get_Instance()->Render(hMemDC);
 	CObjMgr::Get_Instance()->Render(hDC);
 }
 

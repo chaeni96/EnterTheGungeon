@@ -12,6 +12,7 @@
 #include "Mouse.h"
 #include "Gun.h"
 #include "Comando.h"
+#include "BossMonster.h"
 float	g_fSound = 1.f;
 
 CPlayer::CPlayer()
@@ -26,7 +27,7 @@ CPlayer::~CPlayer()
 
 void CPlayer::Initialize(void)
 {
-	m_tInfo.fX = WINCX >> 1;
+	m_tInfo.fX = 1100.F;
 	m_tInfo.fY = 500.f;
 
 	m_tInfo.fCX = 80.f; // 20 * 25
@@ -41,7 +42,7 @@ void CPlayer::Initialize(void)
 	m_bGhost = false;
 	m_CollisionCheck = false;
 
-	m_iHp = 50;
+	m_iHp = 10;
 	m_pFrameKey = L"Player_RIGHT";
 	m_eRender = RENDER_GAMEOBJECT;
 	m_delayTime = GetTickCount();
@@ -88,6 +89,11 @@ int CPlayer::Update(void)
 
 void CPlayer::Late_Update(void)
 {
+	/*if (m_tInfo.fX ==  1200 && m_tInfo.fY < 600)
+	{
+		CObjMgr::Get_Instance()->Add_Object(OBJ_BOSS, CAbstractFactory<CBossMonster>::Create());
+
+	}*/
 	Motion_Change();
 
 	if (Move_Frame() == true)
@@ -151,8 +157,8 @@ void CPlayer::Render(HDC hDC)
 		hMemDC,							// 비트맵을 가지고 있는 DC
 		m_tFrame.iFrameStart * (int)m_tInfo.fCX * 0.5f,								// 비트맵 출력 시작 좌표, X,Y
 		m_tFrame.iMotion * (int)m_tInfo.fCY * 0.5f,
-		(int)m_tInfo.fCX * 0.5f,				// 복사할 비트맵의 가로, 세로 길이
-		(int)m_tInfo.fCY * 0.5f,
+		((int)m_tInfo.fCX * 0.5f),				// 복사할 비트맵의 가로, 세로 길이
+		((int)m_tInfo.fCY * 0.5f),
 		RGB(255, 0, 255));			// 제거하고자 하는 색상/ 제거하고자 하는 색상
 
 				
@@ -229,7 +235,7 @@ void CPlayer::Mouse_Sight(void)
 		m_eCurState = IDLE;
 	}
 
-	if (GetAsyncKeyState(VK_LBUTTON))
+	if (GetAsyncKeyState(VK_RBUTTON))
 	{
 		m_eCurState = ROLL;
 		
@@ -297,7 +303,7 @@ void CPlayer::Key_Input(void)
 
 		//2번 눌렀을때 코만도 생성해야하는데 WEAPON이 비었을때? 그리고 코만도를 생성했을때는 일반총을 삭제해줘야한다
 		
-		if (GetAsyncKeyState(VK_LBUTTON))
+		if (GetAsyncKeyState(VK_RBUTTON))
 		{
 			m_eCurState = ROLL;
 

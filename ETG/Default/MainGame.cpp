@@ -11,7 +11,7 @@
 #include "BmpMgr.h"
 #include "SceneMgr.h"
 #include "SoundMgr.h"
-
+#include "TileMgr.h"
 CMainGame::CMainGame()
 	: m_dwTime(GetTickCount())
 {

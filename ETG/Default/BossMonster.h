@@ -42,7 +42,7 @@ private:
 
 
 	enum PATTERN { // 패턴만 쓰자
-		LAUNCH1,		// 총알 발사
+		LAUNCH1 = 1,		// 총알 발사
 		LAUNCH2,		// 전방향 총알 발사
 		LAUNCH3,	// 연속총알 발사
 		MOVE,

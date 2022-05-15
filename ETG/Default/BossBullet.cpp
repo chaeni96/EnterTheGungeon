@@ -30,7 +30,16 @@ void BossBullet::Initialize(void)
 int BossBullet::Update(void)
 {
 	if (m_bDead)
+	{
+	/*	m_pTarget = CObjMgr::Get_Instance()->Get_Target(OBJ_PLAYER, this);
+
+		if (m_pTarget)
+		{
+			dynamic_cast<CPlayer*>(m_pTarget)->Set_CollisionCheck();
+		}
+*/
 		return OBJ_DEAD;
+	}
 
 
 	m_tInfo.fX += m_fSpeed * cosf(m_fAngle * PI / 180.f);
@@ -43,7 +52,7 @@ int BossBullet::Update(void)
 
 void BossBullet::Late_Update(void)
 {
-	if (m_tRect.left < 30 || m_tRect.right > 1100 || m_tRect.top < 0 || m_tRect.bottom > 1100 )
+	if (m_tRect.left < 100 || m_tRect.right > 1100 || m_tRect.top < 100 || m_tRect.bottom > 750 )
 	{
 
 		m_bDead = true;
