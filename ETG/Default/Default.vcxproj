@@ -149,6 +149,7 @@
   <ItemGroup>
     <ClInclude Include="AbstractFactory.h" />
     <ClInclude Include="BmpMgr.h" />
+    <ClInclude Include="BossBomb.h" />
     <ClInclude Include="BossBullet.h" />
     <ClInclude Include="BossMonster.h" />
     <ClInclude Include="Bullet.h" />
@@ -191,6 +192,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BmpMgr.cpp" />
+    <ClCompile Include="BossBomb.cpp" />
     <ClCompile Include="BossBullet.cpp" />
     <ClCompile Include="BossMonster.cpp" />
     <ClCompile Include="Bullet.cpp" />

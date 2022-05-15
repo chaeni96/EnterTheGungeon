@@ -1,11 +1,13 @@
 #pragma once
 #include "Obj.h"
-class CGuideBullet :
+class CBossBomb :
 	public CObj
 {
 public:
-	CGuideBullet();
-	virtual ~CGuideBullet();
+	enum STATE { IDLE, DEAD, END};
+public:
+	CBossBomb();
+	~CBossBomb();
 
 public:
 	virtual void Initialize(void) override;
@@ -13,8 +15,17 @@ public:
 	virtual void Late_Update(void) override;
 	virtual void Render(HDC hDC) override;
 	virtual void Release(void) override;
-	virtual		void	OnCollision(void)	override;
+	virtual	void OnCollision(void)	override;
+
+public :
 	bool Get_DeadEffect() { return m_bDeadEffect; }
+private :
+	void		Motion_Change(void);
+
+
+private:
+	STATE	m_eCurState;
+	STATE   m_ePreState;
 
 };
 

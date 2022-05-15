@@ -18,10 +18,13 @@ public:
 	virtual void Render(HDC hDC) override;
 	virtual void Release(void) override;
 	virtual		void	OnCollision(void)	override;
+	bool Get_DeadEffect() { return m_bDeadEffect; }
+
 
 public :
 	bool		Check_Roll(void) { return m_bRoll; }
 	STATE  Get_State(void) { return m_eCurState; }
+	void   Set_CollisionCheck(void) { m_CollisionCheck = false; }
 
 private:
 	void		Mouse_Sight(void); // 마우스 위치에 따라서 플레이어의 시선방향 움직임
@@ -37,9 +40,10 @@ private:
 	STATE					m_eCurState;
 	bool					m_bDeadEffect;
 	bool					m_bHitEffect;
+	bool					m_CollisionCheck;
 	bool					m_bStretch = true;
 	bool					m_bRoll; // 구르는 상태 확인
-	bool    m_bGhost;
+	bool					m_bGhost;
 	int iCount;
 	POINT	pt{};
 

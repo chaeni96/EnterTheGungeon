@@ -91,3 +91,8 @@ void CMyButton::Release(void)
 void CMyButton::OnCollision(void)
 {
 }
+
+bool CMyButton::Get_DeadEffect(void)
+{
+	return false;
+}

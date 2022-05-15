@@ -22,6 +22,7 @@ public:
 	virtual void Render(HDC hDC) override;
 	virtual void Release(void) override;
 	virtual		void	OnCollision(void)	override;
+	virtual		bool	Get_DeadEffect(void);
 
 private:
 	int			m_iDrawID;

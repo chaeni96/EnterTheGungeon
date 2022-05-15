@@ -1,13 +1,15 @@
 #include "stdafx.h"
 #include "BossMonster.h"
+#include "BossBomb.h"
 #include "BmpMgr.h"
 #include "ScrollMgr.h"
 #include "ObjMgr.h"
 #include "AbstractFactory.h"
 #include "BossBullet.h"
 #include "KeyMgr.h"
+
 CBossMonster::CBossMonster()
-	:m_eCurState(DOWN), m_ePreState(END), currentState(LAUNCH1)
+	:m_eCurState(DOWN), m_ePreState(END), currentState(NONE)
 {
 }
 
@@ -21,11 +23,12 @@ void CBossMonster::Initialize(void)
 {
 	m_tInfo.fX = 650.f;
 	m_tInfo.fY = 400.f;
-
+	m_iHp = 30;
 	m_tInfo.fCX = 200.f;
 	m_tInfo.fCY = 200.f;
-
-	m_iHp = 10;
+	iCount = 0;
+	iTempX = 0;
+	iTempY = 10;
 	m_fSpeed = 5.f;
 	m_fDiagonal = 70.f;
 	m_bDeadEffect = false;
@@ -57,39 +60,36 @@ int CBossMonster::Update(void)
 			case LAUNCH1:
 				if (m_dwTime + 1000 < GetTickCount())
 				{
-					srand(unsigned(time(nullptr)));
-
 					PatternNormalShot();
-					RandomPattern();
-
 					m_dwTime = GetTickCount();
+					currentState = NONE;
 				}
-
 				break;
 			case LAUNCH2:
-				if (m_dwTime + 1000 < GetTickCount())
+				if (m_dwTime + 2000 < GetTickCount())
 				{
-					srand(unsigned(time(nullptr)));
-
 					PatternWideShot();
-					RandomPattern();
-
 					m_dwTime = GetTickCount();
+					currentState = NONE;
 				}
 				break;
 
 			case LAUNCH3:
-				if (m_dwTime + 300 < GetTickCount())
+				if (m_dwTime + 200 < GetTickCount())
 				{
-					srand(unsigned(time(nullptr)));
-
-					PatternContinueShot();
-					RandomPattern();
-
-					m_dwTime = GetTickCount();
-
+					if (iCount < 3)
+					{
+						PatternContinueShot();
+						m_dwTime = GetTickCount();
+						++iCount;
+					}
+					else
+					{
+						currentState = NONE;
+						iCount = 0;
+					}
 				}
-
+				
 				break;
 
 			case MOVE:
@@ -110,12 +110,19 @@ int CBossMonster::Update(void)
 
 				if (m_dwTime + 600 < GetTickCount())
 				{
-
-					PatternContinueShot();
-					currentState = RETURN;
-					m_dwTime = GetTickCount();
-				}
-				
+						if (iCount < 10)
+						{
+							PatternBomb();
+							m_dwTime = GetTickCount();
+							++iCount;
+						}
+						else
+						{
+							currentState = RETURN;
+							iCount = 0;
+					
+						}
+					}				
 				break;
 
 			case RETURN:
@@ -125,13 +132,19 @@ int CBossMonster::Update(void)
 				{
 					if (PatternMoveToOri())
 					{
-						srand(unsigned(time(nullptr)));
 						m_eCurState = POSE;
-						RandomPattern();
+						currentState = NONE;
 					}
+					
 					m_dwTime = GetTickCount();
 
 				}
+				break;
+
+			case NONE:
+				Monster_Dir();
+				RandomPattern();
+
 				break;
 		
 			}
@@ -153,6 +166,7 @@ void CBossMonster::Late_Update(void)
 		switch ((m_eCurState))
 		{
 		case HIT:
+			Monster_Dir();
 			break;
 		case FLY :
 			m_tFrame.iFrameStart = 0;
@@ -164,6 +178,7 @@ void CBossMonster::Late_Update(void)
 			m_bDead = true;
 			break;
 		case POSE:
+			Monster_Dir();
 			break;
 		default:
 			break;
@@ -295,7 +310,7 @@ void CBossMonster::Motion_Change(void)
 			m_tFrame.iFrameStart = 0;
 			m_tFrame.iFrameEnd = 2;
 			m_tFrame.iMotion =10;
-			m_tFrame.dwSpeed = 100;
+			m_tFrame.dwSpeed = 200;
 			m_tFrame.dwTime = GetTickCount();
 			break;
 		case DEAD:
@@ -378,9 +393,13 @@ void CBossMonster::Monster_Dir(void)
 
 void CBossMonster::RandomPattern()
 {
-	srand(unsigned(time(nullptr)));
 
-	currentState = PATTERN(rand() % BOMB);
+	random_device random;
+	mt19937 rd(random());
+	uniform_int_distribution<int> range(0,3);
+
+	currentState = (PATTERN)range(rd);
+
 
 }
 
@@ -395,6 +414,8 @@ bool CBossMonster::PatternMoveToUp()
 		int		iScrollX = (int)CScrollMgr::Get_Instance()->Get_ScrollX();
 		int		iScrollY = (int)CScrollMgr::Get_Instance()->Get_ScrollY();
 
+		if (m_pTarget)
+		{
 
 		float fWidth = (m_pTarget->Get_Info().fX - (m_tInfo.fX + iScrollX));
 		float fHeight = (m_pTarget->Get_Info().fY - (m_tInfo.fY + iScrollY));
@@ -416,6 +437,7 @@ bool CBossMonster::PatternMoveToUp()
 
 		return true;
 	}
+	}
 	return false;
 	
 				
@@ -427,6 +449,45 @@ bool CBossMonster::PatternMoveToUp()
 
 void CBossMonster::PatternBomb()
 {
+
+
+	random_device random;
+	mt19937 rd(random());
+	uniform_int_distribution<int> range(100, 1000);
+
+	random_device random2;
+	mt19937 rd2(random2());
+	uniform_int_distribution<int> range2(-100, 0);
+
+	iTempX = range(rd);
+	iTempY = range2(rd2);
+
+	int		iScrollX = (int)CScrollMgr::Get_Instance()->Get_ScrollX();
+	int		iScrollY = (int)CScrollMgr::Get_Instance()->Get_ScrollY();
+
+	if (m_pTarget != nullptr)
+	{
+		float fWidth = (m_pTarget->Get_Info().fX - (m_tInfo.fX + iScrollX));
+		float fHeight = (m_pTarget->Get_Info().fY - (m_tInfo.fY + iScrollY));
+
+		float	fDiagonal = sqrtf((fWidth * fWidth) + (fHeight * fHeight)); //빗변	
+
+		float	fRadian = acosf(fWidth / fDiagonal);
+
+
+		if (m_pTarget->Get_Info().fY > (m_tInfo.fY + iScrollY))
+			fRadian *= -1.f;
+
+		m_fAngle = fRadian * 180.f / PI;
+
+		m_tPosin.x = long(m_tInfo.fX + m_fDiagonal * cosf((m_fAngle * PI) / 180.f));
+		m_tPosin.y = long(m_tInfo.fY - m_fDiagonal * sinf((m_fAngle * PI) / 180.f));
+
+
+		CObjMgr::Get_Instance()->Add_Object(OBJ_MONSTER_BULLET, CAbstractFactory<CBossBomb>::Create(iTempX, iTempY, m_fAngle));
+		
+
+	}
 }
 
 bool CBossMonster::PatternMoveToOri()
@@ -453,30 +514,33 @@ void CBossMonster::PatternWideShot()
 
 void CBossMonster::PatternContinueShot()
 {
-	for (int i = 0; i < 2; ++i)
-	{
-			int		iScrollX = (int)CScrollMgr::Get_Instance()->Get_ScrollX();
-			int		iScrollY = (int)CScrollMgr::Get_Instance()->Get_ScrollY();
+		int		iScrollX = (int)CScrollMgr::Get_Instance()->Get_ScrollX();
+		int		iScrollY = (int)CScrollMgr::Get_Instance()->Get_ScrollY();
+
+			if (m_pTarget != nullptr)
+			{
+				float fWidth = (m_pTarget->Get_Info().fX - (m_tInfo.fX + iScrollX));
+				float fHeight = (m_pTarget->Get_Info().fY - (m_tInfo.fY + iScrollY));
+
+				float	fDiagonal = sqrtf((fWidth * fWidth) + (fHeight * fHeight)); //빗변	
+
+				float	fRadian = acosf(fWidth / fDiagonal);
 
 
-			float fWidth = (m_pTarget->Get_Info().fX - (m_tInfo.fX + iScrollX));
-			float fHeight = (m_pTarget->Get_Info().fY - (m_tInfo.fY + iScrollY));
+				if (m_pTarget->Get_Info().fY > (m_tInfo.fY + iScrollY))
+					fRadian *= -1.f;
 
-			float	fDiagonal = sqrtf((fWidth * fWidth) + (fHeight * fHeight)); //빗변	
+				m_fAngle = fRadian * 180.f / PI;
 
-			float	fRadian = acosf(fWidth / fDiagonal);
+				m_tPosin.x = long(m_tInfo.fX + m_fDiagonal * cosf((m_fAngle * PI) / 180.f));
+				m_tPosin.y = long(m_tInfo.fY - m_fDiagonal * sinf((m_fAngle * PI) / 180.f));
+				
+				for (int i = 0; i < 5; ++i)
+				{
 
-
-			if (m_pTarget->Get_Info().fY > (m_tInfo.fY + iScrollY))
-				fRadian *= -1.f;
-
-			m_fAngle = fRadian * 180.f / PI;
-
-			m_tPosin.x = long(m_tInfo.fX + m_fDiagonal * cosf((m_fAngle * PI) / 180.f));
-			m_tPosin.y = long(m_tInfo.fY - m_fDiagonal * sinf((m_fAngle * PI) / 180.f));
-
-			CObjMgr::Get_Instance()->Add_Object(OBJ_MONSTER_BULLET, CAbstractFactory<BossBullet>::Create((float)m_tPosin.x, (float)m_tPosin.y, m_fAngle));
-
+					CObjMgr::Get_Instance()->Add_Object(OBJ_MONSTER_BULLET, CAbstractFactory<BossBullet>::Create((float)m_tPosin.x, (float)m_tPosin.y, m_fAngle));
+				}
+				
 	}
 	
 }
@@ -487,27 +551,28 @@ void CBossMonster::PatternNormalShot()
 	int		iScrollX = (int)CScrollMgr::Get_Instance()->Get_ScrollX();
 	int		iScrollY = (int)CScrollMgr::Get_Instance()->Get_ScrollY();
 
+	if (m_pTarget != nullptr)
+	{
+		float fWidth = (m_pTarget->Get_Info().fX - (m_tInfo.fX + iScrollX));
+		float fHeight = (m_pTarget->Get_Info().fY - (m_tInfo.fY + iScrollY));
 
-	float fWidth = (m_pTarget->Get_Info().fX - (m_tInfo.fX + iScrollX));
-	float fHeight = (m_pTarget->Get_Info().fY - (m_tInfo.fY + iScrollY));
+		float	fDiagonal = sqrtf((fWidth * fWidth) + (fHeight * fHeight)); //빗변	
 
-	float	fDiagonal = sqrtf((fWidth * fWidth) + (fHeight * fHeight)); //빗변	
-
-	float	fRadian = acosf(fWidth / fDiagonal);
-
-
-	if (m_pTarget->Get_Info().fY > (m_tInfo.fY + iScrollY))
-		fRadian *= -1.f;
-
-	m_fAngle = fRadian * 180.f / PI;
+		float	fRadian = acosf(fWidth / fDiagonal);
 
 
-	m_tPosin.x = long(m_tInfo.fX + m_fDiagonal * cosf((m_fAngle * PI) / 180.f));
-	m_tPosin.y = long(m_tInfo.fY - m_fDiagonal * sinf((m_fAngle * PI) / 180.f));
+		if (m_pTarget->Get_Info().fY > (m_tInfo.fY + iScrollY))
+			fRadian *= -1.f;
 
-	CObjMgr::Get_Instance()->Add_Object(OBJ_MONSTER_BULLET, CAbstractFactory<BossBullet>::Create((float)m_tPosin.x, (float)m_tPosin.y, m_fAngle));
+		m_fAngle = fRadian * 180.f / PI;
 
-	
+
+		m_tPosin.x = long(m_tInfo.fX + m_fDiagonal * cosf((m_fAngle * PI) / 180.f));
+		m_tPosin.y = long(m_tInfo.fY - m_fDiagonal * sinf((m_fAngle * PI) / 180.f));
+
+		CObjMgr::Get_Instance()->Add_Object(OBJ_MONSTER_BULLET, CAbstractFactory<BossBullet>::Create((float)m_tPosin.x, (float)m_tPosin.y, m_fAngle));
+
+	}
 
 }
 
@@ -528,4 +593,9 @@ void CBossMonster::OnCollision(void)
 
 	}
 	//hp의따라서 행동 만약에 hp가 0 보다 클때는 타격 이펙트를 true로 하고 아닐[때는 die 함수를 쓴다
+}
+
+bool CBossMonster::Get_DeadEffect(void)
+{
+	return false;
 }

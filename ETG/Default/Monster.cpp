@@ -78,3 +78,8 @@ void CMonster::OnCollision(void)
 {
 	m_bDead = true;
 }
+
+bool CMonster::Get_DeadEffect(void)
+{
+	return false;
+}

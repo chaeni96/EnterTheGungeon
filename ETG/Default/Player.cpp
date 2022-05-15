@@ -39,7 +39,9 @@ void CPlayer::Initialize(void)
 	m_bRoll = false;
 	m_bHitEffect = false;
 	m_bGhost = false;
-	m_iHp = 100;
+	m_CollisionCheck = false;
+
+	m_iHp = 50;
 	m_pFrameKey = L"Player_RIGHT";
 	m_eRender = RENDER_GAMEOBJECT;
 	m_delayTime = GetTickCount();
@@ -227,15 +229,11 @@ void CPlayer::Mouse_Sight(void)
 		m_eCurState = IDLE;
 	}
 
-
-
 	if (GetAsyncKeyState(VK_LBUTTON))
 	{
 		m_eCurState = ROLL;
 		
 	}
-
-	
 
 }
 
@@ -312,8 +310,13 @@ void CPlayer::Key_Input(void)
 void CPlayer::Hit(void)
 {
 	m_eCurState = HIT;
-	m_iHp -= 1;
 	m_bHitEffect = true;
+
+	if (!m_CollisionCheck)
+	{
+		m_iHp -= 1;
+		m_CollisionCheck = true;
+	}
 }
 
 void CPlayer::OnCollision(void)
@@ -328,6 +331,7 @@ void CPlayer::OnCollision(void)
 		}
 
 	}
+	
 }
 
 

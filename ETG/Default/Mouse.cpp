@@ -74,3 +74,8 @@ void CMouse::Release(void)
 void CMouse::OnCollision(void)
 {
 }
+
+bool CMouse::Get_DeadEffect(void)
+{
+	return false;
+}

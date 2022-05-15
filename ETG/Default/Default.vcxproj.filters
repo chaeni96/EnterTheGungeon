@@ -127,6 +127,9 @@
     <Filter Include="01. Obj\01. Bullet\02.BossBullet">
       <UniqueIdentifier>{f60f5344-761e-48c5-851c-3ba637874430}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01. Obj\01. Bullet\03.BossBomb">
+      <UniqueIdentifier>{6ddd478c-3783-491c-b277-71a241d6ed8d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -255,6 +258,9 @@
     <ClInclude Include="BossBullet.h">
       <Filter>01. Obj\01. Bullet\02.BossBullet</Filter>
     </ClInclude>
+    <ClInclude Include="BossBomb.h">
+      <Filter>01. Obj\01. Bullet\03.BossBomb</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -355,6 +361,9 @@
     </ClCompile>
     <ClCompile Include="BossBullet.cpp">
       <Filter>01. Obj\01. Bullet\02.BossBullet</Filter>
+    </ClCompile>
+    <ClCompile Include="BossBomb.cpp">
+      <Filter>01. Obj\01. Bullet\03.BossBomb</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

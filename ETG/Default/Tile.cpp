@@ -74,3 +74,8 @@ void CTile::Release(void)
 void CTile::OnCollision(void)
 {
 }
+
+bool CTile::Get_DeadEffect(void)
+{
+	return false;
+}

@@ -7,7 +7,6 @@ public:
 	BossBullet();
 	~BossBullet();
 
-
 public:
 	virtual void Initialize(void) override;
 	virtual int Update(void) override;
@@ -15,6 +14,7 @@ public:
 	virtual void Render(HDC hDC) override;
 	virtual void Release(void) override;
 	virtual		void	OnCollision(void)	override;
+	bool Get_DeadEffect() { return m_bDeadEffect; }
 private :
 	float m_fDiagonal;
 };

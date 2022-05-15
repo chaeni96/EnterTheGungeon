@@ -39,6 +39,7 @@ public:
 	virtual		void	Render(HDC hDC)		PURE;
 	virtual		void	Release(void)		PURE;
 	virtual		void	OnCollision(void)	PURE;
+	virtual		bool	Get_DeadEffect(void) PURE;
 protected:
 	void		Update_Rect(void);
 	bool		Move_Frame(void);
@@ -57,7 +58,7 @@ protected:
 
 	CObj*		m_pTarget;
 	TCHAR*		m_pFrameKey;
-
+	bool    m_bDeadEffect;
 	RENDERID	m_eRender;
 	TYPE		m_eType;
 };

@@ -33,9 +33,10 @@ void CStage::Initialize(void)
 
 	CObjMgr::Get_Instance()->Add_Object(OBJ_MONSTER, CAbstractFactory<CMonster>::Create(200.f, 200.f));
 
+	//��ǥ �޾ƿͼ� �ֱ� �̻����� ��쿡��
 	CObjMgr::Get_Instance()->Add_Object(OBJ_BOSS, CAbstractFactory<CBossMonster>::Create());
 
-	CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Back/Map.bmp", L"Map");
+	CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Back/mapSuccess.bmp", L"mapSuccess");
 
 	CTileMgr::Get_Instance()->Load_Tile();
 
@@ -69,6 +70,7 @@ void CStage::Render(HDC hDC)
 	}
 
 	HDC		hGroundMemDC = CBmpMgr::Get_Instance()->Find_Image(L"Map");
+	HDC		hGroundMemDC = CBmpMgr::Get_Instance()->Find_Image(L"mapSuccess");
 	BitBlt(hDC, iScrollX, iScrollY, 2400, 1400, hGroundMemDC, 0, 0, SRCCOPY);
 
 	//CTileMgr::Get_Instance()->Render(hDC);

@@ -87,6 +87,13 @@ void CComando::OnCollision(void)
 {
 }
 
+bool CComando::Get_DeadEffect(void)
+{
+	return false;
+}
+
+
+
 void CComando::Mouse_Sight(void)
 {
 	int		iScrollX = (int)CScrollMgr::Get_Instance()->Get_ScrollX();

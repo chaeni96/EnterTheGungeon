@@ -89,6 +89,11 @@ void CGun::OnCollision(void)
 {
 }
 
+bool CGun::Get_DeadEffect(void)
+{
+	return false;
+}
+
 
 void CGun::Mouse_Sight(void)
 {
