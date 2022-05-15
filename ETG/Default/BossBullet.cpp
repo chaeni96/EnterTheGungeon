@@ -31,13 +31,13 @@ int BossBullet::Update(void)
 {
 	if (m_bDead)
 	{
-	/*	m_pTarget = CObjMgr::Get_Instance()->Get_Target(OBJ_PLAYER, this);
+		m_pTarget = CObjMgr::Get_Instance()->Get_Target(OBJ_PLAYER, this);
 
 		if (m_pTarget)
 		{
 			dynamic_cast<CPlayer*>(m_pTarget)->Set_CollisionCheck();
 		}
-*/
+
 		return OBJ_DEAD;
 	}
 

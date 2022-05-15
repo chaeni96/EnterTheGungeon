@@ -27,8 +27,8 @@ CPlayer::~CPlayer()
 
 void CPlayer::Initialize(void)
 {
-	m_tInfo.fX = 1100.F;
-	m_tInfo.fY = 500.f;
+	m_tInfo.fX = 1880.F;
+	m_tInfo.fY = 1150.f;
 
 	m_tInfo.fCX = 80.f; // 20 * 25
 	m_tInfo.fCY = 100.f;
@@ -42,7 +42,7 @@ void CPlayer::Initialize(void)
 	m_bGhost = false;
 	m_CollisionCheck = false;
 
-	m_iHp = 10;
+	m_iHp = 30;
 	m_pFrameKey = L"Player_RIGHT";
 	m_eRender = RENDER_GAMEOBJECT;
 	m_delayTime = GetTickCount();
@@ -79,6 +79,12 @@ int CPlayer::Update(void)
 	else
 	{
 		Key_Input();
+		if (m_eCurState != HIT)
+		{
+			Mouse_Sight();
+
+		}
+
 		OffSet();
 	}
 
@@ -89,11 +95,16 @@ int CPlayer::Update(void)
 
 void CPlayer::Late_Update(void)
 {
-	/*if (m_tInfo.fX ==  1200 && m_tInfo.fY < 600)
+	if (m_tInfo.fX ==  1280 && m_tInfo.fY < 600)
 	{
-		CObjMgr::Get_Instance()->Add_Object(OBJ_BOSS, CAbstractFactory<CBossMonster>::Create());
+		if (m_delayTime + 3000 < GetTickCount())
+		{
 
-	}*/
+			CObjMgr::Get_Instance()->Add_Object(OBJ_BOSS, CAbstractFactory<CBossMonster>::Create());
+			m_delayTime = GetTickCount();
+		}
+
+	}
 	Motion_Change();
 
 	if (Move_Frame() == true)

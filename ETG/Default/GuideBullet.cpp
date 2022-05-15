@@ -31,8 +31,8 @@ int CGuideBullet::Update(void)
 		return OBJ_DEAD;
 
 
-	//건의 위치에 따라서 m_pTarget 바꿔주기
-	m_pTarget = CObjMgr::Get_Instance()->Get_Target(OBJ_MONSTER, this);
+	//플레이어의 위치에 따라서 m_pTarget 바꿔주기
+	m_pTarget = CObjMgr::Get_Instance()->Get_Target(OBJ_BOSS, this);
 	
 	if (m_pTarget)
 	{

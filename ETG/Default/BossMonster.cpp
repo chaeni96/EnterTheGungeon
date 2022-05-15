@@ -52,9 +52,13 @@ int CBossMonster::Update(void)
 			return OBJ_DEAD;
 	}
 	else {
+
+		if (m_eCurState != FLY && m_eCurState != HIT && m_eCurState != POSE)
+		{
+			Monster_Dir();
+		}
+
 		m_pTarget = CObjMgr::Get_Instance()->Get_Target(OBJ_PLAYER, this);
-
-
 		// ¿ø·¡ ·£´ýÀÎµ¥ ½Ã¿¬È¸¶§´Â ·£´ýÀ¸·Î X
 			switch (currentState)
 			{
@@ -80,14 +84,12 @@ int CBossMonster::Update(void)
 				break;
 
 			case LAUNCH3:
-				if (m_dwTime + 300 < GetTickCount())
+				if (m_dwTime + 200 < GetTickCount())
 				{
-					if (iCount < 5)
+					if (iCount < 10)
 					{
 						Monster_Dir();
-
 						PatternContinueShot();
-						
 						m_dwTime = GetTickCount();
 						++iCount;
 					}
@@ -118,7 +120,7 @@ int CBossMonster::Update(void)
 
 				if (m_dwTime + 600 < GetTickCount())
 				{
-						if (iCount < 10)
+						if (iCount < 15)
 						{
 							PatternBomb();
 
@@ -194,11 +196,7 @@ void CBossMonster::Late_Update(void)
 
 		}
 
-		if (m_eCurState != FLY)
-		{
-
-			Monster_Dir();
-		}
+	
 	}
 
 
@@ -464,7 +462,7 @@ void CBossMonster::PatternBomb()
 
 	random_device random;
 	mt19937 rd(random());
-	uniform_int_distribution<int> range(50, 1160);
+	uniform_int_distribution<int> range(50, 1130);
 
 	random_device random2;
 	mt19937 rd2(random2());
@@ -527,33 +525,33 @@ void CBossMonster::PatternWideShot()
 void CBossMonster::PatternContinueShot()
 {
 
-			if (m_pTarget != nullptr)
-			{
-				int		iScrollX = (int)CScrollMgr::Get_Instance()->Get_ScrollX();
-				int		iScrollY = (int)CScrollMgr::Get_Instance()->Get_ScrollY();
+		if (m_pTarget != nullptr)
+		{
+			int		iScrollX = (int)CScrollMgr::Get_Instance()->Get_ScrollX();
+			int		iScrollY = (int)CScrollMgr::Get_Instance()->Get_ScrollY();
 
-				m_pTarget = CObjMgr::Get_Instance()->Get_Target(OBJ_PLAYER, this);
+			m_pTarget = CObjMgr::Get_Instance()->Get_Target(OBJ_PLAYER, this);
 
-				float fWidth = (m_pTarget->Get_Info().fX - (m_tInfo.fX + iScrollX));
-				float fHeight = (m_pTarget->Get_Info().fY - (m_tInfo.fY + iScrollY));
+			float fWidth = (m_pTarget->Get_Info().fX - (m_tInfo.fX + iScrollX));
+			float fHeight = (m_pTarget->Get_Info().fY - (m_tInfo.fY + iScrollY));
 
-				float	fDiagonal = sqrtf((fWidth * fWidth) + (fHeight * fHeight)); //ºøº¯	
+			float	fDiagonal = sqrtf((fWidth * fWidth) + (fHeight * fHeight)); //ºøº¯	
 
-				float	fRadian = acosf(fWidth / fDiagonal);
+			float	fRadian = acosf(fWidth / fDiagonal);
 
 
-				if (m_pTarget->Get_Info().fY > (m_tInfo.fY + iScrollY))
-					fRadian *= -1.f;
+			if (m_pTarget->Get_Info().fY > (m_tInfo.fY + iScrollY))
+				fRadian *= -1.f;
 
-				m_fAngle = fRadian * 180.f / PI;
+			m_fAngle = fRadian * 180.f / PI;
 
-				m_tPosin.x = long(m_tInfo.fX + m_fDiagonal * cosf((m_fAngle * PI) / 180.f));
-				m_tPosin.y = long(m_tInfo.fY - m_fDiagonal * sinf((m_fAngle * PI) / 180.f));
-				
-				
-				CObjMgr::Get_Instance()->Add_Object(OBJ_MONSTER_BULLET, CAbstractFactory<BossBullet>::Create((float)m_tPosin.x, (float)m_tPosin.y, m_fAngle));
-				
-				
+			m_tPosin.x = long(m_tInfo.fX + m_fDiagonal * cosf((m_fAngle * PI) / 180.f));
+			m_tPosin.y = long(m_tInfo.fY - m_fDiagonal * sinf((m_fAngle * PI) / 180.f));
+			
+			
+			CObjMgr::Get_Instance()->Add_Object(OBJ_MONSTER_BULLET, CAbstractFactory<BossBullet>::Create((float)m_tPosin.x, (float)m_tPosin.y, m_fAngle));
+			
+			
 	}
 	
 }
@@ -574,8 +572,7 @@ void CBossMonster::PatternNormalShot()
 
 		float	fRadian = acosf(fWidth / fDiagonal);
 
-
-		if (m_pTarget->Get_Info().fY > (m_tInfo.fY - iScrollY))
+		if (m_pTarget->Get_Info().fY > (m_tInfo.fY + iScrollY))
 			fRadian *= -1.f;
 
 		m_fAngle = fRadian * 180.f / PI;

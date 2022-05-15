@@ -31,7 +31,7 @@ void CStage::Initialize(void)
 
 	CObjMgr::Get_Instance()->Add_Object(OBJ_MOUSE, CAbstractFactory<CMouse>::Create());
 
-	CObjMgr::Get_Instance()->Add_Object(OBJ_BOSS, CAbstractFactory<CBossMonster>::Create());
+	//CObjMgr::Get_Instance()->Add_Object(OBJ_BOSS, CAbstractFactory<CBossMonster>::Create());
 	//좌표 받아와서 넣기 미사일의 경우에는
 
 	CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Back/mapSuccess.bmp", L"mapSuccess");
@@ -75,7 +75,7 @@ void CStage::Render(HDC hDC)
 	BitBlt(hDC, iScrollX, iScrollY, 2400, 1400, hGroundMemDC, 0, 0, SRCCOPY);
 
 	if(GetAsyncKeyState('C'))
-	CTileMgr::Get_Instance()->Render(hDC);
+		CTileMgr::Get_Instance()->Render(hDC);
 
 	CObjMgr::Get_Instance()->Render(hDC);
 }

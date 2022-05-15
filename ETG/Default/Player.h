@@ -36,6 +36,7 @@ private:
 private:
 	float					m_fDiagonal;
 	DWORD					m_delayTime;
+	
 	STATE					m_ePreState;
 	STATE					m_eCurState;
 	bool					m_bDeadEffect;
