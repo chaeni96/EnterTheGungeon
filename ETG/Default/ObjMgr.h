@@ -20,9 +20,11 @@ public:
 	void		Render(HDC hDC);
 	void		Release(void);
 	void		Delete_ID(OBJID eID);
+	void		Set_Vector(vector<CObj*> _vectorId) { m_vecTile = _vectorId; }
 
 private:
 	list<CObj*>	m_ObjList[OBJ_END];
+	vector<CObj*> m_vecTile; // 타일의 주소값 받아오기
 
 public:
 	static		CObjMgr*		Get_Instance(void)

@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "CollisionMgr.h"
 #include "ScrollMgr.h"
-
+#include "Tile.h"
 CCollisionMgr::CCollisionMgr()
 {
 }
@@ -116,6 +116,49 @@ void CCollisionMgr::Collision_Sphere(list<CObj*> _Dest, list<CObj*> _Sour)
 				Dest->OnCollision();
 				Sour->OnCollision();
 			}
+		}
+	}
+}
+//Dest - 타일, Sour - 플레이어, 몬스터, 불릿
+void CCollisionMgr::Collision_RectExTile(vector<CObj*> _Dest, list<CObj*> _Sour)
+{
+	for (auto& Dest : _Dest)
+	{
+		for (auto& Sour : _Sour)
+		{
+			float	fX = 0.f, fY = 0.f;
+		if (Check_Rect(Dest, Sour, &fX, &fY))
+			{
+			if (dynamic_cast<CTile*>(Dest)->Get_DrawID() == 1)
+			{
+					// 타일의 종류 받아오기
+					// 상하 충돌
+					if (fX > fY)
+					{
+						// 상 충돌
+						if (Dest->Get_Info().fY > Sour->Get_Info().fY)
+							Sour->OnCollision(DIR_UP, fX, fY);
+
+						else // 하 충돌
+							Sour->OnCollision(DIR_DOWN, fX, fY);
+
+					}
+					// 좌우 충돌
+					else
+					{
+						// 좌 충돌
+						if (Dest->Get_Info().fX > Sour->Get_Info().fX)
+							Sour->OnCollision(DIR_LEFT, fX, fY);
+
+						// 우 충돌
+						else
+							Sour->OnCollision(DIR_RIGHT, fX, fY);
+					}
+
+				}
+			}
+
+		
 		}
 	}
 }

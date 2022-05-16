@@ -79,6 +79,12 @@ void CMonster::OnCollision(void)
 	m_bDead = true;
 }
 
+void CMonster::OnCollision(DIRECTION _eDir, const float & _fX, const float & _fY)
+{
+}
+
+
+
 bool CMonster::Get_DeadEffect(void)
 {
 	return false;

@@ -30,8 +30,8 @@ void CPlayer::Initialize(void)
 	m_tInfo.fX = 1880.F;
 	m_tInfo.fY = 1150.f;
 
-	m_tInfo.fCX = 80.f; // 20 * 25
-	m_tInfo.fCY = 100.f;
+	m_tInfo.fCX = 40.f; // 20 * 25
+	m_tInfo.fCY = 50.f;
 
 	m_fSpeed = 5.f;
 
@@ -163,13 +163,13 @@ void CPlayer::Render(HDC hDC)
 	GdiTransparentBlt(hDC, 					// 복사 받을, 최종적으로 그림을 그릴 DC
 		int(m_tRect.left + iScrollX),	// 2,3 인자 :  복사받을 위치 X, Y
 		int(m_tRect.top + iScrollY),
-		int(m_tInfo.fCX),				// 4,5 인자 : 복사받을 가로, 세로 길이
-		int(m_tInfo.fCY),
+		int(m_tInfo.fCX + 40.f),				// 4,5 인자 : 복사받을 가로, 세로 길이
+		int(m_tInfo.fCY + 50.f),
 		hMemDC,							// 비트맵을 가지고 있는 DC
-		m_tFrame.iFrameStart * (int)m_tInfo.fCX * 0.5f,								// 비트맵 출력 시작 좌표, X,Y
-		m_tFrame.iMotion * (int)m_tInfo.fCY * 0.5f,
-		((int)m_tInfo.fCX * 0.5f),				// 복사할 비트맵의 가로, 세로 길이
-		((int)m_tInfo.fCY * 0.5f),
+		m_tFrame.iFrameStart * (int)m_tInfo.fCX ,								// 비트맵 출력 시작 좌표, X,Y
+		m_tFrame.iMotion * (int)m_tInfo.fCY ,
+		((int)m_tInfo.fCX ),				// 복사할 비트맵의 가로, 세로 길이
+		((int)m_tInfo.fCY),
 		RGB(255, 0, 255));			// 제거하고자 하는 색상/ 제거하고자 하는 색상
 
 				
@@ -349,6 +349,30 @@ void CPlayer::OnCollision(void)
 
 	}
 	
+}
+
+//타일 충돌
+void CPlayer::OnCollision(DIRECTION _eDir, const float & _fX, const float& _fY)
+{
+	switch (_eDir)
+	{
+	case DIR_LEFT:
+		m_tInfo.fX -= _fX;
+		break;
+	case DIR_UP:
+		m_tInfo.fY -= _fY;
+		break;
+	case DIR_RIGHT:
+		m_tInfo.fX += _fX;
+		break;
+	case DIR_DOWN:
+		m_tInfo.fY += _fY;
+		break;
+	case DIR_END:
+		break;
+	default:
+		break;
+	}
 }
 
 

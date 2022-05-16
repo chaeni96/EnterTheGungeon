@@ -77,3 +77,21 @@ void CBullet::OnCollision(void)
 	
 	
 }
+
+void CBullet::OnCollision(DIRECTION _eDir, const float & _fX, const float & _fY)
+{
+	switch (_eDir)
+	{
+	case DIR_LEFT:
+	case DIR_UP:
+	case DIR_RIGHT:
+	case DIR_DOWN:
+		m_bDead = true;
+		break;
+	case DIR_END:
+		break;
+	default:
+		break;
+	}
+}
+

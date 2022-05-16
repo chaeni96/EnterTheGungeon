@@ -65,7 +65,7 @@ void CMyEdit::Key_Input(void)
 	if (CKeyMgr::Get_Instance()->Key_Pressing(VK_DOWN))
 		CScrollMgr::Get_Instance()->Set_ScrollY(-m_fSpeed);
 
-	if (CKeyMgr::Get_Instance()->Key_Down(VK_LBUTTON))
+	if (CKeyMgr::Get_Instance()->Key_Down(VK_SPACE))
 	{
 		POINT		pt;
 		GetCursorPos(&pt);
@@ -75,11 +75,27 @@ void CMyEdit::Key_Input(void)
 		pt.y -= (int)CScrollMgr::Get_Instance()->Get_ScrollY();
 
 		CTileMgr::Get_Instance()->Picking_Tile(pt, 1, 0);
+		
+	}
+
+	if (CKeyMgr::Get_Instance()->Key_Down('V'))
+	{
+		POINT		pt;
+		GetCursorPos(&pt);
+		ScreenToClient(g_hWnd, &pt);
+
+		pt.x -= (int)CScrollMgr::Get_Instance()->Get_ScrollX();
+		pt.y -= (int)CScrollMgr::Get_Instance()->Get_ScrollY();
+
+		CTileMgr::Get_Instance()->Picking_Tile(pt, 0, 0);
+
 	}
 
 	if (CKeyMgr::Get_Instance()->Key_Down('Z'))
 		CTileMgr::Get_Instance()->Save_Tile();
 
 
+	if (CKeyMgr::Get_Instance()->Key_Down('X'))
+		CTileMgr::Get_Instance()->Load_Tile();
 	
 }

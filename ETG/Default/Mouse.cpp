@@ -79,3 +79,8 @@ bool CMouse::Get_DeadEffect(void)
 {
 	return false;
 }
+
+void CMouse::OnCollision(DIRECTION _eDir, const float & _fX, const float & _fY)
+{
+}
+

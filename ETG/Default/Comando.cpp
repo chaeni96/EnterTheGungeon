@@ -92,6 +92,10 @@ bool CComando::Get_DeadEffect(void)
 	return false;
 }
 
+void CComando::OnCollision(DIRECTION _eDir, const float & _fX, const float & _fY)
+{
+}
+
 
 
 void CComando::Mouse_Sight(void)
@@ -101,8 +105,8 @@ void CComando::Mouse_Sight(void)
 
 	m_pTarget = CObjMgr::Get_Instance()->Get_Target(OBJ_PLAYER, this);
 
-	m_tInfo.fY = m_pTarget->Get_Info().fY + 11.f;
-	m_tInfo.fX = m_pTarget->Get_Info().fX;
+	m_tInfo.fY = m_pTarget->Get_Info().fY + 25.f + 10.f;
+	m_tInfo.fX = m_pTarget->Get_Info().fX + 20.f;
 
 
 	GetCursorPos(&pt);	// 현재 마우스의 위치 좌표를 얻어오는 함수
@@ -192,3 +196,4 @@ void CComando::Mouse_Sight(void)
 
 	}
 }
+

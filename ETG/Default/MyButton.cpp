@@ -96,3 +96,8 @@ bool CMyButton::Get_DeadEffect(void)
 {
 	return false;
 }
+
+void CMyButton::OnCollision(DIRECTION _eDir, const float & _fX, const float & _fY)
+{
+}
+

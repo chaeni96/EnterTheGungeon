@@ -37,7 +37,10 @@ void CStage::Initialize(void)
 	CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Back/mapSuccess.bmp", L"mapSuccess");
 
 	CTileMgr::Get_Instance()->Initialize();
-	CTileMgr::Get_Instance()->Load_Tile();
+	CTileMgr::Get_Instance()->Load_Tile(); // 타일 L
+	
+	//타일 매니저 만든다음에 주소값 넘겨주기
+	CObjMgr::Get_Instance()->Set_Vector(CTileMgr::Get_Instance()->Get_Tile());
 
 }	
 
@@ -65,10 +68,25 @@ void CStage::Render(HDC hDC)
 	int		iScrollX = (int)CScrollMgr::Get_Instance()->Get_ScrollX();
 	int		iScrollY = (int)CScrollMgr::Get_Instance()->Get_ScrollY();
 
+
+	//일반 총일때만 쉐이킹 하도록
+
+	random_device random;
+	mt19937 rd(random());
+	uniform_int_distribution<int> range(0, 15);
+	iTemp = range(rd);
+
+
+	
 	if (GetAsyncKeyState(VK_LBUTTON))
 	{
-		iScrollX -= 10;
-		iScrollY += 10;
+		
+		if (iTemp == 5)
+		{
+			iScrollX -= 10;
+			iScrollY += 10;
+
+		}
 	}
 
 	HDC		hGroundMemDC = CBmpMgr::Get_Instance()->Find_Image(L"mapSuccess");

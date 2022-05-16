@@ -52,11 +52,11 @@ int BossBullet::Update(void)
 
 void BossBullet::Late_Update(void)
 {
-	if (m_tRect.left < 100 || m_tRect.right > 1100 || m_tRect.top < 100 || m_tRect.bottom > 750 )
+	/*if (m_tRect.left < 100 || m_tRect.right > 1100 || m_tRect.top < 100 || m_tRect.bottom > 750 )
 	{
 
 		m_bDead = true;
-	}
+	}*/
 }
 
 void BossBullet::Render(HDC hDC)
@@ -97,5 +97,24 @@ void BossBullet::OnCollision(void)
 		}
 	}
 }
+
+void BossBullet::OnCollision(DIRECTION _eDir, const float & _fX, const float & _fY)
+{
+
+	switch (_eDir)
+	{
+	case DIR_LEFT:
+	case DIR_UP:
+	case DIR_RIGHT:
+	case DIR_DOWN:
+		m_bDead = true;
+		break;
+	case DIR_END:
+		break;
+	default:
+		break;
+	}
+}
+
 
 

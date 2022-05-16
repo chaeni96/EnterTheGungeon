@@ -33,6 +33,7 @@ void CMainGame::Initialize(void)
 
 	CSoundMgr::Get_Instance()->Initialize(); 
 	CSceneMgr::Get_Instance()->Scene_Change(SC_STAGE);
+	//CSceneMgr::Get_Instance()->Scene_Change(SC_EDIT);
 
 //#ifdef _DEBUG
 //

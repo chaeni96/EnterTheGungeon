@@ -19,7 +19,7 @@ public:
 	virtual void Release(void) override;
 	virtual		void	OnCollision(void)	override;
 	bool Get_DeadEffect() { return m_bDeadEffect; }
-
+	virtual		void	OnCollision(DIRECTION _eDir, const float & _fX, const float& _fY) override;
 
 public :
 	bool		Check_Roll(void) { return m_bRoll; }

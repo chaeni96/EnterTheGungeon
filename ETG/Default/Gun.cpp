@@ -94,6 +94,12 @@ bool CGun::Get_DeadEffect(void)
 	return false;
 }
 
+void CGun::OnCollision(DIRECTION _eDir, const float & _fX, const float & _fY)
+{
+}
+
+
+
 
 void CGun::Mouse_Sight(void)
 {
@@ -106,8 +112,8 @@ void CGun::Mouse_Sight(void)
 	if (m_pTarget != nullptr)
 	{
 
-		m_tInfo.fY = m_pTarget->Get_Info().fY + 11.f;
-		m_tInfo.fX = m_pTarget->Get_Info().fX;
+		m_tInfo.fY = m_pTarget->Get_Info().fY +25.f + 10.f;
+		m_tInfo.fX = m_pTarget->Get_Info().fX +20.f;
 		GetCursorPos(&pt);	// 현재 마우스의 위치 좌표를 얻어오는 함수
 		ScreenToClient(g_hWnd, &pt);	// 전체 스크린영역에서 생성한 클라이언트(창) 좌표로 변환
 

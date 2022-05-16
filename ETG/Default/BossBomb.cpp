@@ -147,6 +147,12 @@ void CBossBomb::OnCollision(void)
 	}
 }
 
+void CBossBomb::OnCollision(DIRECTION _eDir, const float & _fX, const float & _fY)
+{
+}
+
+
+
 void CBossBomb::Motion_Change(void)
 {
 	if (m_ePreState != m_eCurState)

@@ -21,11 +21,11 @@ CBossMonster::~CBossMonster()
 
 void CBossMonster::Initialize(void)
 {
-	m_tInfo.fX = 560.f;
-	m_tInfo.fY = 450.f;
+	m_tInfo.fX = 530.f;
+	m_tInfo.fY = 400.f;
 	m_iHp = 30;
-	m_tInfo.fCX = 200.f;
-	m_tInfo.fCY = 200.f;
+	m_tInfo.fCX = 100.f;
+	m_tInfo.fCY = 100.f;
 	iCount = 0;
 	iTempX = 0;
 	iTempY = 10;
@@ -76,7 +76,6 @@ int CBossMonster::Update(void)
 				if (m_dwTime + 1000 < GetTickCount())
 				{
 					Monster_Dir();
-
 					PatternWideShot();
 					m_dwTime = GetTickCount();
 					currentState = NONE;
@@ -118,12 +117,11 @@ int CBossMonster::Update(void)
 
 			case BOMB:
 
-				if (m_dwTime + 600 < GetTickCount())
+				if (m_dwTime + 400 < GetTickCount())
 				{
-						if (iCount < 15)
+						if (iCount < 20)
 						{
 							PatternBomb();
-
 							m_dwTime = GetTickCount();
 							++iCount;
 						}
@@ -155,7 +153,6 @@ int CBossMonster::Update(void)
 			case NONE:
 				Monster_Dir();
 				RandomPattern();
-
 				break;
 		
 			}
@@ -213,13 +210,13 @@ void CBossMonster::Render(HDC hDC)
 	GdiTransparentBlt(hDC, 					// 복사 받을, 최종적으로 그림을 그릴 DC
 		int(m_tRect.left + iScrollX),	// 2,3 인자 :  복사받을 위치 X, Y
 		int(m_tRect.top + iScrollY),
-		int(m_tInfo.fCX),				// 4,5 인자 : 복사받을 가로, 세로 길이
-		int(m_tInfo.fCY),
+		int(m_tInfo.fCX + 100.f) ,				// 4,5 인자 : 복사받을 가로, 세로 길이
+		int(m_tInfo.fCY + 100.f),
 		hMemDC,							// 비트맵을 가지고 있는 DC
-		m_tFrame.iFrameStart * (int)m_tInfo.fCX * 0.5f,// 비트맵 출력 시작 좌표, X,Y
-		m_tFrame.iMotion * (int)m_tInfo.fCY * 0.5f,
-		(int)m_tInfo.fCX* 0.5f,				// 복사할 비트맵의 가로, 세로 길이
-		(int)m_tInfo.fCY* 0.5f,
+		m_tFrame.iFrameStart * (int)m_tInfo.fCX ,// 비트맵 출력 시작 좌표, X,Y
+		m_tFrame.iMotion * (int)m_tInfo.fCY ,
+		(int)m_tInfo.fCX,				// 복사할 비트맵의 가로, 세로 길이
+		(int)m_tInfo.fCY,
 		RGB(255, 0, 255));			// 제거하고자 하는 색상/ 제거하고자 하는 색상
 
 }
@@ -336,8 +333,6 @@ void CBossMonster::Motion_Change(void)
 
 void CBossMonster::Monster_Dir(void)
 {
-
-
 	//플레이어와의 각도에 따라서 시선이 달라짐
 
 	m_pTarget = CObjMgr::Get_Instance()->Get_Target(OBJ_PLAYER, this); // 플레이어 객체 가져오기	
@@ -406,7 +401,7 @@ void CBossMonster::RandomPattern()
 
 	random_device random;
 	mt19937 rd(random());
-	uniform_int_distribution<int> range(1,4);
+	uniform_int_distribution<int> range(1,4);//여기까지 한뭉치라고 생각하면됨
 
 	currentState = (PATTERN)range(rd);
 
@@ -502,7 +497,7 @@ void CBossMonster::PatternBomb()
 
 bool CBossMonster::PatternMoveToOri()
 {
-	if (m_tInfo.fY == 450.f)
+	if (m_tInfo.fY == 400.f)
 	{
 		return true;
 	}
@@ -604,6 +599,11 @@ void CBossMonster::OnCollision(void)
 	}
 	//hp의따라서 행동 만약에 hp가 0 보다 클때는 타격 이펙트를 true로 하고 아닐[때는 die 함수를 쓴다
 }
+
+void CBossMonster::OnCollision(DIRECTION _eDir, const float & _fX, const float & _fY)
+{
+}
+
 
 bool CBossMonster::Get_DeadEffect(void)
 {

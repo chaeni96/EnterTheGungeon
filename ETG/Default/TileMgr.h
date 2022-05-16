@@ -20,6 +20,8 @@ public:
 	void		Save_Tile(void);
 	void		Load_Tile(void);
 	vector<CObj*>		Get_Tile(void) { return m_vecTile; }
+
+
 public:
 	static		CTileMgr*		Get_Instance(void)
 	{

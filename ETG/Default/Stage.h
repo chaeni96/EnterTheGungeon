@@ -17,6 +17,7 @@ public:
 
 private :
 	CObj*		m_pTarget;
-
+private :
+	int iTemp = 0;
 };
 
