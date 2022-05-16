@@ -112,15 +112,6 @@
     <Filter Include="01. Obj\01. Bullet\00.NomalBullet">
       <UniqueIdentifier>{309b85bc-4fb9-450a-bad5-a79bf936aee6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="00. MainGame\04.UI">
-      <UniqueIdentifier>{3d3d0a4a-c487-4dfe-8228-98d2a7db222d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="00. MainGame\04.UI\00.Inventory">
-      <UniqueIdentifier>{54683c04-aabf-450b-9a5e-1c39089c0748}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="98. Design\UIMgr">
-      <UniqueIdentifier>{a5d48004-2f5c-4779-9b7c-d40232fdc0e1}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01. Obj\02. Monster\BossMonster">
       <UniqueIdentifier>{f6daa8b1-51ed-4907-a449-d7b9746b7d9e}</UniqueIdentifier>
     </Filter>
@@ -129,6 +120,18 @@
     </Filter>
     <Filter Include="01. Obj\01. Bullet\03.BossBomb">
       <UniqueIdentifier>{6ddd478c-3783-491c-b277-71a241d6ed8d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. MainGame\00.UI">
+      <UniqueIdentifier>{3d3d0a4a-c487-4dfe-8228-98d2a7db222d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. MainGame\00.UI\00.Inventory">
+      <UniqueIdentifier>{54683c04-aabf-450b-9a5e-1c39089c0748}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Obj\NewFilter1">
+      <UniqueIdentifier>{75a179e7-e28f-45d9-bd22-caf45da957a3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Obj\Hp">
+      <UniqueIdentifier>{770d4e2b-7940-4368-bdea-e409b87cd631}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -154,9 +157,6 @@
       <Filter>99. Header</Filter>
     </ClInclude>
     <ClInclude Include="Functor.h">
-      <Filter>99. Header</Filter>
-    </ClInclude>
-    <ClInclude Include="Enum.h">
       <Filter>99. Header</Filter>
     </ClInclude>
     <ClInclude Include="Include.h">
@@ -246,11 +246,8 @@
     <ClInclude Include="ObjMgr.h">
       <Filter>98. Design\ObjMgr</Filter>
     </ClInclude>
-    <ClInclude Include="Ui.h">
-      <Filter>00. MainGame\04.UI</Filter>
-    </ClInclude>
     <ClInclude Include="Inventory.h">
-      <Filter>00. MainGame\04.UI\00.Inventory</Filter>
+      <Filter>00. MainGame\00.UI\00.Inventory</Filter>
     </ClInclude>
     <ClInclude Include="BossMonster.h">
       <Filter>01. Obj\02. Monster\BossMonster</Filter>
@@ -260,6 +257,12 @@
     </ClInclude>
     <ClInclude Include="BossBomb.h">
       <Filter>01. Obj\01. Bullet\03.BossBomb</Filter>
+    </ClInclude>
+    <ClInclude Include="HpBar.h">
+      <Filter>01. Obj\Hp</Filter>
+    </ClInclude>
+    <ClInclude Include="Enum.h">
+      <Filter>99. Header</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -350,11 +353,8 @@
     <ClCompile Include="Comando.cpp">
       <Filter>01. Obj\06.Weapon\01.Comando</Filter>
     </ClCompile>
-    <ClCompile Include="Ui.cpp">
-      <Filter>00. MainGame\04.UI</Filter>
-    </ClCompile>
     <ClCompile Include="Inventory.cpp">
-      <Filter>00. MainGame\04.UI\00.Inventory</Filter>
+      <Filter>00. MainGame\00.UI\00.Inventory</Filter>
     </ClCompile>
     <ClCompile Include="BossMonster.cpp">
       <Filter>01. Obj\02. Monster\BossMonster</Filter>
@@ -364,6 +364,9 @@
     </ClCompile>
     <ClCompile Include="BossBomb.cpp">
       <Filter>01. Obj\01. Bullet\03.BossBomb</Filter>
+    </ClCompile>
+    <ClCompile Include="HpBar.cpp">
+      <Filter>01. Obj\Hp</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

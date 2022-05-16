@@ -34,7 +34,7 @@ void CPlayer::Initialize(void)
 	m_tInfo.fCY = 50.f;
 
 	m_fSpeed = 5.f;
-
+	m_iLife = 3;
 	m_fDiagonal = 100.f;
 	m_bDeadEffect = false;
 	m_bRoll = false;

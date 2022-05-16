@@ -1,12 +1,11 @@
 #pragma once
 #include "Obj.h"
-class CInventory :
+class CHpBar :
 	public CObj
 {
 public:
-	CInventory();
-	virtual ~CInventory();
-
+	CHpBar();
+	virtual ~CHpBar();
 
 public:
 	virtual void	Initialize(void) override;
@@ -18,5 +17,8 @@ public:
 	virtual		void	OnCollision(void)	override;
 	virtual		void	OnCollision(DIRECTION _eDir, const float & _fX, const float& _fY) override;
 	virtual		bool	Get_DeadEffect(void) override;
+
+private :
+	float m_fGague;
 };
 

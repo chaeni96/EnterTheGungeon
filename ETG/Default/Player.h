@@ -45,7 +45,8 @@ private:
 	bool					m_bStretch = true;
 	bool					m_bRoll; // 구르는 상태 확인
 	bool					m_bGhost;
-	int iCount;
+	int						iCount;
 	POINT	pt{};
+
 
 };

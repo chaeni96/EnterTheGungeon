@@ -192,7 +192,7 @@ void CComando::Mouse_Sight(void)
 	if ((CKeyMgr::Get_Instance()->Key_Down(VK_LBUTTON)))
 	{
 	
-		CObjMgr::Get_Instance()->Add_Object(OBJ_BULLET, CAbstractFactory<CGuideBullet>::Create(m_tPosin.x, m_tPosin.y, m_fAngle));
+		CObjMgr::Get_Instance()->Add_Object(OBJ_BULLET, CAbstractFactory<CGuideBullet>::Create((float)m_tPosin.x, (float)m_tPosin.y, m_fAngle));
 
 	}
 }

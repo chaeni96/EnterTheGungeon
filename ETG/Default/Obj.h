@@ -25,7 +25,7 @@ public:
 	void		Set_FrameKey(TCHAR* pFrameKey) { m_pFrameKey = pFrameKey; }
 
 	bool		Get_Dead() { return m_bDead; }
-
+	const int& Get_Hp() { return m_iHp; }
 
 	const INFO&		Get_Info(void) const { return m_tInfo; }
 	const RECT&		Get_Rect(void) const { return m_tRect; }
@@ -53,7 +53,7 @@ protected:
 	float		m_fSpeed;
 	float		m_fAngle;
 	int			m_iHp;
-
+	int			m_iLife;
 	DIRECTION	m_eDir;
 	bool		m_bDead;
 

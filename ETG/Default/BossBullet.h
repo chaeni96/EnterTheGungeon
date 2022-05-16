@@ -16,7 +16,6 @@ public:
 	virtual		void	OnCollision(void)	override; 
 	virtual		void	OnCollision(DIRECTION _eDir, const float & _fX, const float& _fY) override;
 	bool Get_DeadEffect() { return m_bDeadEffect; }
-private :
-	float m_fDiagonal;
+
 };
 

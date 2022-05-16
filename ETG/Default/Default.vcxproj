@@ -161,6 +161,7 @@
     <ClInclude Include="Functor.h" />
     <ClInclude Include="GuideBullet.h" />
     <ClInclude Include="Gun.h" />
+    <ClInclude Include="HpBar.h" />
     <ClInclude Include="Include.h" />
     <ClInclude Include="Inventory.h" />
     <ClInclude Include="KeyMgr.h" />
@@ -188,7 +189,6 @@
     <ClInclude Include="targetver.h" />
     <ClInclude Include="Tile.h" />
     <ClInclude Include="TileMgr.h" />
-    <ClInclude Include="Ui.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BmpMgr.cpp" />
@@ -201,6 +201,7 @@
     <ClCompile Include="Default.cpp" />
     <ClCompile Include="GuideBullet.cpp" />
     <ClCompile Include="Gun.cpp" />
+    <ClCompile Include="HpBar.cpp" />
     <ClCompile Include="Inventory.cpp" />
     <ClCompile Include="KeyMgr.cpp" />
     <ClCompile Include="Line.cpp" />
@@ -229,7 +230,6 @@
     </ClCompile>
     <ClCompile Include="Tile.cpp" />
     <ClCompile Include="TileMgr.cpp" />
-    <ClCompile Include="Ui.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Default.rc" />

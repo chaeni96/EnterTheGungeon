@@ -58,8 +58,8 @@ private:
 	bool m_bDeadEffect;
 	DWORD m_dwTime;
 	int iCount; 
-	int iTempX;
-	int iTempY;
+	float iTempX;
+	float iTempY;
 	POINT originPosition; //현재 위치
 	POINT targetPosition; // 타겟 위치
 	bool m_bCheck;

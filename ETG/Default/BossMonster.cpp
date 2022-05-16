@@ -21,11 +21,11 @@ CBossMonster::~CBossMonster()
 
 void CBossMonster::Initialize(void)
 {
-	m_tInfo.fX = 530.f;
+	m_tInfo.fX = 550.f;
 	m_tInfo.fY = 400.f;
 	m_iHp = 30;
-	m_tInfo.fCX = 100.f;
-	m_tInfo.fCY = 100.f;
+	m_tInfo.fCX = 200.f;
+	m_tInfo.fCY = 200.f;
 	iCount = 0;
 	iTempX = 0;
 	iTempY = 10;
@@ -65,8 +65,6 @@ int CBossMonster::Update(void)
 			case LAUNCH1:
 				if (m_dwTime + 1000 < GetTickCount())
 				{
-					Monster_Dir();
-
 					PatternNormalShot();
 					m_dwTime = GetTickCount();
 					currentState = NONE;
@@ -75,7 +73,6 @@ int CBossMonster::Update(void)
 			case LAUNCH2:
 				if (m_dwTime + 1000 < GetTickCount())
 				{
-					Monster_Dir();
 					PatternWideShot();
 					m_dwTime = GetTickCount();
 					currentState = NONE;
@@ -85,9 +82,8 @@ int CBossMonster::Update(void)
 			case LAUNCH3:
 				if (m_dwTime + 200 < GetTickCount())
 				{
-					if (iCount < 10)
+					if (iCount < 5)
 					{
-						Monster_Dir();
 						PatternContinueShot();
 						m_dwTime = GetTickCount();
 						++iCount;
@@ -119,7 +115,7 @@ int CBossMonster::Update(void)
 
 				if (m_dwTime + 400 < GetTickCount())
 				{
-						if (iCount < 20)
+						if (iCount < 12)
 						{
 							PatternBomb();
 							m_dwTime = GetTickCount();
@@ -210,13 +206,13 @@ void CBossMonster::Render(HDC hDC)
 	GdiTransparentBlt(hDC, 					// 복사 받을, 최종적으로 그림을 그릴 DC
 		int(m_tRect.left + iScrollX),	// 2,3 인자 :  복사받을 위치 X, Y
 		int(m_tRect.top + iScrollY),
-		int(m_tInfo.fCX + 100.f) ,				// 4,5 인자 : 복사받을 가로, 세로 길이
-		int(m_tInfo.fCY + 100.f),
+		int(m_tInfo.fCX) ,				// 4,5 인자 : 복사받을 가로, 세로 길이
+		int(m_tInfo.fCY),
 		hMemDC,							// 비트맵을 가지고 있는 DC
-		m_tFrame.iFrameStart * (int)m_tInfo.fCX ,// 비트맵 출력 시작 좌표, X,Y
-		m_tFrame.iMotion * (int)m_tInfo.fCY ,
-		(int)m_tInfo.fCX,				// 복사할 비트맵의 가로, 세로 길이
-		(int)m_tInfo.fCY,
+		m_tFrame.iFrameStart * (int)m_tInfo.fCX * 0.5f,// 비트맵 출력 시작 좌표, X,Y
+		m_tFrame.iMotion * (int)m_tInfo.fCY * 0.5f,
+		(int)m_tInfo.fCX* 0.5f,				// 복사할 비트맵의 가로, 세로 길이
+		(int)m_tInfo.fCY * 0.5f,
 		RGB(255, 0, 255));			// 제거하고자 하는 색상/ 제거하고자 하는 색상
 
 }
@@ -401,7 +397,7 @@ void CBossMonster::RandomPattern()
 
 	random_device random;
 	mt19937 rd(random());
-	uniform_int_distribution<int> range(1,4);//여기까지 한뭉치라고 생각하면됨
+	uniform_int_distribution<int> range(1,3);//여기까지 한뭉치라고 생각하면됨
 
 	currentState = (PATTERN)range(rd);
 
@@ -412,7 +408,7 @@ bool CBossMonster::PatternMoveToUp()
 {
 	m_tInfo.fY -= 80.f;
 
-	if (m_tInfo.fY < -70)
+	if (m_tInfo.fY < -100)
 	{
 		//미사일 쏘기 플레이어 정보 받아와서 보스보다 왼쪽에 있을때는 왼쪽 영역에 폭탄 투하, 오른쪽에 있을때는 오른쪽 영역에 폭탄 투하 일정 좌표에 플레이어의 실시간 y 좌표보다 커지면 삭제 이거는 미사일의 late_update에서 
 
@@ -438,7 +434,7 @@ bool CBossMonster::PatternMoveToUp()
 		m_tPosin.x = long(m_tInfo.fX + m_fDiagonal * cosf((m_fAngle * PI) / 180.f));
 		m_tPosin.y = long(m_tInfo.fY - m_fDiagonal * sinf((m_fAngle * PI) / 180.f));
 
-		CObjMgr::Get_Instance()->Add_Object(OBJ_MONSTER_BULLET, CAbstractFactory<BossBullet>::Create((float)m_tPosin.x, (float)m_tPosin.y, m_fAngle));
+		CObjMgr::Get_Instance()->Add_Object(OBJ_MONSTER_BULLET, CAbstractFactory<BossBullet>::Create(m_tPosin.x, m_tPosin.y, m_fAngle));
 
 		return true;
 		}
@@ -463,8 +459,8 @@ void CBossMonster::PatternBomb()
 	mt19937 rd2(random2());
 	uniform_int_distribution<int> range2(-150, -10);
 
-	iTempX = range(rd);
-	iTempY = range2(rd2);
+	iTempX = (float)range(rd);
+	iTempY = (float)range2(rd2);
 
 	int		iScrollX = (int)CScrollMgr::Get_Instance()->Get_ScrollX();
 	int		iScrollY = (int)CScrollMgr::Get_Instance()->Get_ScrollY();

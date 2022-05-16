@@ -12,6 +12,8 @@
 #include "Comando.h"
 #include "BossMonster.h"
 #include "KeyMgr.h"
+#include "HpBar.h"
+#include "Inventory.h"
 CStage::CStage()
 {
 }
@@ -30,8 +32,9 @@ void CStage::Initialize(void)
 	CObjMgr::Get_Instance()->Add_Object(OBJ_WEAPON, CAbstractFactory<CGun>::Create());
 
 	CObjMgr::Get_Instance()->Add_Object(OBJ_MOUSE, CAbstractFactory<CMouse>::Create());
-
-	//CObjMgr::Get_Instance()->Add_Object(OBJ_BOSS, CAbstractFactory<CBossMonster>::Create());
+	
+	CObjMgr::Get_Instance()->Add_Object(OBJ_HP, CAbstractFactory<CHpBar>::Create());
+	CObjMgr::Get_Instance()->Add_Object(OBJ_INVEN, CAbstractFactory<CInventory>::Create());
 	//좌표 받아와서 넣기 미사일의 경우에는
 
 	CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Back/mapSuccess.bmp", L"mapSuccess");
@@ -42,7 +45,7 @@ void CStage::Initialize(void)
 	//타일 매니저 만든다음에 주소값 넘겨주기
 	CObjMgr::Get_Instance()->Set_Vector(CTileMgr::Get_Instance()->Get_Tile());
 
-}	
+}
 
 
 
@@ -52,7 +55,6 @@ void CStage::Update(void)
 	CTileMgr::Get_Instance()->Update();
 
 	CObjMgr::Get_Instance()->Update();	
-
 }
 
 void CStage::Late_Update(void)
@@ -96,6 +98,7 @@ void CStage::Render(HDC hDC)
 		CTileMgr::Get_Instance()->Render(hDC);
 
 	CObjMgr::Get_Instance()->Render(hDC);
+
 }
 
 void CStage::Release(void)
@@ -106,5 +109,8 @@ void CStage::Release(void)
 	CObjMgr::Get_Instance()->Delete_ID(OBJ_WEAPON);
 	CObjMgr::Get_Instance()->Delete_ID(OBJ_BULLET);	
 	CObjMgr::Get_Instance()->Delete_ID(OBJ_MONSTER_BULLET);
+	CObjMgr::Get_Instance()->Delete_ID(OBJ_HP);
+	CObjMgr::Get_Instance()->Delete_ID(OBJ_INVEN);
+
 
 }

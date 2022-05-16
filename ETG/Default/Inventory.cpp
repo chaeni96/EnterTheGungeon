@@ -13,14 +13,14 @@ CInventory::~CInventory()
 
 void CInventory::Initialize(void)
 {
-	m_tInfo.fX = 500.f;
-	m_tInfo.fX = 500.f;
-	m_tInfo.fCX = 200.f;
-	m_tInfo.fCY = 130.f;
+	m_tInfo.fX = 720.f;
+	m_tInfo.fY = 580.f;
+	m_tInfo.fCX = 285.f;
+	m_tInfo.fCY = 188.f;
 
 	m_eRender = RENDER_UI;
 
-	CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/UI/Inventory.bmp", L"Inventory");
+	CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/UI/Inventory1.bmp", L"Inventory");
 
 
 }
@@ -49,8 +49,8 @@ void CInventory::Render(HDC hDC)
 	GdiTransparentBlt(hDC, 					// 복사 받을, 최종적으로 그림을 그릴 DC
 		int(m_tRect.left ),	// 2,3 인자 :  복사받을 위치 X, Y
 		int(m_tRect.top ),
-		int(m_tInfo.fCX),				// 4,5 인자 : 복사받을 가로, 세로 길이
-		int(m_tInfo.fCY),
+		int(m_tInfo.fCX -70.f),				// 4,5 인자 : 복사받을 가로, 세로 길이
+		int(m_tInfo.fCY -70.f),
 		hMemDC,							// 비트맵을 가지고 있는 DC
 		m_tFrame.iFrameStart * (int)m_tInfo.fCX,								// 비트맵 출력 시작 좌표, X,Y
 		m_tFrame.iMotion * (int)m_tInfo.fCY,
@@ -61,4 +61,17 @@ void CInventory::Render(HDC hDC)
 
 void CInventory::Release(void)
 {
+}
+
+void CInventory::OnCollision(void)
+{
+}
+
+void CInventory::OnCollision(DIRECTION _eDir, const float & _fX, const float & _fY)
+{
+}
+
+bool CInventory::Get_DeadEffect(void)
+{
+	return false;
 }

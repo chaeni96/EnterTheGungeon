@@ -22,7 +22,6 @@ void BossBullet::Initialize(void)
 	m_tInfo.fCY = 47.f;
 	m_fSpeed = 8.f;
 	m_eRender = RENDER_GAMEOBJECT;
-
 	CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Bullet/BossBullet.bmp", L"BossBullet");
 
 }
