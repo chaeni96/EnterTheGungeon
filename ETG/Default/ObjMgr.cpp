@@ -67,11 +67,11 @@ void CObjMgr::Weapon_Change(TYPE _eType)
 		switch (m_eCurWeapon)
 		{
 		case TYPE_WEAPON_GUN:
-			Add_Object(OBJ_WEAPON, CAbstractFactory<CGun>::Create());
+			Add_Object(OBJ_WEAPON, CAbstractFactory<CGun>::Create(0,0,DIR_UP));
 			break;
 
 		case TYPE_WEAPON_COMANDO:
-			Add_Object(OBJ_WEAPON, CAbstractFactory<CComando>::Create());
+			Add_Object(OBJ_WEAPON, CAbstractFactory<CComando>::Create(0, 0, DIR_DOWN));
 			break;
 
 	

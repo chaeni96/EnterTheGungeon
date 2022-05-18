@@ -133,6 +133,12 @@
     <Filter Include="01. Obj\Hp">
       <UniqueIdentifier>{770d4e2b-7940-4368-bdea-e409b87cd631}</UniqueIdentifier>
     </Filter>
+    <Filter Include="98. Design\NewFilter1">
+      <UniqueIdentifier>{5a4aa635-833d-4bbb-ae76-3a9e8b6de7e2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Obj\01. Bullet\04.MonsterBullet">
+      <UniqueIdentifier>{482c49aa-5853-47c7-ab53-0f8018de7f30}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />

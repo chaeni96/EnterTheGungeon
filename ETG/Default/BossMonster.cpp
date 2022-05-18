@@ -21,8 +21,8 @@ CBossMonster::~CBossMonster()
 
 void CBossMonster::Initialize(void)
 {
-	m_tInfo.fX = 550.f;
-	m_tInfo.fY = 400.f;
+	m_tInfo.fX = 570.f;
+	m_tInfo.fY = 430.f;
 	m_iHp = 30;
 	m_tInfo.fCX = 200.f;
 	m_tInfo.fCY = 200.f;
@@ -63,7 +63,7 @@ int CBossMonster::Update(void)
 			switch (currentState)
 			{
 			case LAUNCH1:
-				if (m_dwTime + 1000 < GetTickCount())
+				if (m_dwTime + 800 < GetTickCount())
 				{
 					PatternNormalShot();
 					m_dwTime = GetTickCount();
@@ -71,7 +71,7 @@ int CBossMonster::Update(void)
 				}
 				break;
 			case LAUNCH2:
-				if (m_dwTime + 1000 < GetTickCount())
+				if (m_dwTime + 800 < GetTickCount())
 				{
 					PatternWideShot();
 					m_dwTime = GetTickCount();
@@ -115,7 +115,7 @@ int CBossMonster::Update(void)
 
 				if (m_dwTime + 400 < GetTickCount())
 				{
-						if (iCount < 12)
+						if (iCount < 15)
 						{
 							PatternBomb();
 							m_dwTime = GetTickCount();
@@ -148,7 +148,12 @@ int CBossMonster::Update(void)
 
 			case NONE:
 				Monster_Dir();
-				RandomPattern();
+
+				if (m_dwTime + 2000 < GetTickCount())
+				{
+					RandomPattern();
+					m_dwTime = GetTickCount();
+				}
 				break;
 		
 			}
@@ -397,7 +402,7 @@ void CBossMonster::RandomPattern()
 
 	random_device random;
 	mt19937 rd(random());
-	uniform_int_distribution<int> range(1,3);//여기까지 한뭉치라고 생각하면됨
+	uniform_int_distribution<int> range(1,4);
 
 	currentState = (PATTERN)range(rd);
 
@@ -493,7 +498,7 @@ void CBossMonster::PatternBomb()
 
 bool CBossMonster::PatternMoveToOri()
 {
-	if (m_tInfo.fY == 400.f)
+	if (m_tInfo.fY == 430.f)
 	{
 		return true;
 	}
@@ -509,7 +514,7 @@ void CBossMonster::PatternWideShot()
 	while (degree < 360)
 	{
 		CObjMgr::Get_Instance()->Add_Object(OBJ_MONSTER_BULLET, CAbstractFactory<BossBullet>::Create(m_tInfo.fX, m_tInfo.fY, degree));
-		degree += 30;
+		degree += 45;
 	}
 }
 

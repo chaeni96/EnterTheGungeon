@@ -3,6 +3,8 @@
 class CMonster : public CObj
 {
 public:
+	enum STATE {MONSTER_UP, MONSTER_RIGHT, MONSTER_DOWN, MONSTER_LEFT, MONSTER_HIT, MONSTER_DEAD, MONSTER_END};
+public:
 	CMonster();
 	virtual ~CMonster();
 
@@ -15,8 +17,15 @@ public:
 	virtual		void	OnCollision(void)	override;
 	virtual		void	OnCollision(DIRECTION _eDir, const float & _fX, const float& _fY) override;
 	virtual		bool	Get_DeadEffect(void);
+
 private:
-	POINT			m_tPoint[3];		// аб ╩С╢э, ©Л ╩С╢э, аб го╢э
+	void		Motion_Change(void);
+	void		Monster_Dir(void);
+
+private:
+	STATE		m_eCurState;
+	STATE		m_ePreState;
+	bool		m_bDeadEffect;
 
 };
 

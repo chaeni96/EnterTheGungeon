@@ -82,6 +82,7 @@ void BossBullet::Render(HDC hDC)
 
 void BossBullet::Release(void)
 {
+
 }
 
 void BossBullet::OnCollision(void)

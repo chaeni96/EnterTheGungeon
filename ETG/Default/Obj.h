@@ -23,7 +23,7 @@ public:
 	void		Set_PosY(float _fY) { m_tInfo.fY += _fY; }
 
 	void		Set_FrameKey(TCHAR* pFrameKey) { m_pFrameKey = pFrameKey; }
-
+	const DIRECTION & Get_Dir(void) { return m_eDir; }
 	bool		Get_Dead() { return m_bDead; }
 	const int& Get_Hp() { return m_iHp; }
 

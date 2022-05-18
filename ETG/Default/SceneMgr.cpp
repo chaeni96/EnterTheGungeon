@@ -34,7 +34,7 @@ void CSceneMgr::Scene_Change(SCENEID eID)
 			break;
 
 		case SC_EDIT:
-			//m_pScene = new CMyEdit;
+			m_pScene = new CMyEdit;
 			break;
 		
 		case SC_STAGE:

@@ -34,8 +34,17 @@ int CGuideBullet::Update(void)
 
 
 	//플레이어의 위치에 따라서 m_pTarget 바꿔주기
-	m_pTarget = CObjMgr::Get_Instance()->Get_Target(OBJ_BOSS, this);
-	
+	if (m_tInfo.fX < 1280 && m_tInfo.fY < 400)
+	{
+		m_pTarget = CObjMgr::Get_Instance()->Get_Target(OBJ_BOSS, this);
+	}
+	else
+	{
+		m_pTarget = CObjMgr::Get_Instance()->Get_Target(OBJ_MONSTER, this);
+
+
+	}
+
 	if (m_pTarget)
 	{
 		float		fWidth = m_pTarget->Get_Info().fX - m_tInfo.fX;

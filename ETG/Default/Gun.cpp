@@ -22,7 +22,7 @@ void CGun::Initialize(void)
 
 	m_fSpeed = 1.f;
 
-	m_eRender = RENDER_GAMEOBJECT;
+	m_eRender = RENDER_UI;
 
 	CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/GundeadGun/Gun_LD.bmp", L"Gun_LD");
 	CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/GundeadGun/Gun_Left.bmp", L"Gun_Left");
@@ -76,7 +76,7 @@ void CGun::Render(HDC hDC)
 		m_tFrame.iMotion * (int)m_tInfo.fCY ,
 		(int)m_tInfo.fCX,				// 복사할 비트맵의 가로, 세로 길이
 		(int)m_tInfo.fCY ,
-		RGB(255, 0, 255));			// 제거하고자 하는 색상/ 제거하고자 하는 색상
+		RGB(255, 0, 255));		
 
 
 }

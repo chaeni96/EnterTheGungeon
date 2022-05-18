@@ -135,10 +135,14 @@ void CTileMgr::Load_Tile(void)
 			break;
 
 		CObj*		pObj = CAbstractFactory<CTile>::Create(tInfo.fX, tInfo.fY);
-		dynamic_cast<CTile*>(pObj)->Set_DrawID(iDrawID);
-		dynamic_cast<CTile*>(pObj)->Set_Option(iOption);
+		
+		if (iDrawID == 1)
+		{
+			dynamic_cast<CTile*>(pObj)->Set_DrawID(iDrawID);
+			dynamic_cast<CTile*>(pObj)->Set_Option(iOption);
 
-		m_vecTile.push_back(pObj);
+			m_vecTile.push_back(pObj);
+		}
 	}
 	CloseHandle(hFile);
 }

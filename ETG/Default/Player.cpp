@@ -28,7 +28,7 @@ CPlayer::~CPlayer()
 void CPlayer::Initialize(void)
 {
 	m_tInfo.fX = 1880.F;
-	m_tInfo.fY = 1150.f;
+	m_tInfo.fY = 1100.f;
 
 	m_tInfo.fCX = 40.f; // 20 * 25
 	m_tInfo.fCY = 50.f;
@@ -41,7 +41,7 @@ void CPlayer::Initialize(void)
 	m_bHitEffect = false;
 	m_bGhost = false;
 	m_CollisionCheck = false;
-
+	m_bBossCheck = false;
 	m_iHp = 30;
 	m_pFrameKey = L"Player_RIGHT";
 	m_eRender = RENDER_GAMEOBJECT;
@@ -84,7 +84,6 @@ int CPlayer::Update(void)
 			Mouse_Sight();
 
 		}
-
 		OffSet();
 	}
 
@@ -95,12 +94,15 @@ int CPlayer::Update(void)
 
 void CPlayer::Late_Update(void)
 {
-	if (m_tInfo.fX ==  1280 && m_tInfo.fY < 600)
+	if (m_tInfo.fX ==  1280 && m_tInfo.fY < 500)
 	{
 		if (m_delayTime + 3000 < GetTickCount())
 		{
-
-			CObjMgr::Get_Instance()->Add_Object(OBJ_BOSS, CAbstractFactory<CBossMonster>::Create());
+			if (!m_bBossCheck)
+			{
+				CObjMgr::Get_Instance()->Add_Object(OBJ_BOSS, CAbstractFactory<CBossMonster>::Create());
+				m_bBossCheck = true;
+			}
 			m_delayTime = GetTickCount();
 		}
 
@@ -208,41 +210,34 @@ void CPlayer::Mouse_Sight(void)
 	if (25 <= m_fAngle &&  m_fAngle < 60)
 	{
 		m_pFrameKey = L"Player_RU";
-		m_eCurState = IDLE;
 	}
 	else if ((60 <= m_fAngle &&  m_fAngle < 115))
 	{
 		m_pFrameKey = L"Player_UP";
-		m_eCurState = IDLE;
 	}
 	else if ((115 <= m_fAngle &&  m_fAngle < 150))
 	{
 		m_pFrameKey = L"Player_LU";
-		m_eCurState = IDLE;
 	}
 	else if ((150 <= m_fAngle &&  m_fAngle < 183))
 	{
 		m_pFrameKey = L"Player_LEFT";
-		m_eCurState = IDLE;
 	}
 	else if ((-120 <= m_fAngle &&  m_fAngle < -100))
 	{
 		m_pFrameKey = L"Player_LEFT";
-		m_eCurState = IDLE;
 
 	}
 	else if ((-100 <= m_fAngle &&  m_fAngle < -40))
 	{
 		m_pFrameKey = L"Player_DOWN";
-		m_eCurState = IDLE;
 	}
 	else if ((-40 <= m_fAngle &&  m_fAngle < 25))
 	{
 		m_pFrameKey = L"Player_RIGHT";	
-		m_eCurState = IDLE;
 	}
-	else 
-	{
+	
+	else {
 		m_eCurState = IDLE;
 	}
 
@@ -303,12 +298,16 @@ void CPlayer::Key_Input(void)
 		if (GetAsyncKeyState(0x31)) // 1¹ø´­·¶À»¶§ ÀÏ¹Ý ÃÑ
 		{
 			CObjMgr::Get_Instance()->Weapon_Change(TYPE_WEAPON_GUN);
+			m_eCurState = WALK;
+
 		}
 		
 		
 		else if (GetAsyncKeyState(0x32)) // 2¹ø ´­·¶À»¶§ ÄÚ¸¸µµ
 		{
 			CObjMgr::Get_Instance()->Weapon_Change(TYPE_WEAPON_COMANDO);
+			m_eCurState = WALK;
+
 		}
 
 
