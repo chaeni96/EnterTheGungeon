@@ -51,7 +51,7 @@ int CBossBomb::Update(void)
 void CBossBomb::Late_Update(void)
 {
 	
-		if (m_tInfo.fY >  550)
+		if (m_tInfo.fY >  900)
 		{	
 			m_bDeadEffect = true;
 		}
@@ -105,8 +105,8 @@ void CBossBomb::Render(HDC hDC)
 		GdiTransparentBlt(hDC, 					// 복사 받을, 최종적으로 그림을 그릴 DC
 			int(m_tRect.left + iScrollX),	// 2,3 인자 :  복사받을 위치 X, Y
 			int(m_tRect.top + iScrollY),
-			int(m_tInfo.fCX),				// 4,5 인자 : 복사받을 가로, 세로 길이
-			int(m_tInfo.fCY),
+			int(m_tInfo.fCX + 20.f),				// 4,5 인자 : 복사받을 가로, 세로 길이
+			int(m_tInfo.fCY + 20.f),
 			hMemDC,							// 비트맵을 가지고 있는 DC
 			m_tFrame.iFrameStart * (int)m_tInfo.fCX,								// 비트맵 출력 시작 좌표, X,Y
 			m_tFrame.iMotion * (int)m_tInfo.fCY,
@@ -119,8 +119,8 @@ void CBossBomb::Render(HDC hDC)
 		GdiTransparentBlt(hDC, 					// 복사 받을, 최종적으로 그림을 그릴 DC
 			int(m_tRect.left + iScrollX),	// 2,3 인자 :  복사받을 위치 X, Y
 			int(m_tRect.top + iScrollY),
-			int(m_tInfo.fCX + 50),				// 4,5 인자 : 복사받을 가로, 세로 길이
-			int(m_tInfo.fCY +50),
+			int(m_tInfo.fCX + 100.f),				// 4,5 인자 : 복사받을 가로, 세로 길이
+			int(m_tInfo.fCY +100.f),
 			hMemDC,							// 비트맵을 가지고 있는 DC
 			m_tFrame.iFrameStart * (int)m_tInfo.fCX,								// 비트맵 출력 시작 좌표, X,Y
 			m_tFrame.iMotion * (int)m_tInfo.fCY,

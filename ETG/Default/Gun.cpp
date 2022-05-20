@@ -6,6 +6,7 @@
 #include "ScrollMgr.h"
 #include "AbstractFactory.h"
 #include "Bullet.h"
+#include "SoundMgr.h"
 CGun::CGun()
 {
 }

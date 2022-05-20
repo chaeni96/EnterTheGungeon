@@ -25,7 +25,16 @@ public :
 	bool		Check_Roll(void) { return m_bRoll; }
 	STATE  Get_State(void) { return m_eCurState; }
 	void   Set_CollisionCheck(void) { m_CollisionCheck = false; }
-
+	void	Set_HpPlus(const int& _iHp) {
+		if (m_iHp <= 50)
+		{
+			m_iHp += _iHp;
+			if (m_iHp > 50)
+			{
+				m_iHp = 50;
+			}
+		}
+	}
 private:
 	void		Mouse_Sight(void); // 마우스 위치에 따라서 플레이어의 시선방향 움직임
 	void		Key_Input(void);
@@ -42,10 +51,11 @@ private:
 	bool					m_bDeadEffect;
 	bool					m_bHitEffect;
 	bool					m_CollisionCheck;
-	bool					m_bStretch = true;
 	bool					m_bRoll; // 구르는 상태 확인
-	bool					m_bGhost;
-	bool					m_bBossCheck;
+	bool					m_bGhost; // 유령상태 체크
+	bool					m_bBossCheck; // 보스 한번 생성용
+	bool					m_bMonster1Check; // 몬스터 한번 생성용
+	bool					m_bMonster2Check; // 몬스터
 	int						iCount;
 	POINT	pt{};
 

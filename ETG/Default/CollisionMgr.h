@@ -15,5 +15,6 @@ public:
 	static void		Collision_RectEx(list<CObj*> _Dest, list<CObj*> _Sour);
 	static void		Collision_Sphere(list<CObj*> _Dest, list<CObj*> _Sour);
 	static void		Collision_RectExTile(vector<CObj*> _Dest, list<CObj*> _Sour);
+	static void		Collision_Rect_Player(list<CObj*> _Dest, list<CObj*> _Sour);
 };
 

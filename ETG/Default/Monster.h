@@ -21,11 +21,16 @@ public:
 private:
 	void		Motion_Change(void);
 	void		Monster_Dir(void);
-
+	void		Hit();
+	void		Attack();
 private:
 	STATE		m_eCurState;
 	STATE		m_ePreState;
 	bool		m_bDeadEffect;
+	int			m_iRandom;
+	float			m_fDiagonal;
+	POINT			m_tPosin;
+	DWORD          m_DelayTime;
 
 };
 

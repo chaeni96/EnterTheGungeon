@@ -21,9 +21,9 @@ void CScrollMgr::Scroll_Lock(void)
 	if (0.f < m_fScrollY)
 		m_fScrollY = 0.f;
 
-	if (WINCX - 2400 > m_fScrollX)
-		m_fScrollX = WINCX - 2400;
+	if (WINCX - 3600 > m_fScrollX)
+		m_fScrollX = WINCX - 3600;
 
-	if (WINCY - 1400 > m_fScrollY)
-		m_fScrollY = WINCY - 1400;
+	if (WINCY - 2100 > m_fScrollY)
+		m_fScrollY = WINCY - 2100;
 }

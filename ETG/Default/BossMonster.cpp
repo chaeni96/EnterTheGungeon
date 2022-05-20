@@ -21,8 +21,8 @@ CBossMonster::~CBossMonster()
 
 void CBossMonster::Initialize(void)
 {
-	m_tInfo.fX = 570.f;
-	m_tInfo.fY = 430.f;
+	m_tInfo.fX = 980.f;
+	m_tInfo.fY = 690.f;
 	m_iHp = 30;
 	m_tInfo.fCX = 200.f;
 	m_tInfo.fCY = 200.f;
@@ -63,7 +63,7 @@ int CBossMonster::Update(void)
 			switch (currentState)
 			{
 			case LAUNCH1:
-				if (m_dwTime + 800 < GetTickCount())
+				if (m_dwTime + 500 < GetTickCount())
 				{
 					PatternNormalShot();
 					m_dwTime = GetTickCount();
@@ -71,7 +71,7 @@ int CBossMonster::Update(void)
 				}
 				break;
 			case LAUNCH2:
-				if (m_dwTime + 800 < GetTickCount())
+				if (m_dwTime + 500 < GetTickCount())
 				{
 					PatternWideShot();
 					m_dwTime = GetTickCount();
@@ -115,7 +115,7 @@ int CBossMonster::Update(void)
 
 				if (m_dwTime + 400 < GetTickCount())
 				{
-						if (iCount < 15)
+						if (iCount < 20)
 						{
 							PatternBomb();
 							m_dwTime = GetTickCount();
@@ -174,7 +174,6 @@ void CBossMonster::Late_Update(void)
 		switch ((m_eCurState))
 		{
 		case HIT:
-			Monster_Dir();
 			break;
 		case FLY :
 			m_tFrame.iFrameStart = 0;
@@ -211,8 +210,8 @@ void CBossMonster::Render(HDC hDC)
 	GdiTransparentBlt(hDC, 					// 복사 받을, 최종적으로 그림을 그릴 DC
 		int(m_tRect.left + iScrollX),	// 2,3 인자 :  복사받을 위치 X, Y
 		int(m_tRect.top + iScrollY),
-		int(m_tInfo.fCX) ,				// 4,5 인자 : 복사받을 가로, 세로 길이
-		int(m_tInfo.fCY),
+		int(m_tInfo.fCX) + 50.f ,				// 4,5 인자 : 복사받을 가로, 세로 길이
+		int(m_tInfo.fCY) + 50.f,
 		hMemDC,							// 비트맵을 가지고 있는 DC
 		m_tFrame.iFrameStart * (int)m_tInfo.fCX * 0.5f,// 비트맵 출력 시작 좌표, X,Y
 		m_tFrame.iMotion * (int)m_tInfo.fCY * 0.5f,
@@ -343,18 +342,18 @@ void CBossMonster::Monster_Dir(void)
 		int		iScrollX = (int)CScrollMgr::Get_Instance()->Get_ScrollX();
 		int		iScrollY = (int)CScrollMgr::Get_Instance()->Get_ScrollY();
 	
-		float fWidth = (m_pTarget->Get_Info().fX - (m_tInfo.fX + iScrollX)); // 밑변
-		float fHeight = (m_pTarget->Get_Info().fY - (m_tInfo.fX + iScrollY)); // 높이
+		float fWidth = (m_pTarget->Get_Info().fX - (m_tInfo.fX)); // 밑변
+		float fHeight = (m_pTarget->Get_Info().fY - (m_tInfo.fY)); // 높이
 
 		float	fDiagonal = sqrtf(fWidth * fWidth + fHeight * fHeight); //빗변	
 
 		float	fRadian = acosf(fWidth / fDiagonal); // 라디안 각도
 
-
-		if (m_pTarget->Get_Info().fY > m_tInfo.fY + iScrollY)  //  cos 0도에서 180도 밖에 표현이 안되기때문에
-			fRadian *= -1.f;
-
 		m_fAngle = fRadian * 180.f / PI; // 각도
+
+		if (m_pTarget->Get_Info().fY > m_tInfo.fY )  //  cos 0도에서 180도 밖에 표현이 안되기때문에
+			m_fAngle *= -1.f;
+
 
 		if (25 <= m_fAngle &&  m_fAngle < 90)
 		{
@@ -458,7 +457,7 @@ void CBossMonster::PatternBomb()
 
 	random_device random;
 	mt19937 rd(random());
-	uniform_int_distribution<int> range(50, 1130);
+	uniform_int_distribution<int> range(450, 1520);
 
 	random_device random2;
 	mt19937 rd2(random2());
@@ -498,7 +497,7 @@ void CBossMonster::PatternBomb()
 
 bool CBossMonster::PatternMoveToOri()
 {
-	if (m_tInfo.fY == 430.f)
+	if (m_tInfo.fY == 690.f)
 	{
 		return true;
 	}
@@ -528,18 +527,18 @@ void CBossMonster::PatternContinueShot()
 
 			m_pTarget = CObjMgr::Get_Instance()->Get_Target(OBJ_PLAYER, this);
 
-			float fWidth = (m_pTarget->Get_Info().fX - (m_tInfo.fX + iScrollX));
-			float fHeight = (m_pTarget->Get_Info().fY - (m_tInfo.fY + iScrollY));
+			float fWidth = (m_pTarget->Get_Info().fX - (m_tInfo.fX ));
+			float fHeight = (m_pTarget->Get_Info().fY - (m_tInfo.fY ));
 
 			float	fDiagonal = sqrtf((fWidth * fWidth) + (fHeight * fHeight)); //빗변	
 
 			float	fRadian = acosf(fWidth / fDiagonal);
 
-
-			if (m_pTarget->Get_Info().fY > (m_tInfo.fY + iScrollY))
-				fRadian *= -1.f;
-
 			m_fAngle = fRadian * 180.f / PI;
+
+			if (m_pTarget->Get_Info().fY > (m_tInfo.fY ))
+				m_fAngle *= -1.f;
+
 
 			m_tPosin.x = long(m_tInfo.fX + m_fDiagonal * cosf((m_fAngle * PI) / 180.f));
 			m_tPosin.y = long(m_tInfo.fY - m_fDiagonal * sinf((m_fAngle * PI) / 180.f));
@@ -561,17 +560,17 @@ void CBossMonster::PatternNormalShot()
 	if (m_pTarget != nullptr)
 	{
 		m_pTarget = CObjMgr::Get_Instance()->Get_Target(OBJ_PLAYER, this);
-		float fWidth = (m_pTarget->Get_Info().fX - (m_tInfo.fX + iScrollX));
-		float fHeight = (m_pTarget->Get_Info().fY - (m_tInfo.fY + iScrollY));
+		float fWidth = (m_pTarget->Get_Info().fX - (m_tInfo.fX ));
+		float fHeight = (m_pTarget->Get_Info().fY - (m_tInfo.fY ));
 
 		float	fDiagonal = sqrtf((fWidth * fWidth) + (fHeight * fHeight)); //빗변	
 
 		float	fRadian = acosf(fWidth / fDiagonal);
-
-		if (m_pTarget->Get_Info().fY > (m_tInfo.fY + iScrollY))
-			fRadian *= -1.f;
-
 		m_fAngle = fRadian * 180.f / PI;
+
+		if (m_pTarget->Get_Info().fY > (m_tInfo.fY ))
+			m_fAngle *= -1.f;
+
 
 		m_tPosin.x = long(m_tInfo.fX + m_fDiagonal * cosf((m_fAngle * PI) / 180.f));
 		m_tPosin.y = long(m_tInfo.fY - m_fDiagonal * sinf((m_fAngle * PI) / 180.f));
@@ -586,11 +585,12 @@ void CBossMonster::PatternNormalShot()
 void CBossMonster::Hit()
 {
 	m_iHp -= 1;
-	m_eCurState = HIT;
 }
 
 void CBossMonster::OnCollision(void)
 {
+	m_eCurState = HIT;
+
 	Hit();
 
 	 if (m_iHp <= 0)

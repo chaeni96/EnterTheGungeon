@@ -108,6 +108,7 @@ void CMainGame::Release(void)
 	CKeyMgr::Get_Instance()->Destroy_Instance();
 	CLineMgr::Get_Instance()->Destroy_Instance();
 	CObjMgr::Get_Instance()->Destroy_Instance();
+	CTileMgr::Get_Instance()->Destroy_Instance();
 
 	ReleaseDC(g_hWnd, m_hDC);	
 }

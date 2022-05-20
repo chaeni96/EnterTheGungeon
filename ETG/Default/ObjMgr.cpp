@@ -130,13 +130,19 @@ void CObjMgr::Late_Update(void)
 		}
 	}
 
-	CCollisionMgr::Collision_RectEx(m_ObjList[OBJ_PLAYER], m_ObjList[OBJ_MONSTER]); // 플레이어, 몬스터 
-	CCollisionMgr::Collision_Rect(m_ObjList[OBJ_MONSTER], m_ObjList[OBJ_BULLET]); // 몬스터, 플레이어 총알
+	//플레이어에만 허용되는 함수 하나만들기?
+
+	CCollisionMgr::Collision_Rect_Player(m_ObjList[OBJ_PLAYER], m_ObjList[OBJ_MONSTER]); // 플레이어 
 	CCollisionMgr::Collision_Rect(m_ObjList[OBJ_BOSS], m_ObjList[OBJ_BULLET]); // 보스랑 플레이어 총알
 	CCollisionMgr::Collision_Rect(m_ObjList[OBJ_MONSTER_BULLET], m_ObjList[OBJ_PLAYER]); // 몬스터 총알, 플레이어
 	CCollisionMgr::Collision_RectExTile(m_vecTile, m_ObjList[OBJ_PLAYER]); // 타일, 플레이어
 	CCollisionMgr::Collision_RectExTile(m_vecTile, m_ObjList[OBJ_MONSTER_BULLET]); // 타일, 몬스터 총알
 	CCollisionMgr::Collision_RectExTile(m_vecTile, m_ObjList[OBJ_BULLET]); // 타일, 플레이어 총알
+	CCollisionMgr::Collision_Rect(m_ObjList[OBJ_MONSTER], m_ObjList[OBJ_BULLET]); // 몬스터 총알, 플레이어
+	CCollisionMgr::Collision_RectExTile(m_vecTile, m_ObjList[OBJ_MONSTER]); // 타일, 몬스터
+	CCollisionMgr::Collision_Rect(m_ObjList[OBJ_PLAYER], m_ObjList[OBJ_ITEM]);
+	// 타일 몬스터 총알
+	
 
 	//추가할것 타일이랑 몬스터
 

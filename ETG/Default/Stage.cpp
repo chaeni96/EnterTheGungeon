@@ -14,6 +14,12 @@
 #include "KeyMgr.h"
 #include "HpBar.h"
 #include "Inventory.h"
+#include "SoundMgr.h"
+#include "Monster2.h"
+#include "Potion.h"
+
+float	g_fSoundStage = .5f;
+
 CStage::CStage()
 {
 }
@@ -30,19 +36,21 @@ void CStage::Initialize(void)
 	CObjMgr::Get_Instance()->Add_Object(OBJ_PLAYER, CAbstractFactory<CPlayer>::Create());
 
 	CObjMgr::Get_Instance()->Add_Object(OBJ_MOUSE, CAbstractFactory<CMouse>::Create());
-	CObjMgr::Get_Instance()->Add_Object(OBJ_MONSTER, CAbstractFactory<CMonster>::Create());
 
 	CObjMgr::Get_Instance()->Add_Object(OBJ_HP, CAbstractFactory<CHpBar>::Create());
 	CObjMgr::Get_Instance()->Add_Object(OBJ_INVEN, CAbstractFactory<CInventory>::Create());
+	//CObjMgr::Get_Instance()->Add_Object(OBJ_ITEM, CAbstractFactory<CPotion>::Create());
+
 	//좌표 받아와서 넣기 미사일의 경우에는
 
 	CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Back/mapSuccess.bmp", L"mapSuccess");
 
-	CTileMgr::Get_Instance()->Initialize();
-	CTileMgr::Get_Instance()->Load_Tile(); // 타일 L
+	//CTileMgr::Get_Instance()->Initialize();
+	CTileMgr::Get_Instance()->Load_Tile(); // 타일 
 	
 	//타일 매니저 만든다음에 주소값 넘겨주기
 	CObjMgr::Get_Instance()->Set_Vector(CTileMgr::Get_Instance()->Get_Tile());
+	CSoundMgr::Get_Instance()->PlaySoundW(L"GUNGEONDOWN.mp3", SOUND_EFFECT, 0.3f);
 
 }
 
@@ -51,14 +59,15 @@ void CStage::Initialize(void)
 void CStage::Update(void)
 {
 
-	CTileMgr::Get_Instance()->Update();
+	//CTileMgr::Get_Instance()->Update();
 
 	CObjMgr::Get_Instance()->Update();	
+
 }
 
 void CStage::Late_Update(void)
 {
-	CTileMgr::Get_Instance()->Late_Update();
+	//CTileMgr::Get_Instance()->Late_Update();
 
 	CObjMgr::Get_Instance()->Late_Update();
 
@@ -74,7 +83,7 @@ void CStage::Render(HDC hDC)
 
 	random_device random;
 	mt19937 rd(random());
-	uniform_int_distribution<int> range(0, 15);
+	uniform_int_distribution<int> range(0, 12);
 	iTemp = range(rd);
 
 
@@ -91,11 +100,9 @@ void CStage::Render(HDC hDC)
 	}
 
 	HDC		hGroundMemDC = CBmpMgr::Get_Instance()->Find_Image(L"mapSuccess");
-	BitBlt(hDC, iScrollX, iScrollY, 2400, 1400, hGroundMemDC, 0, 0, SRCCOPY);
+	BitBlt(hDC, iScrollX, iScrollY, 3600, 2100, hGroundMemDC, 0, 0, SRCCOPY);
 
-	if(GetAsyncKeyState('C'))
-		CTileMgr::Get_Instance()->Render(hDC);
-
+	
 	CObjMgr::Get_Instance()->Render(hDC);
 
 }
@@ -108,8 +115,11 @@ void CStage::Release(void)
 	CObjMgr::Get_Instance()->Delete_ID(OBJ_WEAPON);
 	CObjMgr::Get_Instance()->Delete_ID(OBJ_BULLET);	
 	CObjMgr::Get_Instance()->Delete_ID(OBJ_MONSTER_BULLET);
+	CObjMgr::Get_Instance()->Delete_ID(OBJ_MONSTER1_BULLET);
 	CObjMgr::Get_Instance()->Delete_ID(OBJ_HP);
 	CObjMgr::Get_Instance()->Delete_ID(OBJ_INVEN);
+	CObjMgr::Get_Instance()->Delete_ID(OBJ_ITEM);
+
 
 
 }

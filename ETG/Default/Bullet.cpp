@@ -3,6 +3,7 @@
 #include "BmpMgr.h"
 #include "ScrollMgr.h"
 #include "Player.h"
+#include "SoundMgr.h"
 CBullet::CBullet()
 {
 }
@@ -22,6 +23,7 @@ void CBullet::Initialize(void)
 	m_eRender = RENDER_GAMEOBJECT;
 
 	CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Bullet/Normal.bmp", L"Normal");
+	CSoundMgr::Get_Instance()->PlaySoundW(L"bullet_leap_01.wav", SOUND_EFFECT, 10.f);
 
 }
 
@@ -72,10 +74,7 @@ void CBullet::Release(void)
 
 void CBullet::OnCollision(void)
 {
-
 		m_bDead = true;
-	
-	
 }
 
 void CBullet::OnCollision(DIRECTION _eDir, const float & _fX, const float & _fY)

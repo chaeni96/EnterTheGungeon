@@ -48,7 +48,7 @@ void CHpBar::Late_Update(void)
 	{
 		float iHp = (float)m_pTarget->Get_Hp();
 
-		m_fGague = m_tInfo.fCX*(iHp / 30);
+		m_fGague = m_tInfo.fCX*(iHp / 50);
 	}
 }
 
@@ -62,7 +62,7 @@ void CHpBar::Render(HDC hDC)
 	GdiTransparentBlt(hDC, 					// 복사 받을, 최종적으로 그림을 그릴 DC
 		int(m_tRect.left),	// 2,3 인자 :  복사받을 위치 X, Y
 		int(m_tRect.top),
-		int(m_tInfo.fCX + 20.f),				// 4,5 인자 : 복사받을 가로, 세로 길이
+		int(m_tInfo.fCX + 55.f),				// 4,5 인자 : 복사받을 가로, 세로 길이
 		int(m_tInfo.fCY + 20.f),
 		hMemDC2,							// 비트맵을 가지고 있는 DC
 		m_tFrame.iFrameStart * (int)m_tInfo.fCX,								// 비트맵 출력 시작 좌표, X,Y
@@ -72,9 +72,9 @@ void CHpBar::Render(HDC hDC)
 		RGB(255, 0, 255));
 
 	GdiTransparentBlt(hDC, 					// 복사 받을, 최종적으로 그림을 그릴 DC
-		int(m_tRect.left + 23.f),	// 2,3 인자 :  복사받을 위치 X, Y
+		int(m_tRect.left + 26.f),	// 2,3 인자 :  복사받을 위치 X, Y
 		int(m_tRect.top),
-		int(m_fGague +20.f),				// 4,5 인자 : 복사받을 가로, 세로 길이
+		int(m_fGague ),				// 4,5 인자 : 복사받을 가로, 세로 길이
 		int(m_tInfo.fCY +20.f),
 		hMemDC,							// 비트맵을 가지고 있는 DC
 		m_tFrame.iFrameStart * (int)m_tInfo.fCX,								// 비트맵 출력 시작 좌표, X,Y

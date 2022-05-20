@@ -76,7 +76,13 @@ void CTileMgr::Render(HDC hDC)
 
 void CTileMgr::Release()
 {
-	for_each(m_vecTile.begin(), m_vecTile.end(), CDeleteObj());
+
+	for (auto iter = m_vecTile.begin(); iter != m_vecTile.end();)
+	{
+		Safe_Delete<CObj*>(*iter);
+		iter = m_vecTile.erase(iter);
+	}
+
 	m_vecTile.clear();
 }
 
@@ -135,14 +141,15 @@ void CTileMgr::Load_Tile(void)
 			break;
 
 		CObj*		pObj = CAbstractFactory<CTile>::Create(tInfo.fX, tInfo.fY);
-		
-		if (iDrawID == 1)
+
+		if (iDrawID == 1) // 나중에 삭제 아니면 메모리 누수 일어남
 		{
 			dynamic_cast<CTile*>(pObj)->Set_DrawID(iDrawID);
 			dynamic_cast<CTile*>(pObj)->Set_Option(iOption);
 
 			m_vecTile.push_back(pObj);
 		}
+		
 	}
 	CloseHandle(hFile);
 }

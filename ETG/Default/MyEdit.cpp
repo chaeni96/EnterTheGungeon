@@ -41,7 +41,7 @@ void CMyEdit::Render(HDC hDC)
 	CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Back/MapEdit.bmp", L"MapEdit");
 
 	HDC		hGroundMemDC = CBmpMgr::Get_Instance()->Find_Image(L"MapEdit");
-	BitBlt(hDC, iScrollX, iScrollY, 2400, 1400, hGroundMemDC, 0, 0, SRCCOPY);
+	BitBlt(hDC, iScrollX, iScrollY, 3600, 2100, hGroundMemDC, 0, 0, SRCCOPY);
 
 	CTileMgr::Get_Instance()->Render(hDC);
 }

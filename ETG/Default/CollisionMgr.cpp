@@ -2,6 +2,8 @@
 #include "CollisionMgr.h"
 #include "ScrollMgr.h"
 #include "Tile.h"
+#include "Potion.h"
+
 CCollisionMgr::CCollisionMgr()
 {
 }
@@ -22,8 +24,28 @@ void CCollisionMgr::Collision_Rect(list<CObj*> _Dest, list<CObj*> _Sour)
 		{
 			if (IntersectRect(&rc, &(Dest->Get_Rect()), &(Sour->Get_Rect())))
 			{
+				if (Sour->Get_RenderID() == RENDER_ITEM)
+				{
+					static_cast<CPotion*>(Sour)->OnCollision();
+					return;
+				}
 				Dest->OnCollision();
 				Sour->OnCollision();
+			}
+		}
+	}
+}
+void CCollisionMgr::Collision_Rect_Player(list<CObj*> _Dest, list<CObj*> _Sour)
+{
+	RECT		rc{};
+
+	for (auto& Dest : _Dest)
+	{
+		for (auto& Sour : _Sour)
+		{
+			if (IntersectRect(&rc, &(Dest->Get_Rect()), &(Sour->Get_Rect())))
+			{
+				Dest->OnCollision();
 			}
 		}
 	}

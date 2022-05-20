@@ -56,11 +56,12 @@ void CSoundMgr::PlaySound(TCHAR * pSoundKey, CHANNELID eID, float fVolume)
 
 	FMOD_BOOL bPlay = FALSE; 
 
-	if (FMOD_Channel_IsPlaying(m_pChannelArr[eID], &bPlay))
+	/*if (FMOD_Channel_IsPlaying(m_pChannelArr[eID], &bPlay))
 	{
-		FMOD_System_PlaySound(m_pSystem, FMOD_CHANNEL_FREE, iter->second, FALSE, &m_pChannelArr[eID]);
 	}
-
+*/
+	FMOD_System_PlaySound(m_pSystem, FMOD_CHANNEL_FREE, iter->second, FALSE, &m_pChannelArr[eID]);
+	
 	FMOD_Channel_SetVolume(m_pChannelArr[eID], fVolume);
 
 	FMOD_System_Update(m_pSystem);
@@ -70,7 +71,7 @@ void CSoundMgr::PlayBGM(TCHAR * pSoundKey, float fVolume)
 {
 	map<TCHAR*, FMOD_SOUND*>::iterator iter;
 
-	// iter = find_if(m_mapSound.begin(), m_mapSound.end(), CTag_Finder(pSoundKey));
+	//iter = find_if(m_mapSound.begin(), m_mapSound.end(), CTag_Finder(pSoundKey));
 	iter = find_if(m_mapSound.begin(), m_mapSound.end(), [&](auto& iter)->bool
 	{
 		return !lstrcmp(pSoundKey, iter.first);

@@ -139,6 +139,9 @@
     <Filter Include="01. Obj\01. Bullet\04.MonsterBullet">
       <UniqueIdentifier>{482c49aa-5853-47c7-ab53-0f8018de7f30}</UniqueIdentifier>
     </Filter>
+    <Filter Include="00. MainGame\00.UI\01.Potion">
+      <UniqueIdentifier>{361bff6e-51f4-48dc-8fbe-bf9152b4c92b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -270,6 +273,15 @@
     <ClInclude Include="Enum.h">
       <Filter>99. Header</Filter>
     </ClInclude>
+    <ClInclude Include="MonsterBullet.h">
+      <Filter>01. Obj\01. Bullet\04.MonsterBullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Monster2.h">
+      <Filter>01. Obj\02. Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="Potion.h">
+      <Filter>00. MainGame\00.UI\01.Potion</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -373,6 +385,15 @@
     </ClCompile>
     <ClCompile Include="HpBar.cpp">
       <Filter>01. Obj\Hp</Filter>
+    </ClCompile>
+    <ClCompile Include="MonsterBullet.cpp">
+      <Filter>01. Obj\01. Bullet\04.MonsterBullet</Filter>
+    </ClCompile>
+    <ClCompile Include="Monster2.cpp">
+      <Filter>01. Obj\02. Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="Potion.cpp">
+      <Filter>00. MainGame\00.UI\01.Potion</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

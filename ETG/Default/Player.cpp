@@ -13,7 +13,10 @@
 #include "Gun.h"
 #include "Comando.h"
 #include "BossMonster.h"
-float	g_fSound = 1.f;
+#include "Monster.h"
+#include "Monster2.h"
+
+float	g_fSound = 10.f;
 
 CPlayer::CPlayer()
 	: m_eCurState(IDLE), m_ePreState(END)
@@ -27,8 +30,8 @@ CPlayer::~CPlayer()
 
 void CPlayer::Initialize(void)
 {
-	m_tInfo.fX = 1880.F;
-	m_tInfo.fY = 1100.f;
+	m_tInfo.fX = 2822.f;
+	m_tInfo.fY = 1720.f;
 
 	m_tInfo.fCX = 40.f; // 20 * 25
 	m_tInfo.fCY = 50.f;
@@ -42,7 +45,9 @@ void CPlayer::Initialize(void)
 	m_bGhost = false;
 	m_CollisionCheck = false;
 	m_bBossCheck = false;
-	m_iHp = 30;
+	m_bMonster1Check = false;
+	m_bMonster2Check = false;
+	m_iHp = 50;
 	m_pFrameKey = L"Player_RIGHT";
 	m_eRender = RENDER_GAMEOBJECT;
 	m_delayTime = GetTickCount();
@@ -78,12 +83,13 @@ int CPlayer::Update(void)
 	}
 	else
 	{
-		Key_Input();
 		if (m_eCurState != HIT)
 		{
-			Mouse_Sight();
+		
+		Mouse_Sight();
+	}
+		Key_Input();
 
-		}
 		OffSet();
 	}
 
@@ -94,14 +100,54 @@ int CPlayer::Update(void)
 
 void CPlayer::Late_Update(void)
 {
-	if (m_tInfo.fX ==  1280 && m_tInfo.fY < 500)
+	if (m_tInfo.fX ==  1670 && m_tInfo.fY < 920)
 	{
-		if (m_delayTime + 3000 < GetTickCount())
+		if (m_delayTime + 4000 < GetTickCount())
 		{
 			if (!m_bBossCheck)
 			{
 				CObjMgr::Get_Instance()->Add_Object(OBJ_BOSS, CAbstractFactory<CBossMonster>::Create());
 				m_bBossCheck = true;
+			}
+			m_delayTime = GetTickCount();
+		}
+
+	}
+
+	if (m_tInfo.fX < 2350 && m_tInfo.fY > 1300)
+	{
+		if (m_delayTime + 3000 < GetTickCount())
+		{
+			if (!m_bMonster1Check)
+			{
+				CObjMgr::Get_Instance()->Add_Object(OBJ_MONSTER, CAbstractFactory<CMonster>::Create(1450.f, 1450.f, DIR_DOWN)); // +,+
+				CObjMgr::Get_Instance()->Add_Object(OBJ_MONSTER, CAbstractFactory<CMonster>::Create(1700.f, 1870.f, DIR_UP)); // -
+				CObjMgr::Get_Instance()->Add_Object(OBJ_MONSTER, CAbstractFactory<CMonster>::Create(1410.f, 1830.f, DIR_RIGHT)); //  +
+				CObjMgr::Get_Instance()->Add_Object(OBJ_MONSTER, CAbstractFactory<CMonster>::Create(1925.f, 1380.f, DIR_LEFT)); // -,-
+				CObjMgr::Get_Instance()->Add_Object(OBJ_MONSTER, CAbstractFactory<CMonster>::Create(1600.f, 1350.f, DIR_RIGHT)); // +, -
+				//CObjMgr::Get_Instance()->Add_Object(OBJ_MONSTER, CAbstractFactory<CMonster>::Create(1930.f, 1930.f, DIR_RIGHT)); // +, -
+				//CObjMgr::Get_Instance()->Add_Object(OBJ_MONSTER, CAbstractFactory<CMonster>::Create(1930.f, 1930.f, DIR_UP)); // +, -
+
+
+				m_bMonster1Check = true;
+			}
+			m_delayTime = GetTickCount();
+		}
+
+	}
+
+	if (m_tInfo.fX > 2250 && m_tInfo.fY == 1190)
+	{
+		if (m_delayTime + 2000 < GetTickCount())
+		{
+			if (!m_bMonster2Check)
+			{
+				CObjMgr::Get_Instance()->Add_Object(OBJ_MONSTER, CAbstractFactory<CMonster2>::Create(2177.f, 460.f, DIR_RIGHT)); // +,+
+				CObjMgr::Get_Instance()->Add_Object(OBJ_MONSTER, CAbstractFactory<CMonster2>::Create(2177.f, 460.f, DIR_DOWN)); // +,+
+				CObjMgr::Get_Instance()->Add_Object(OBJ_MONSTER, CAbstractFactory<CMonster2>::Create(2384.f, 760.f, DIR_UP)); // -
+				CObjMgr::Get_Instance()->Add_Object(OBJ_MONSTER, CAbstractFactory<CMonster2>::Create(3044.f, 762.f, DIR_LEFT)); //  +
+
+				m_bMonster2Check = true;
 			}
 			m_delayTime = GetTickCount();
 		}
@@ -140,16 +186,7 @@ void CPlayer::Late_Update(void)
 	}
 
 	
-
-
-#ifdef _DEBUG
-
-	//system("cls");
-	//cout << "플레이어 좌표 : " << m_tInfo.fX << "\t" << m_tInfo.fY << endl;
-
-
-#endif // _DEBUG
-
+	
 
 }
 
@@ -166,7 +203,7 @@ void CPlayer::Render(HDC hDC)
 		int(m_tRect.left + iScrollX),	// 2,3 인자 :  복사받을 위치 X, Y
 		int(m_tRect.top + iScrollY),
 		int(m_tInfo.fCX + 40.f),				// 4,5 인자 : 복사받을 가로, 세로 길이
-		int(m_tInfo.fCY + 50.f),
+		int(m_tInfo.fCY + 51.f),
 		hMemDC,							// 비트맵을 가지고 있는 DC
 		m_tFrame.iFrameStart * (int)m_tInfo.fCX ,								// 비트맵 출력 시작 좌표, X,Y
 		m_tFrame.iMotion * (int)m_tInfo.fCY ,
@@ -178,7 +215,8 @@ void CPlayer::Render(HDC hDC)
 }
 void CPlayer::Release(void)
 {
-	
+
+
 }
 
 
@@ -210,31 +248,45 @@ void CPlayer::Mouse_Sight(void)
 	if (25 <= m_fAngle &&  m_fAngle < 60)
 	{
 		m_pFrameKey = L"Player_RU";
+		m_eCurState = IDLE;
+
 	}
 	else if ((60 <= m_fAngle &&  m_fAngle < 115))
 	{
 		m_pFrameKey = L"Player_UP";
+		m_eCurState = IDLE;
+
 	}
 	else if ((115 <= m_fAngle &&  m_fAngle < 150))
 	{
 		m_pFrameKey = L"Player_LU";
+		m_eCurState = IDLE;
+
 	}
 	else if ((150 <= m_fAngle &&  m_fAngle < 183))
 	{
 		m_pFrameKey = L"Player_LEFT";
+		m_eCurState = IDLE;
+
 	}
 	else if ((-120 <= m_fAngle &&  m_fAngle < -100))
 	{
 		m_pFrameKey = L"Player_LEFT";
+		m_eCurState = IDLE;
+
 
 	}
 	else if ((-100 <= m_fAngle &&  m_fAngle < -40))
 	{
 		m_pFrameKey = L"Player_DOWN";
+		m_eCurState = IDLE;
+
 	}
 	else if ((-40 <= m_fAngle &&  m_fAngle < 25))
 	{
 		m_pFrameKey = L"Player_RIGHT";	
+		m_eCurState = IDLE;
+
 	}
 	
 	else {
@@ -244,8 +296,8 @@ void CPlayer::Mouse_Sight(void)
 	if (GetAsyncKeyState(VK_RBUTTON))
 	{
 		m_eCurState = ROLL;
-		
 	}
+
 
 }
 
@@ -262,8 +314,6 @@ void CPlayer::Key_Input(void)
 			{
 				m_eCurState = WALK;
 			}
-		
-
 		}
 		else if (GetAsyncKeyState('D'))
 		{
@@ -302,7 +352,6 @@ void CPlayer::Key_Input(void)
 
 		}
 		
-		
 		else if (GetAsyncKeyState(0x32)) // 2번 눌렀을때 코만도
 		{
 			CObjMgr::Get_Instance()->Weapon_Change(TYPE_WEAPON_COMANDO);
@@ -316,8 +365,8 @@ void CPlayer::Key_Input(void)
 		if (GetAsyncKeyState(VK_RBUTTON))
 		{
 			m_eCurState = ROLL;
-
 		}
+
 
 
 }
@@ -383,7 +432,7 @@ void CPlayer::OffSet(void)
 	int		iScrollX = (int)CScrollMgr::Get_Instance()->Get_ScrollX();
 	int		iScrollY = (int)CScrollMgr::Get_Instance()->Get_ScrollY();
 	int		iItvX = 100;
-	int		iItvY = 200;
+	int		iItvY = 50;
 
 	if (iOffSetX - iItvX > m_tInfo.fX + iScrollX)
 		CScrollMgr::Get_Instance()->Set_ScrollX(m_fSpeed);
@@ -438,7 +487,7 @@ void CPlayer::Motion_Change(void)
 			break;
 		case GHOST:
 			m_tFrame.iFrameStart = 0;
-			m_tFrame.iFrameEnd = 6;
+			m_tFrame.iFrameEnd = 7;
 			m_tFrame.iMotion = 0;
 			m_tFrame.dwSpeed = 200;
 			m_tFrame.dwTime = GetTickCount();
