@@ -7,7 +7,7 @@
 #include "AbstractFactory.h"
 #include "Bullet.h"
 #include "GuideBullet.h"
-
+#include "Player.h"
 CComando::CComando()
 {
 }
@@ -23,19 +23,9 @@ void CComando::Initialize(void)
 
 	m_fSpeed = 1.f;
 
-	m_eRender = RENDER_UI;
+	m_eRender = RENDER_GAMEOBJECT;
 
-	CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Comando/Comando_LD.bmp", L"Comando_LD");
-	CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Comando/Comando_Left.bmp", L"Comando_Left");
-	CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Comando/Comando_Right.bmp", L"Comando_Right");
-	CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Comando/Comando_LU.bmp", L"Comando_LU");
-	CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Comando/Comando_RD.bmp", L"Comando_RD");
-	CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Comando/Comando_RU.bmp", L"Comando_RU");
-	CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Comando/Comando_Left_UP.bmp", L"Comando_Left_UP");
-	CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Comando/Comando_Right_UP.bmp", L"Comando_Right_UP");
-	CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Comando/Comando_Left_Down.bmp", L"Comando_Left_Down");
-	CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Comando/Comando_Right_Down.bmp", L"Comando_Right_Down");
-	CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Weapon/Plg.bmp", L"Plg");
+	CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Weapon/Comando/Comando.bmp", L"Comando");
 	m_dwTime = 0;
 	m_fDiagonal = 27.f;
 }
@@ -54,6 +44,15 @@ int CComando::Update(void)
 
 void CComando::Late_Update(void)
 {
+	m_pTarget = CObjMgr::Get_Instance()->Get_Target(OBJ_PLAYER, this);
+	if (m_pTarget)
+	{
+
+		if (static_cast<CPlayer*>(m_pTarget)->Get_State() == 5)
+		{
+			m_bDead = true;
+		}
+	}
 }
 
 void CComando::Render(HDC hDC)
@@ -62,7 +61,7 @@ void CComando::Render(HDC hDC)
 	int		iScrollX = (int)CScrollMgr::Get_Instance()->Get_ScrollX();
 	int		iScrollY = (int)CScrollMgr::Get_Instance()->Get_ScrollY();
 
-	HDC		hMemDC = CBmpMgr::Get_Instance()->Find_Image(m_pFrameKey);
+	HDC		hMemDC = CBmpMgr::Get_Instance()->Find_Image(L"Comando");
 
 	GdiTransparentBlt(hDC, 					// 복사 받을, 최종적으로 그림을 그릴 DC
 		int(m_tRect.left + iScrollX),	// 2,3 인자 :  복사받을 위치 X, Y
@@ -134,26 +133,30 @@ void CComando::Mouse_Sight(void)
 
 			if (25 <= m_fAngle &&  m_fAngle < 60)
 			{
-				m_pFrameKey = L"Comando_RU";
+
+				m_tFrame.iFrameStart = 1;
+				m_tFrame.iFrameEnd = 1;
 			}
 			else if ((60 <= m_fAngle &&  m_fAngle < 88))
 			{
-				m_pFrameKey = L"Comando_Right_UP";
-
+				m_tFrame.iFrameStart = 0;
+				m_tFrame.iFrameEnd = 0;
 			}
 			else if ((-5 <= m_fAngle &&  m_fAngle < 25))
 			{
-				m_pFrameKey = L"Comando_Right";
-
+				m_tFrame.iFrameStart = 2;
+				m_tFrame.iFrameEnd = 2;
 			}
 			else if ((-20 <= m_fAngle &&  m_fAngle < -5))
 			{
-				m_pFrameKey = L"Comando_RD";
+				m_tFrame.iFrameStart = 3;
+				m_tFrame.iFrameEnd = 3;
 			}
 			else if ((-60 <= m_fAngle &&  m_fAngle < -20))
 			{
-				m_pFrameKey = L"Comando_Right_Down";
 
+				m_tFrame.iFrameStart = 4;
+				m_tFrame.iFrameEnd = 4;
 			}
 		}
 
@@ -162,27 +165,28 @@ void CComando::Mouse_Sight(void)
 			m_tInfo.fX -= 16.f;
 			if ((91 <= m_fAngle &&  m_fAngle < 115))
 			{
-				m_pFrameKey = L"Comando_Left_UP";
-
+				m_tFrame.iFrameStart = 9;
+				m_tFrame.iFrameEnd = 9;
 			}
 			else if ((115 <= m_fAngle &&  m_fAngle < 150))
 			{
-				m_pFrameKey = L"Comando_LU";
-
+				m_tFrame.iFrameStart = 8;
+				m_tFrame.iFrameEnd = 8;
 			}
 			else if ((150 <= m_fAngle &&  m_fAngle < 183))
 			{
-				m_pFrameKey = L"Comando_Left";
-
+				m_tFrame.iFrameStart = 7;
+				m_tFrame.iFrameEnd = 7;
 			}
 			else if ((-120 <= m_fAngle &&  m_fAngle < -100))
 			{
-				m_pFrameKey = L"Comando_LD";
-
+				m_tFrame.iFrameStart = 6;
+				m_tFrame.iFrameEnd = 6;
 			}
 			else if ((-100 <= m_fAngle &&  m_fAngle < -70))
 			{
-				m_pFrameKey = L"Comando_Left_Down";
+				m_tFrame.iFrameStart = 5;
+				m_tFrame.iFrameEnd = 5;
 			}
 		}
 		else

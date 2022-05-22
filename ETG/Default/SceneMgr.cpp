@@ -40,6 +40,10 @@ void CSceneMgr::Scene_Change(SCENEID eID)
 		case SC_STAGE:
 			m_pScene = new CStage;
 			break;
+
+		case SC_HIDDEN:
+			m_pScene = new CHidden;
+			break;
 			
 		}
 

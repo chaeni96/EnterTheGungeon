@@ -43,7 +43,7 @@ int CMonster::Update(void)
 		{
 			random_device random;
 			mt19937 rd(random());
-			uniform_int_distribution<int> range(1, 2);
+			uniform_int_distribution<int> range(1, 3);
 
 			m_iRandom = range(rd);
 

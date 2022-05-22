@@ -19,7 +19,6 @@ public:
 	virtual		void	OnCollision(DIRECTION _eDir, const float & _fX, const float& _fY) override;
 public :
 	void		Mouse_Sight(void);
-
 private:
 
 	POINT			m_tPoint[3];

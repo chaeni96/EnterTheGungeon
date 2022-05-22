@@ -10,7 +10,9 @@ private:
 public:
 	CObj*		Get_Player() { return m_ObjList[OBJ_PLAYER].front(); }
 	CObj*		Get_Target(OBJID eID, CObj* pObj);
-	
+	CObj*		Get_Player_Info() { return m_pPlayer; }
+	void		Set_Player(CObj* _pPlayer) { m_pPlayer = _pPlayer; }
+
 	void		Weapon_Change(TYPE _eType);
 
 public:
@@ -51,6 +53,7 @@ private:
 	list<CObj*>				m_RenderSort[RENDER_END];
 	TYPE		m_eCurWeapon;  // 현재 무기 타입
 	TYPE		m_ePreWeapon;  //이전 무기타입
+	CObj* m_pPlayer;
 
 };
 

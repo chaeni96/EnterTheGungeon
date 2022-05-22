@@ -77,8 +77,8 @@ void CHpBar::Render(HDC hDC)
 		int(m_fGague ),				// 4,5 인자 : 복사받을 가로, 세로 길이
 		int(m_tInfo.fCY +20.f),
 		hMemDC,							// 비트맵을 가지고 있는 DC
-		m_tFrame.iFrameStart * (int)m_tInfo.fCX,								// 비트맵 출력 시작 좌표, X,Y
-		m_tFrame.iMotion * (int)m_tInfo.fCY,
+		0,// 비트맵 출력 시작 좌표, X,Y
+		0,
 		(int)m_tInfo.fCX,				// 복사할 비트맵의 가로, 세로 길이
 		(int)m_tInfo.fCY,
 		RGB(255, 0, 255));			// 제거하고자 하는 색상/ 제거하고자 하는 색상

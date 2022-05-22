@@ -7,6 +7,7 @@
 #include "AbstractFactory.h"
 #include "Bullet.h"
 #include "SoundMgr.h"
+#include "Player.h"
 CGun::CGun()
 {
 }
@@ -23,19 +24,9 @@ void CGun::Initialize(void)
 
 	m_fSpeed = 1.f;
 
-	m_eRender = RENDER_UI;
+	m_eRender = RENDER_GAMEOBJECT;
 
-	CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/GundeadGun/Gun_LD.bmp", L"Gun_LD");
-	CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/GundeadGun/Gun_Left.bmp", L"Gun_Left");
-	CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/GundeadGun/Gun_Right.bmp", L"Gun_Right");
-	CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/GundeadGun/Gun_LU.bmp", L"Gun_LU");
-	CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/GundeadGun/Gun_RD.bmp", L"Gun_RD");
-	CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/GundeadGun/Gun_RU.bmp", L"Gun_RU");
-	CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/GundeadGun/Gun_Left_UP.bmp", L"Gun_Left_UP");
-	CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/GundeadGun/Gun_Right_UP.bmp", L"Gun_Right_UP");
-	CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/GundeadGun/Gun_Left_Down.bmp", L"Gun_Left_Down");
-	CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/GundeadGun/Gun_Right_Down.bmp", L"Gun_Right_Down");
-	CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Weapon/Plg.bmp", L"Plg");
+	CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Weapon/GundeadGun/Gun.bmp", L"Gun");
 
 	m_fDiagonal = 15.f;
 }
@@ -54,9 +45,14 @@ int CGun::Update(void)
 
 void CGun::Late_Update(void)
 {
-	if (m_pTarget == nullptr)
+	m_pTarget = CObjMgr::Get_Instance()->Get_Target(OBJ_PLAYER, this);
+	if (m_pTarget)
 	{
-		m_bDead = true;
+
+		if (static_cast<CPlayer*>(m_pTarget)->Get_State() == 5)
+		{
+			m_bDead = true;
+		}
 	}
 }
 
@@ -65,7 +61,7 @@ void CGun::Render(HDC hDC)
 	int		iScrollX = (int)CScrollMgr::Get_Instance()->Get_ScrollX();
 	int		iScrollY = (int)CScrollMgr::Get_Instance()->Get_ScrollY();
 
-	HDC		hMemDC = CBmpMgr::Get_Instance()->Find_Image(m_pFrameKey);
+	HDC		hMemDC = CBmpMgr::Get_Instance()->Find_Image(L"Gun");
 
 	GdiTransparentBlt(hDC, 					// 복사 받을, 최종적으로 그림을 그릴 DC
 		int(m_tRect.left + iScrollX),	// 2,3 인자 :  복사받을 위치 X, Y
@@ -104,7 +100,6 @@ void CGun::OnCollision(DIRECTION _eDir, const float & _fX, const float & _fY)
 
 void CGun::Mouse_Sight(void)
 {
-
 	int		iScrollX = (int)CScrollMgr::Get_Instance()->Get_ScrollX();
 	int		iScrollY = (int)CScrollMgr::Get_Instance()->Get_ScrollY();
 
@@ -138,26 +133,34 @@ void CGun::Mouse_Sight(void)
 
 			if (25 <= m_fAngle &&  m_fAngle < 60)
 			{
-				m_pFrameKey = L"Gun_RU";
+				m_tFrame.iFrameStart = 0;
+				m_tFrame.iFrameEnd = 0;
+			
 			}
 			else if ((60 <= m_fAngle &&  m_fAngle < 88))
 			{
-				m_pFrameKey = L"Gun_Right_UP";
-
+				m_tFrame.iFrameStart = 1;
+				m_tFrame.iFrameEnd = 1;
+		
 			}
 			else if ((-5 <= m_fAngle &&  m_fAngle < 25))
 			{
-				m_pFrameKey = L"Gun_Right";
-
+				m_tFrame.iFrameStart = 2;
+				m_tFrame.iFrameEnd = 2;
+			
 			}
 			else if ((-20 <= m_fAngle &&  m_fAngle < -5))
 			{
-				m_pFrameKey = L"Gun_RD";
+				m_tFrame.iFrameStart = 3;
+				m_tFrame.iFrameEnd = 3;
+				
 			}
 			else if ((-60 <= m_fAngle &&  m_fAngle < -20))
 			{
-				m_pFrameKey = L"Gun_Right_Down";
-
+				m_tFrame.iFrameStart = 4;
+				m_tFrame.iFrameEnd = 4;
+			
+				
 			}
 		}
 
@@ -166,27 +169,28 @@ void CGun::Mouse_Sight(void)
 			m_tInfo.fX -= 16.f;
 			if ((91 <= m_fAngle &&  m_fAngle < 115))
 			{
-				m_pFrameKey = L"Gun_Left_UP";
-
+				m_tFrame.iFrameStart = 9;
+				m_tFrame.iFrameEnd = 9;
 			}
 			else if ((115 <= m_fAngle &&  m_fAngle < 150))
 			{
-				m_pFrameKey = L"Gun_LU";
-
+				m_tFrame.iFrameStart = 8;
+				m_tFrame.iFrameEnd = 8;
 			}
 			else if ((150 <= m_fAngle &&  m_fAngle < 183))
 			{
-				m_pFrameKey = L"Gun_Left";
-
+				m_tFrame.iFrameStart = 7;
+				m_tFrame.iFrameEnd = 7;
 			}
 			else if ((-120 <= m_fAngle &&  m_fAngle < -100))
 			{
-				m_pFrameKey = L"Gun_LD";
-
+				m_tFrame.iFrameStart = 6;
+				m_tFrame.iFrameEnd = 6;
 			}
 			else if ((-100 <= m_fAngle &&  m_fAngle < -70))
 			{
-				m_pFrameKey = L"Gun_Left_Down";
+				m_tFrame.iFrameStart = 5;
+				m_tFrame.iFrameEnd = 5;
 			}
 		}
 		else
@@ -196,7 +200,8 @@ void CGun::Mouse_Sight(void)
 		m_tPosin.y = long(m_tInfo.fY - m_fDiagonal * sinf((m_fAngle * PI) / 180.f));
 
 		if ((CKeyMgr::Get_Instance()->Key_Down(VK_LBUTTON)))
-		{
+		{;
+
 			CObjMgr::Get_Instance()->Add_Object(OBJ_BULLET, CAbstractFactory<CBullet>::Create((float)m_tPosin.x, (float)m_tPosin.y, m_fAngle));
 
 		}
@@ -204,3 +209,4 @@ void CGun::Mouse_Sight(void)
 	}
 
 }
+

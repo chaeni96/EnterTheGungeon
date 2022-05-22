@@ -15,7 +15,7 @@
 #include "BossMonster.h"
 #include "Monster.h"
 #include "Monster2.h"
-
+#include "SceneMgr.h"
 float	g_fSound = 10.f;
 
 CPlayer::CPlayer()
@@ -100,7 +100,15 @@ int CPlayer::Update(void)
 
 void CPlayer::Late_Update(void)
 {
-	if (m_tInfo.fX ==  1670 && m_tInfo.fY < 920)
+	if (m_tInfo.fX == 2822.f && m_tInfo.fY == 1720.f)
+	{
+		if (CKeyMgr::Get_Instance()->Key_Down('Q'))
+		{
+			CSceneMgr::Get_Instance()->Scene_Change(SC_HIDDEN);
+
+		}
+	}
+	if (m_tInfo.fX ==  1670 && m_tInfo.fY < 850)
 	{
 		if (m_delayTime + 4000 < GetTickCount())
 		{
@@ -358,7 +366,18 @@ void CPlayer::Key_Input(void)
 			m_eCurState = WALK;
 
 		}
+		else if (GetAsyncKeyState(0x33)) // 3번 눌렀을때 램프
+		{
+			CObjMgr::Get_Instance()->Weapon_Change(TYPE_WEAPON_LAMP);
+			m_eCurState = WALK;
 
+		}
+		else if (GetAsyncKeyState(0x34)) // 4번 눌렀을때 램프
+		{
+			CObjMgr::Get_Instance()->Weapon_Change(TYPE_WEAPON_SHARK);
+			m_eCurState = WALK;
+
+		}
 
 		//2번 눌렀을때 코만도 생성해야하는데 WEAPON이 비었을때? 그리고 코만도를 생성했을때는 일반총을 삭제해줘야한다
 		

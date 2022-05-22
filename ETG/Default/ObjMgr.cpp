@@ -4,7 +4,8 @@
 #include "AbstractFactory.h"
 #include "Gun.h"
 #include "Comando.h"
-
+#include "Lamp.h"
+#include "Shark.h"
 CObjMgr* CObjMgr::m_pInstance = nullptr;
 
 CObjMgr::CObjMgr()
@@ -74,6 +75,13 @@ void CObjMgr::Weapon_Change(TYPE _eType)
 			Add_Object(OBJ_WEAPON, CAbstractFactory<CComando>::Create(0, 0, DIR_DOWN));
 			break;
 
+		case TYPE_WEAPON_LAMP:
+			Add_Object(OBJ_WEAPON, CAbstractFactory<CLamp>::Create(0, 0, DIR_LEFT));
+			break;
+
+		case TYPE_WEAPON_SHARK:
+			Add_Object(OBJ_WEAPON, CAbstractFactory<CShark>::Create(0, 0, DIR_RIGHT));
+			break;
 	
 		}
 	}

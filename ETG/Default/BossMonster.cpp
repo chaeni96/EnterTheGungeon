@@ -32,6 +32,7 @@ void CBossMonster::Initialize(void)
 	m_fSpeed = 5.f;
 	m_fDiagonal = 70.f;
 	m_bDeadEffect = false;
+	m_bCollisionCheck = false;
 	m_eRender = RENDER_GAMEOBJECT;
 
 	CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Boss/Boss.bmp", L"Boss");
@@ -582,16 +583,19 @@ void CBossMonster::PatternNormalShot()
 }
 
 
-void CBossMonster::Hit()
-{
-	m_iHp -= 1;
-}
 
 void CBossMonster::OnCollision(void)
 {
-	m_eCurState = HIT;
 
-	Hit();
+
+	if (!m_bCollisionCheck)
+	{
+		m_eCurState = HIT;
+	
+		m_iHp -= 1;
+
+		m_bCollisionCheck = true;
+	}
 
 	 if (m_iHp <= 0)
 	{

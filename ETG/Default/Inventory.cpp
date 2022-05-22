@@ -22,10 +22,11 @@ void CInventory::Initialize(void)
 
 	m_eRender = RENDER_UI;
 
-	CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/UI/Inventory1.bmp", L"Inventory");
-	CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/GundeadGun/Gun_inven.bmp", L"Gun_inven");
-	CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Comando/Comando_inven.bmp", L"Comando_inven");
-
+	CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/UI/Inventory.bmp", L"Inventory");
+	CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/UI/Gun_inven.bmp", L"Gun_inven");
+	CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/UI/Comando_inven.bmp", L"Comando_inven");
+	CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/UI/Lamp_inven.bmp", L"Lamp_inven");
+	CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/UI/Shark_inven.bmp", L"Shark_inven");
 
 }
 
@@ -42,7 +43,7 @@ int CInventory::Update(void)
 
 void CInventory::Late_Update(void)
 {
-	m_pTarget = m_pTarget = CObjMgr::Get_Instance()->Get_Target(OBJ_WEAPON, this);
+	m_pTarget = CObjMgr::Get_Instance()->Get_Target(OBJ_WEAPON, this);
 
 	if (m_pTarget)
 	{
@@ -52,6 +53,12 @@ void CInventory::Late_Update(void)
 		}
 		if (m_pTarget->Get_Dir() == DIR_DOWN)
 			m_pFrameKey = L"Comando_inven";
+
+		if (m_pTarget->Get_Dir() == DIR_LEFT)
+			m_pFrameKey = L"Lamp_inven";
+
+		if (m_pTarget->Get_Dir() == DIR_RIGHT)
+			m_pFrameKey = L"Shark_inven";
 
 	}
 }

@@ -1,0 +1,25 @@
+#pragma once
+#include "Scene.h"
+#include "Obj.h"
+class CHidden :
+	public CScene
+{
+public:
+	CHidden();
+	virtual ~CHidden();
+
+
+public:
+	virtual void Initialize(void) override;
+	virtual void Update(void) override;
+	virtual void Late_Update(void) override;
+	virtual void Render(HDC hDC) override;
+	virtual void Release(void) override;
+
+private:
+	CObj*		m_pTarget;
+private:
+	int iTemp = 0;
+
+};
+

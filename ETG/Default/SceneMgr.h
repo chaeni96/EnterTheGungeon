@@ -4,7 +4,7 @@
 #include "MyMenu.h"
 #include "MyEdit.h"
 #include "Stage.h"
-
+#include "Hidden.h"
 class CSceneMgr
 {
 private:

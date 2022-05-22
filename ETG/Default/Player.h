@@ -35,6 +35,8 @@ public :
 			}
 		}
 	}
+
+	void	Set_Player(const float&  _fX, const float& _fY) { m_tInfo.fX = _fX, m_tInfo.fY = _fY; }
 private:
 	void		Mouse_Sight(void); // 마우스 위치에 따라서 플레이어의 시선방향 움직임
 	void		Key_Input(void);

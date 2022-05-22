@@ -50,7 +50,7 @@ void CStage::Initialize(void)
 	
 	//타일 매니저 만든다음에 주소값 넘겨주기
 	CObjMgr::Get_Instance()->Set_Vector(CTileMgr::Get_Instance()->Get_Tile());
-	CSoundMgr::Get_Instance()->PlaySoundW(L"GUNGEONDOWN.mp3", SOUND_EFFECT, 0.3f);
+	//CSoundMgr::Get_Instance()->PlaySoundW(L"GUNGEONDOWN.mp3", SOUND_EFFECT, 0.3f);
 
 }
 
@@ -119,7 +119,7 @@ void CStage::Release(void)
 	CObjMgr::Get_Instance()->Delete_ID(OBJ_HP);
 	CObjMgr::Get_Instance()->Delete_ID(OBJ_INVEN);
 	CObjMgr::Get_Instance()->Delete_ID(OBJ_ITEM);
-
+	CObjMgr::Get_Instance()->Delete_ID(OBJ_PET);
 
 
 }

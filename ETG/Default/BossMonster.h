@@ -18,6 +18,8 @@ public:
 	virtual	void OnCollision(void)	override;
 	virtual		void	OnCollision(DIRECTION _eDir, const float & _fX, const float& _fY) override;
 	virtual		bool	Get_DeadEffect(void);
+	void   Set_CollisionCheck(void) { m_bCollisionCheck = false; }
+
 private:
 	void		Motion_Change(void);
 	void		Monster_Dir(void);
@@ -31,14 +33,13 @@ private:
 	bool PatternMoveToUp(); // 하늘 위로 올라가기
 	void PatternBomb(); // 미사일 쏘기 bool 타입 5번 쏘면 true 반환
 	bool PatternMoveToOri(); // 복귀
-	void Hit();
 
 private:
 	STATE			m_ePreState;
 	STATE			m_eCurState;
 	float			m_fDiagonal;
 	POINT			m_tPosin;
-
+	bool			m_bCollisionCheck;
 private:
 
 

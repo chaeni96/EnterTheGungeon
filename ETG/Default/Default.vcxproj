@@ -148,6 +148,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AbstractFactory.h" />
+    <ClInclude Include="Baba.h" />
     <ClInclude Include="BmpMgr.h" />
     <ClInclude Include="BossBomb.h" />
     <ClInclude Include="BossBullet.h" />
@@ -161,10 +162,16 @@
     <ClInclude Include="Functor.h" />
     <ClInclude Include="GuideBullet.h" />
     <ClInclude Include="Gun.h" />
+    <ClInclude Include="Hidden.h" />
+    <ClInclude Include="Host.h" />
+    <ClInclude Include="HostBullet.h" />
     <ClInclude Include="HpBar.h" />
     <ClInclude Include="Include.h" />
     <ClInclude Include="Inventory.h" />
+    <ClInclude Include="Junior.h" />
     <ClInclude Include="KeyMgr.h" />
+    <ClInclude Include="Lamp.h" />
+    <ClInclude Include="LampBullet.h" />
     <ClInclude Include="Line.h" />
     <ClInclude Include="LineMgr.h" />
     <ClInclude Include="Logo.h" />
@@ -185,6 +192,8 @@
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneMgr.h" />
     <ClInclude Include="ScrollMgr.h" />
+    <ClInclude Include="Shark.h" />
+    <ClInclude Include="SharkBullet.h" />
     <ClInclude Include="SoundMgr.h" />
     <ClInclude Include="Stage.h" />
     <ClInclude Include="stdafx.h" />
@@ -194,6 +203,7 @@
     <ClInclude Include="TileMgr.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Baba.cpp" />
     <ClCompile Include="BmpMgr.cpp" />
     <ClCompile Include="BossBomb.cpp" />
     <ClCompile Include="BossBullet.cpp" />
@@ -204,9 +214,15 @@
     <ClCompile Include="Default.cpp" />
     <ClCompile Include="GuideBullet.cpp" />
     <ClCompile Include="Gun.cpp" />
+    <ClCompile Include="Hidden.cpp" />
+    <ClCompile Include="Host.cpp" />
+    <ClCompile Include="HostBullet.cpp" />
     <ClCompile Include="HpBar.cpp" />
     <ClCompile Include="Inventory.cpp" />
+    <ClCompile Include="Junior.cpp" />
     <ClCompile Include="KeyMgr.cpp" />
+    <ClCompile Include="Lamp.cpp" />
+    <ClCompile Include="LampBullet.cpp" />
     <ClCompile Include="Line.cpp" />
     <ClCompile Include="LineMgr.cpp" />
     <ClCompile Include="Logo.cpp" />
@@ -226,6 +242,8 @@
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneMgr.cpp" />
     <ClCompile Include="ScrollMgr.cpp" />
+    <ClCompile Include="Shark.cpp" />
+    <ClCompile Include="SharkBullet.cpp" />
     <ClCompile Include="SoundMgr.cpp" />
     <ClCompile Include="Stage.cpp" />
     <ClCompile Include="stdafx.cpp">

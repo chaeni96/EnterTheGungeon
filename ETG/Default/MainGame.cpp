@@ -32,7 +32,7 @@ void CMainGame::Initialize(void)
 	CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Back/Back.bmp", L"Back");
 
 	CSoundMgr::Get_Instance()->Initialize(); 
-	CSceneMgr::Get_Instance()->Scene_Change(SC_STAGE);
+	CSceneMgr::Get_Instance()->Scene_Change(SC_HIDDEN);
 	//CSceneMgr::Get_Instance()->Scene_Change(SC_EDIT);
 
 //#ifdef _DEBUG

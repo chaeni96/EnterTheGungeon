@@ -103,9 +103,6 @@
     <Filter Include="01. Obj\06.Weapon\01.Comando">
       <UniqueIdentifier>{c1040db2-29a3-4772-bb1a-8a138e36df37}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01. Obj\06.Weapon\02.Laser">
-      <UniqueIdentifier>{db8cb5f5-68f2-4035-b88e-805d90dc34e5}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01. Obj\01. Bullet\01. GuideBullet">
       <UniqueIdentifier>{d12b3d4b-93c0-4c53-b5f0-a89d4e1f69b3}</UniqueIdentifier>
     </Filter>
@@ -127,9 +124,6 @@
     <Filter Include="00. MainGame\00.UI\00.Inventory">
       <UniqueIdentifier>{54683c04-aabf-450b-9a5e-1c39089c0748}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01. Obj\NewFilter1">
-      <UniqueIdentifier>{75a179e7-e28f-45d9-bd22-caf45da957a3}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01. Obj\Hp">
       <UniqueIdentifier>{770d4e2b-7940-4368-bdea-e409b87cd631}</UniqueIdentifier>
     </Filter>
@@ -141,6 +135,24 @@
     </Filter>
     <Filter Include="00. MainGame\00.UI\01.Potion">
       <UniqueIdentifier>{361bff6e-51f4-48dc-8fbe-bf9152b4c92b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Obj\06.Weapon\03.Shark">
+      <UniqueIdentifier>{391e676e-9ab9-48a1-9b4a-b8bbcf6957a3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Obj\06.Weapon\02.Lamp">
+      <UniqueIdentifier>{db8cb5f5-68f2-4035-b88e-805d90dc34e5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Obj\01. Bullet\05.LampBullet">
+      <UniqueIdentifier>{ab894396-ee20-4108-9a2b-fa552acf6bd4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Obj\01. Bullet\06.SharkBullet">
+      <UniqueIdentifier>{7e0eaecf-2650-4b3d-9544-37c4c4ef4727}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Scene\04.Hidden">
+      <UniqueIdentifier>{9865d9ad-80d7-47d0-9e1c-33c26b999113}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Obj\Pet">
+      <UniqueIdentifier>{75a179e7-e28f-45d9-bd22-caf45da957a3}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -282,6 +294,33 @@
     <ClInclude Include="Potion.h">
       <Filter>00. MainGame\00.UI\01.Potion</Filter>
     </ClInclude>
+    <ClInclude Include="Shark.h">
+      <Filter>01. Obj\06.Weapon\03.Shark</Filter>
+    </ClInclude>
+    <ClInclude Include="Lamp.h">
+      <Filter>01. Obj\06.Weapon\02.Lamp</Filter>
+    </ClInclude>
+    <ClInclude Include="LampBullet.h">
+      <Filter>01. Obj\01. Bullet\05.LampBullet</Filter>
+    </ClInclude>
+    <ClInclude Include="SharkBullet.h">
+      <Filter>01. Obj\01. Bullet\06.SharkBullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Hidden.h">
+      <Filter>02. Scene\04.Hidden</Filter>
+    </ClInclude>
+    <ClInclude Include="Host.h">
+      <Filter>01. Obj\02. Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="HostBullet.h">
+      <Filter>01. Obj\01. Bullet\02.BossBullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Baba.h">
+      <Filter>01. Obj\Pet</Filter>
+    </ClInclude>
+    <ClInclude Include="Junior.h">
+      <Filter>01. Obj\Pet</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -394,6 +433,33 @@
     </ClCompile>
     <ClCompile Include="Potion.cpp">
       <Filter>00. MainGame\00.UI\01.Potion</Filter>
+    </ClCompile>
+    <ClCompile Include="Shark.cpp">
+      <Filter>01. Obj\06.Weapon\03.Shark</Filter>
+    </ClCompile>
+    <ClCompile Include="Lamp.cpp">
+      <Filter>01. Obj\06.Weapon\02.Lamp</Filter>
+    </ClCompile>
+    <ClCompile Include="LampBullet.cpp">
+      <Filter>01. Obj\01. Bullet\05.LampBullet</Filter>
+    </ClCompile>
+    <ClCompile Include="SharkBullet.cpp">
+      <Filter>01. Obj\01. Bullet\06.SharkBullet</Filter>
+    </ClCompile>
+    <ClCompile Include="Hidden.cpp">
+      <Filter>02. Scene\04.Hidden</Filter>
+    </ClCompile>
+    <ClCompile Include="Host.cpp">
+      <Filter>01. Obj\02. Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="HostBullet.cpp">
+      <Filter>01. Obj\01. Bullet\02.BossBullet</Filter>
+    </ClCompile>
+    <ClCompile Include="Baba.cpp">
+      <Filter>01. Obj\Pet</Filter>
+    </ClCompile>
+    <ClCompile Include="Junior.cpp">
+      <Filter>01. Obj\Pet</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
