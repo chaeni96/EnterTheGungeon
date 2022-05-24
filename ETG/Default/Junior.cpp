@@ -63,7 +63,7 @@ int CJunior::Update(void)
 			{
 				m_eCurState = ATTACK;
 
-				if (m_DelayTime + 1000 < GetTickCount())
+				if (m_DelayTime + 4000 < GetTickCount())
 				{
 
 					CObjMgr::Get_Instance()->Add_Object(OBJ_BULLET, CAbstractFactory<CHostBullet>::Create(m_tInfo.fX + 30.f, m_tInfo.fY, DIR_RIGHT));
