@@ -7,7 +7,8 @@
 #include "AbstractFactory.h"
 #include "BossBullet.h"
 #include "KeyMgr.h"
-
+#include "SceneMgr.h"
+#include "SoundMgr.h"
 CBossMonster::CBossMonster()
 	:m_eCurState(DOWN), m_ePreState(END), currentState(NONE)
 {
@@ -23,7 +24,7 @@ void CBossMonster::Initialize(void)
 {
 	m_tInfo.fX = 980.f;
 	m_tInfo.fY = 690.f;
-	m_iHp = 30;
+	m_iHp = 15;
 	m_tInfo.fCX = 200.f;
 	m_tInfo.fCY = 200.f;
 	iCount = 0;
@@ -36,9 +37,10 @@ void CBossMonster::Initialize(void)
 	m_eRender = RENDER_GAMEOBJECT;
 
 	CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Boss/Boss.bmp", L"Boss");
-	
+	m_DelayTime = GetTickCount();
 
 	m_dwTime = GetTickCount();
+	CSoundMgr::Get_Instance()->PlaySoundW(L"Gull_Outro_01.wav", SOUND_EFFECT, 0.5f);
 
 }
 
@@ -54,7 +56,7 @@ int CBossMonster::Update(void)
 	}
 	else {
 
-		if (m_eCurState != FLY && m_eCurState != HIT && m_eCurState != POSE)
+		if (m_eCurState != FLY && m_eCurState != POSE)
 		{
 			Monster_Dir();
 		}
@@ -103,6 +105,7 @@ int CBossMonster::Update(void)
 				if (m_dwTime + 600 < GetTickCount())
 				{
 					m_eCurState = FLY;
+					CSoundMgr::Get_Instance()->PlaySoundW(L"Gull_Lift_01.wav", SOUND_EFFECT, 0.5f);
 
 					if (PatternMoveToUp())
 					{
@@ -140,6 +143,8 @@ int CBossMonster::Update(void)
 					{
 						m_eCurState = POSE;
 						currentState = LAUNCH1;
+						CSoundMgr::Get_Instance()->PlaySoundW(L"Gull_Flap_01.wav", SOUND_EFFECT, 0.5f);
+
 					}
 					
 					m_dwTime = GetTickCount();
@@ -148,7 +153,6 @@ int CBossMonster::Update(void)
 				break;
 
 			case NONE:
-				Monster_Dir();
 
 				if (m_dwTime + 2000 < GetTickCount())
 				{
@@ -183,7 +187,11 @@ void CBossMonster::Late_Update(void)
 			m_tFrame.iFrameStart = 0;
 			break;
 		case DEAD:
-			m_bDead = true;
+				m_bDead = true;
+			
+				CSceneMgr::Get_Instance()->Scene_Change(SC_ENDING);
+			
+
 			break;
 		case POSE:
 			m_eCurState = DOWN;
@@ -224,6 +232,7 @@ void CBossMonster::Render(HDC hDC)
 
 void CBossMonster::Release(void)
 {
+
 }
 
 
@@ -593,6 +602,7 @@ void CBossMonster::OnCollision(void)
 		m_eCurState = HIT;
 	
 		m_iHp -= 1;
+		CSoundMgr::Get_Instance()->PlaySoundW(L"Boss_hurt.wav", SOUND_EFFECT, 0.5f);
 
 		m_bCollisionCheck = true;
 	}
@@ -600,6 +610,7 @@ void CBossMonster::OnCollision(void)
 	 if (m_iHp <= 0)
 	{
 		m_bDeadEffect = true;
+		CSoundMgr::Get_Instance()->PlaySoundW(L"Gull_Death_01.wav", SOUND_EFFECT, 0.5f);
 
 	}
 	//hp의따라서 행동 만약에 hp가 0 보다 클때는 타격 이펙트를 true로 하고 아닐[때는 die 함수를 쓴다

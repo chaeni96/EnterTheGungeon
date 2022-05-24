@@ -33,24 +33,21 @@ CStage::~CStage()
 void CStage::Initialize(void)
 {
 	// 여기서 만들어준 플레이어의 정보를 받아와야하는데 어떻게 받아올지...
-	CObjMgr::Get_Instance()->Add_Object(OBJ_PLAYER, CAbstractFactory<CPlayer>::Create());
+	//CObjMgr::Get_Instance()->Add_Object(OBJ_PLAYER, CAbstractFactory<CPlayer>::Create());
 
-	CObjMgr::Get_Instance()->Add_Object(OBJ_MOUSE, CAbstractFactory<CMouse>::Create());
-
+	m_pPlayer = CObjMgr::Get_Instance()->Get_Player();
+	m_pPlayer->Set_Pos(2822.f, 1720.f);	
 	CObjMgr::Get_Instance()->Add_Object(OBJ_HP, CAbstractFactory<CHpBar>::Create());
 	CObjMgr::Get_Instance()->Add_Object(OBJ_INVEN, CAbstractFactory<CInventory>::Create());
-	//CObjMgr::Get_Instance()->Add_Object(OBJ_ITEM, CAbstractFactory<CPotion>::Create());
 
-	//좌표 받아와서 넣기 미사일의 경우에는
 
 	CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Back/mapSuccess.bmp", L"mapSuccess");
 
-	//CTileMgr::Get_Instance()->Initialize();
 	CTileMgr::Get_Instance()->Load_Tile(); // 타일 
 	
 	//타일 매니저 만든다음에 주소값 넘겨주기
 	CObjMgr::Get_Instance()->Set_Vector(CTileMgr::Get_Instance()->Get_Tile());
-	//CSoundMgr::Get_Instance()->PlaySoundW(L"GUNGEONDOWN.mp3", SOUND_EFFECT, 0.3f);
+	CSoundMgr::Get_Instance()->PlaySoundW(L"WelcomeToTheHell.mp3", SOUND_BGM, 0.8f);
 
 }
 
@@ -109,6 +106,8 @@ void CStage::Render(HDC hDC)
 
 void CStage::Release(void)
 {
+	CSoundMgr::Get_Instance()->StopAll();
+
 	CTileMgr::Get_Instance()->Destroy_Instance();
 	CObjMgr::Get_Instance()->Delete_ID(OBJ_MONSTER);
 	CObjMgr::Get_Instance()->Delete_ID(OBJ_BOSS);
@@ -117,7 +116,6 @@ void CStage::Release(void)
 	CObjMgr::Get_Instance()->Delete_ID(OBJ_MONSTER_BULLET);
 	CObjMgr::Get_Instance()->Delete_ID(OBJ_MONSTER1_BULLET);
 	CObjMgr::Get_Instance()->Delete_ID(OBJ_HP);
-	CObjMgr::Get_Instance()->Delete_ID(OBJ_INVEN);
 	CObjMgr::Get_Instance()->Delete_ID(OBJ_ITEM);
 	CObjMgr::Get_Instance()->Delete_ID(OBJ_PET);
 

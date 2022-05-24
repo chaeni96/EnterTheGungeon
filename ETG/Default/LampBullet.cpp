@@ -4,7 +4,9 @@
 #include "ScrollMgr.h"
 #include "Player.h"
 #include "ObjMgr.h"
-
+#include "SoundMgr.h"
+#include "Monster.h"
+#include "Monster2.h"
 
 CLampBullet::CLampBullet()
 	:m_eCurState(NOMAL), m_ePreState(BULLET_END)
@@ -24,11 +26,11 @@ void CLampBullet::Initialize(void)
 	m_bDeadEffect = false;
 	m_fSpeed = 3.f;
 
-	m_eRender = RENDER_GAMEOBJECT;
-
+	m_eRender = RENDER_UI;
 	CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Bullet/Left_Bullet.bmp", L"Left_Bullet");
 	CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Bullet/Right_Bullet.bmp", L"Right_Bullet");
 	CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Bullet/Lamp_Effect.bmp", L"Lamp_Effect");
+	CSoundMgr::Get_Instance()->PlaySoundW(L"lamp_shot.wav", SOUND_EFFECT, 1.5f);
 
 }
 
@@ -41,7 +43,21 @@ int CLampBullet::Update(void)
 		m_eCurState = BOOM;
 
 		if (m_bDead)
+		{
+			m_pTarget = CObjMgr::Get_Instance()->Get_Target(OBJ_BOSS, this);
+
+			if (m_pTarget)
+			{
+				m_pTarget->Set_CollisionCheck();
+			}
+			m_pTarget = CObjMgr::Get_Instance()->Get_Target(OBJ_MONSTER, this);
+
+			if (m_pTarget)
+			{
+				m_pTarget->Set_CollisionCheck();
+			}
 			return OBJ_DEAD;
+		}
 
 	}
 	else
@@ -76,6 +92,18 @@ void CLampBullet::Late_Update(void)
 {
 	Motion_Change();
 
+
+	if (m_pFrameKey == L"Right_Bullet")
+	{
+
+		m_tInfo.fX += 2.f;
+	}
+	else if (m_pFrameKey == L"Left_Bullet")
+	{
+
+		m_tInfo.fX -= 2.f;
+	}
+
 	if (Move_Frame() == true)
 	{
 
@@ -87,13 +115,7 @@ void CLampBullet::Late_Update(void)
 			break;
 
 		case BOOM:
-			m_pTarget = CObjMgr::Get_Instance()->Get_Target(OBJ_PLAYER, this);
-
-			if (m_pTarget)
-			{
-				dynamic_cast<CPlayer*>(m_pTarget)->Set_CollisionCheck();
-			}
-
+			
 			m_bDead = true;
 			break;
 
@@ -134,8 +156,8 @@ void CLampBullet::Render(HDC hDC)
 		GdiTransparentBlt(hDC, 					// 복사 받을, 최종적으로 그림을 그릴 DC
 			int(m_tRect.left + iScrollX),	// 2,3 인자 :  복사받을 위치 X, Y
 			int(m_tRect.top + iScrollY),
-			int(m_tInfo.fCX),				// 4,5 인자 : 복사받을 가로, 세로 길이
-			int(m_tInfo.fCY),
+			int(m_tInfo.fCX + 20.f),				// 4,5 인자 : 복사받을 가로, 세로 길이
+			int(m_tInfo.fCY + 20.f),
 			hMemDC,							// 비트맵을 가지고 있는 DC
 			m_tFrame.iFrameStart * (int)m_tInfo.fCX,								// 비트맵 출력 시작 좌표, X,Y
 			m_tFrame.iMotion * (int)m_tInfo.fCY,
@@ -184,7 +206,7 @@ void CLampBullet::Motion_Change(void)
 			m_tFrame.iFrameStart = 0;
 			m_tFrame.iFrameEnd = 5;
 			m_tFrame.iMotion = 0;
-			m_tFrame.dwSpeed = 100;
+			m_tFrame.dwSpeed = 200;
 			m_tFrame.dwTime = GetTickCount();
 
 			break;
@@ -193,7 +215,7 @@ void CLampBullet::Motion_Change(void)
 			m_tFrame.iFrameStart = 0;
 			m_tFrame.iFrameEnd = 5;
 			m_tFrame.iMotion = 0;
-			m_tFrame.dwSpeed = 100;
+			m_tFrame.dwSpeed = 200;
 			m_tFrame.dwTime = GetTickCount();
 			break;
 

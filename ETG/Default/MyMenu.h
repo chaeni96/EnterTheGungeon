@@ -4,6 +4,8 @@ class CMyMenu :
 	public CScene
 {
 public:
+	enum STATE {START, END};
+public:
 	CMyMenu();
 	virtual ~CMyMenu();
 
@@ -13,6 +15,14 @@ public:
 	virtual void Late_Update(void) override;
 	virtual void Render(HDC hDC) override;
 	virtual void Release(void) override;
+
+private:
+	void		Motion_Change(void);
+
+private:
+	STATE		m_eCurState;
+	STATE		m_ePreState;
+	DWORD		m_DelayTime;
 
 };
 

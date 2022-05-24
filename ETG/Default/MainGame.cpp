@@ -12,6 +12,7 @@
 #include "SceneMgr.h"
 #include "SoundMgr.h"
 #include "TileMgr.h"
+#include "Mouse.h"
 CMainGame::CMainGame()
 	: m_dwTime(GetTickCount())
 {
@@ -31,9 +32,15 @@ void CMainGame::Initialize(void)
 
 	CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Back/Back.bmp", L"Back");
 
-	CSoundMgr::Get_Instance()->Initialize(); 
-	CSceneMgr::Get_Instance()->Scene_Change(SC_HIDDEN);
+	//CSceneMgr::Get_Instance()->Scene_Change(SC_HIDDEN);
+	CSceneMgr::Get_Instance()->Scene_Change(SC_MENU);
+
+	CObjMgr::Get_Instance()->Add_Object(OBJ_MOUSE, CAbstractFactory<CMouse>::Create());	// 플레이어 생성
 	//CSceneMgr::Get_Instance()->Scene_Change(SC_EDIT);
+	CSoundMgr::Get_Instance()->Initialize(); 
+
+	CSoundMgr::Get_Instance()->PlaySoundW(L"Opening_Ending.mp3", SOUND_EFFECT, 1.f);
+
 
 //#ifdef _DEBUG
 //
@@ -109,6 +116,9 @@ void CMainGame::Release(void)
 	CLineMgr::Get_Instance()->Destroy_Instance();
 	CObjMgr::Get_Instance()->Destroy_Instance();
 	CTileMgr::Get_Instance()->Destroy_Instance();
+	CObjMgr::Get_Instance()->Delete_ID(OBJ_INVEN);
+	CObjMgr::Get_Instance()->Delete_ID(OBJ_PLAYER);
+	CObjMgr::Get_Instance()->Delete_ID(OBJ_MOUSE);
 
 	ReleaseDC(g_hWnd, m_hDC);	
 }

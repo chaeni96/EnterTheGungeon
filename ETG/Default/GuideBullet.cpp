@@ -3,8 +3,9 @@
 #include "ObjMgr.h"
 #include "BmpMgr.h"
 #include "ScrollMgr.h"
-
+#include "BossMonster.h"
 #include "Player.h"
+#include "SoundMgr.h"
 CGuideBullet::CGuideBullet()
 {
 }
@@ -25,12 +26,29 @@ void CGuideBullet::Initialize(void)
 	m_eRender = RENDER_GAMEOBJECT;
 
 	CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Bullet/Guide.bmp", L"Guide");
+	CSoundMgr::Get_Instance()->PlaySoundW(L"Comando.wav", SOUND_EFFECT, 20.f);
+
 }
 
 int CGuideBullet::Update(void)
 {
 	if (m_bDead)
+	{
+		m_pTarget = CObjMgr::Get_Instance()->Get_Target(OBJ_BOSS, this);
+
+		if (m_pTarget)
+		{
+			m_pTarget->Set_CollisionCheck();
+		}
+		m_pTarget = CObjMgr::Get_Instance()->Get_Target(OBJ_MONSTER, this);
+
+		if (m_pTarget)
+		{
+			m_pTarget->Set_CollisionCheck();
+		}
+
 		return OBJ_DEAD;
+	}
 
 
 	//플레이어의 위치에 따라서 m_pTarget 바꿔주기

@@ -4,7 +4,7 @@
 #include "ScrollMgr.h"
 #include "ObjMgr.h"
 #include "Player.h"
-
+#include "SoundMgr.h"
 CBossBomb::CBossBomb()
 	:m_eCurState(IDLE), m_ePreState(END)
 {
@@ -23,8 +23,10 @@ void CBossBomb::Initialize(void)
 	m_bDeadEffect = false;
 	m_fSpeed = 7.f;
 	m_bDeadEffect = false;
+	m_SoundTime = GetTickCount();
 
 	m_eRender = RENDER_GAMEOBJECT;
+	CSoundMgr::Get_Instance()->PlaySoundW(L"beehive_shot_03_002.wav", SOUND_EFFECT, 0.5f);
 
 	CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Bullet/BossBomb.bmp", L"BossBomb");
 }
@@ -33,6 +35,7 @@ int CBossBomb::Update(void)
 {
 	if (m_bDeadEffect)
 	{
+
 		m_eCurState = DEAD;
 
 		if (m_bDead)
@@ -50,6 +53,24 @@ int CBossBomb::Update(void)
 
 void CBossBomb::Late_Update(void)
 {
+
+
+	switch (m_eCurState)
+	{
+	
+	case DEAD:
+		if (m_SoundTime + 2000 < GetTickCount())
+		{
+			CSoundMgr::Get_Instance()->PlaySoundW(L"dragun_explode_01.wav", SOUND_EFFECT, 1.f);
+			m_SoundTime = GetTickCount();
+		}
+
+		break;
+
+	default:
+		break;
+	}
+
 	
 		if (m_tInfo.fY >  900)
 		{	
@@ -72,7 +93,7 @@ void CBossBomb::Late_Update(void)
 
 				if (m_pTarget)
 				{
-					dynamic_cast<CPlayer*>(m_pTarget)->Set_CollisionCheck();
+					dynamic_cast<CPlayer*>(m_pTarget)->Set_PlayerCollisionCheck();
 				}
 
 				m_bDead = true;
@@ -132,6 +153,7 @@ void CBossBomb::Render(HDC hDC)
 
 void CBossBomb::Release(void)
 {
+
 }
 
 void CBossBomb::OnCollision(void)
@@ -143,6 +165,7 @@ void CBossBomb::OnCollision(void)
 		if (dynamic_cast<CPlayer*>(m_pTarget)->Get_State() != 2)
 		{
 			m_bDeadEffect = true;
+
 		}
 	}
 }

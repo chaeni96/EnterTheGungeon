@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "SceneMgr.h"
-
+#include "SoundMgr.h"
 CSceneMgr*	CSceneMgr::m_pInstance = nullptr;
 
 CSceneMgr::CSceneMgr()
@@ -18,7 +18,6 @@ CSceneMgr::~CSceneMgr()
 void CSceneMgr::Scene_Change(SCENEID eID)
 {
 	m_eCurScene = eID;
-
 	if (m_ePreScene != m_eCurScene)
 	{
 		Safe_Delete(m_pScene);
@@ -38,13 +37,21 @@ void CSceneMgr::Scene_Change(SCENEID eID)
 			break;
 		
 		case SC_STAGE:
+			CSoundMgr::Get_Instance()->StopAll();
+
 			m_pScene = new CStage;
 			break;
 
 		case SC_HIDDEN:
+
+			CSoundMgr::Get_Instance()->StopAll();
+
 			m_pScene = new CHidden;
 			break;
 			
+		case SC_ENDING:
+			m_pScene = new CEnding;
+			break;
 		}
 
 	 m_pScene->Initialize();

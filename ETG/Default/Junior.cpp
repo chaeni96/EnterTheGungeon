@@ -5,6 +5,8 @@
 #include "ObjMgr.h"
 #include "AbstractFactory.h"
 #include "HostBullet.h"
+#include "SoundMgr.h"
+
 CJunior::CJunior()
 	:m_eCurState(IDLE), m_ePreState(END)
 {
@@ -27,6 +29,7 @@ void CJunior::Initialize(void)
 	m_DelayTime = GetTickCount();
 	m_bDeadEffect = false;
 	CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Pet/junior.bmp", L"junior");
+	CSoundMgr::Get_Instance()->PlaySoundW(L"junior.mp3", SOUND_EFFECT, 1.5f);
 
 	m_fDiagonal = 5.f;
 }
@@ -50,7 +53,7 @@ int CJunior::Update(void)
 
 		m_fAngle = fRadian * 180.f / PI;
 
-		if (fDiagonal > 90)
+		if (fDiagonal > 100)
 		{
 			m_tInfo.fX += m_fSpeed * cosf(m_fAngle * PI / 180.f);
 			m_tInfo.fY -= m_fSpeed * sinf(m_fAngle * PI / 180.f);
@@ -132,6 +135,25 @@ void CJunior::OnCollision(void)
 
 void CJunior::OnCollision(DIRECTION _eDir, const float & _fX, const float & _fY)
 {
+	switch (_eDir)
+	{
+	case DIR_LEFT:
+		m_tInfo.fX -= _fX;
+		break;
+	case DIR_UP:
+		m_tInfo.fY -= _fY;
+		break;
+	case DIR_RIGHT:
+		m_tInfo.fX += _fX;
+		break;
+	case DIR_DOWN:
+		m_tInfo.fY += _fY;
+		break;
+	case DIR_END:
+		break;
+	default:
+		break;
+	}
 }
 
 bool CJunior::Get_DeadEffect(void)

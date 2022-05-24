@@ -8,6 +8,8 @@
 #include "AbstractFactory.h"
 #include "MonsterBullet.h"
 #include "Potion.h"
+#include "SoundMgr.h"
+
 CMonster::CMonster()
 	:m_eCurState(MONSTER_DOWN), m_ePreState(MONSTER_END)
 {
@@ -30,7 +32,10 @@ void CMonster::Initialize(void)
 	m_eRender = RENDER_GAMEOBJECT;
 	m_DelayTime = GetTickCount();
 	m_bDeadEffect = false;
+	m_SoundTime = GetTickCount();
 	CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Monster/Monster1/Monster1.bmp", L"Monster1");
+	m_bCollisionCheck = false;
+
 }
 
 int CMonster::Update(void)
@@ -150,7 +155,7 @@ void CMonster::Late_Update(void)
 
 			if (m_pTarget)
 			{
-				dynamic_cast<CPlayer*>(m_pTarget)->Set_CollisionCheck();
+				dynamic_cast<CPlayer*>(m_pTarget)->Set_PlayerCollisionCheck();
 			}
 
 			m_tFrame.iFrameStart = 0;
@@ -316,6 +321,8 @@ void CMonster::Hit()
 {
 	m_iHp -= 1;
 	m_eCurState = MONSTER_HIT;
+	CSoundMgr::Get_Instance()->PlaySoundW(L"shotgun_hurt.wav", SOUND_EFFECT, 0.5f);
+
 }
 
 void CMonster::Attack()
@@ -350,13 +357,20 @@ void CMonster::Attack()
 
 void CMonster::OnCollision(void)
 {
-	Hit();
-
-	if (m_iHp <= 0)
+	if (!m_bCollisionCheck)
 	{
-		m_bDeadEffect = true;
+		Hit();
 
+		m_bCollisionCheck = true;
+
+		if (m_iHp <= 0)
+		{
+			m_bDeadEffect = true;
+			CSoundMgr::Get_Instance()->PlaySoundW(L"shotgun_death.wav", SOUND_EFFECT, 1.f);
+
+		}
 	}
+
 }
 
 void CMonster::OnCollision(DIRECTION _eDir, const float & _fX, const float & _fY)

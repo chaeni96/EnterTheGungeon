@@ -4,7 +4,7 @@
 
 CObj::CObj()
 	: m_fSpeed(0.f), m_eDir(DIR_END), m_bDead(false), m_fAngle(0.f)
-	, m_pFrameKey(nullptr), m_eType(TYPE_END), m_iHp(0), m_bDeadEffect(false), m_iLife(0)
+	, m_pFrameKey(nullptr), m_eType(TYPE_END), m_iHp(0), m_bDeadEffect(false), m_iLife(0), m_bCollisionCheck(false)
 {
 	ZeroMemory(&m_tInfo, sizeof(INFO));
 	ZeroMemory(&m_tRect, sizeof(RECT));

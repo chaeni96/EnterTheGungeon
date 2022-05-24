@@ -5,6 +5,7 @@
 #include "MyEdit.h"
 #include "Stage.h"
 #include "Hidden.h"
+#include "Ending.h"
 class CSceneMgr
 {
 private:
@@ -19,6 +20,9 @@ public:
 	void		Release(void);
 
 	SCENEID		Get_SceneID(void) { return m_eCurScene; }
+
+protected:
+	virtual void Set_Player(CObj* _pPlayer) { m_pPlayer = _pPlayer; };
 
 public:
 	static		CSceneMgr*		Get_Instance(void)
@@ -43,7 +47,7 @@ public:
 private:
 	static CSceneMgr*		m_pInstance;
 	CScene*					m_pScene;
-
+	CObj*					m_pPlayer;
 	SCENEID					m_eCurScene;
 	SCENEID					m_ePreScene;
 

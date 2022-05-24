@@ -5,6 +5,7 @@
 #include "ObjMgr.h"
 #include "Player.h"
 #include "KeyMgr.h"
+#include "SoundMgr.h"
 CPotion::CPotion()
 {
 }
@@ -73,8 +74,11 @@ void CPotion::OnCollision(void) // 플레이어와 충돌
 	{
 		if (CKeyMgr::Get_Instance()->Key_Down(VK_SPACE))
 		{
-			static_cast<CPlayer*>(m_pTarget)->Set_HpPlus(10);
+			static_cast<CPlayer*>(m_pTarget)->Set_HpPlus(15);
+			CSoundMgr::Get_Instance()->PlaySoundW(L"Bubbler_Drink_01.wav", SOUND_EFFECT, 1.f);
+
 			m_bDead = true;
+
 		}
 	}
 }

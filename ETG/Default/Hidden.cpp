@@ -8,6 +8,9 @@
 #include "BmpMgr.h"
 #include "ScrollMgr.h"
 #include "Host.h"
+#include "KeyMgr.h"
+#include "SceneMgr.h"
+#include "SoundMgr.h"
 CHidden::CHidden()
 {
 }
@@ -20,18 +23,9 @@ CHidden::~CHidden()
 void CHidden::Initialize(void)
 {
 
-	if (!CObjMgr::Get_Instance()->Get_Player_Info())
-	{
-		CObj* pPlayer = CAbstractFactory<CPlayer>::Create(700.f, 280.f);
 
-		CObjMgr::Get_Instance()->Add_Object(OBJ_PLAYER, pPlayer);
-		CObjMgr::Get_Instance()->Set_Player(pPlayer);
-
-
-	}
-	else
-		CObjMgr::Get_Instance()->Add_Object(OBJ_PLAYER, CAbstractFactory<CPlayer>::Create(700.f, 280.f));
-
+	m_pPlayer = CObjMgr::Get_Instance()->Get_Player();
+	m_pPlayer->Set_Pos(3063.f, 1276.f);
 
 	CObjMgr::Get_Instance()->Add_Object(OBJ_HP, CAbstractFactory<CHpBar>::Create());
 	CObjMgr::Get_Instance()->Add_Object(OBJ_INVEN, CAbstractFactory<CInventory>::Create());
@@ -39,6 +33,7 @@ void CHidden::Initialize(void)
 
 	
 	CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Back/Hidden_Stage.bmp", L"Hidden_Stage");
+	CSoundMgr::Get_Instance()->PlaySoundW(L"FightSand.mp3", SOUND_BGM, 0.2f);
 
 }
 
@@ -50,6 +45,8 @@ void CHidden::Update(void)
 
 void CHidden::Late_Update(void)
 {
+
+
 	CObjMgr::Get_Instance()->Late_Update();
 
 }
@@ -60,7 +57,7 @@ void CHidden::Render(HDC hDC)
 	int		iScrollY = (int)CScrollMgr::Get_Instance()->Get_ScrollY();
 
 	HDC		hGroundMemDC = CBmpMgr::Get_Instance()->Find_Image(L"Hidden_Stage");
-	BitBlt(hDC, iScrollX, iScrollY, 900, 1200, hGroundMemDC, 0, 0, SRCCOPY);
+	BitBlt(hDC, iScrollX, iScrollY, 3600, 2100, hGroundMemDC, 0, 0, SRCCOPY);
 
 	CObjMgr::Get_Instance()->Render(hDC);
 
@@ -68,5 +65,6 @@ void CHidden::Render(HDC hDC)
 
 void CHidden::Release(void)
 {
-	// ³ªÁß¿¡
+	CSoundMgr::Get_Instance()->StopAll();
+
 }

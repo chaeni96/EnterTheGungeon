@@ -64,9 +64,6 @@
     <Filter Include="02. Scene">
       <UniqueIdentifier>{3ec059c9-6cdd-4c42-a859-c82f12cca039}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. Scene\00. Logo">
-      <UniqueIdentifier>{74472493-4e8c-4865-8d0b-52ceec85685f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. Scene\01. MyMenu">
       <UniqueIdentifier>{cf36b007-ce9b-43f5-bf6f-9599e38dc4aa}</UniqueIdentifier>
     </Filter>
@@ -154,6 +151,12 @@
     <Filter Include="01. Obj\Pet">
       <UniqueIdentifier>{75a179e7-e28f-45d9-bd22-caf45da957a3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. Scene\05.Ending">
+      <UniqueIdentifier>{cb035c02-78a4-4c1d-9c9d-4dfaa3dda477}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Scene\00.Logo">
+      <UniqueIdentifier>{4a34d553-c39f-4d83-b349-04350d8a3950}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -224,9 +227,6 @@
     </ClInclude>
     <ClInclude Include="Scene.h">
       <Filter>02. Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="Logo.h">
-      <Filter>02. Scene\00. Logo</Filter>
     </ClInclude>
     <ClInclude Include="SceneMgr.h">
       <Filter>98. Design\SceneMgr</Filter>
@@ -321,6 +321,15 @@
     <ClInclude Include="Junior.h">
       <Filter>01. Obj\Pet</Filter>
     </ClInclude>
+    <ClInclude Include="Ending.h">
+      <Filter>02. Scene\05.Ending</Filter>
+    </ClInclude>
+    <ClInclude Include="Logo.h">
+      <Filter>02. Scene\00.Logo</Filter>
+    </ClInclude>
+    <ClInclude Include="BossScene.h">
+      <Filter>00. MainGame\00.UI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -370,9 +379,6 @@
     </ClCompile>
     <ClCompile Include="Scene.cpp">
       <Filter>02. Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="Logo.cpp">
-      <Filter>02. Scene\00. Logo</Filter>
     </ClCompile>
     <ClCompile Include="SceneMgr.cpp">
       <Filter>98. Design\SceneMgr</Filter>
@@ -460,6 +466,15 @@
     </ClCompile>
     <ClCompile Include="Junior.cpp">
       <Filter>01. Obj\Pet</Filter>
+    </ClCompile>
+    <ClCompile Include="Ending.cpp">
+      <Filter>02. Scene\05.Ending</Filter>
+    </ClCompile>
+    <ClCompile Include="Logo.cpp">
+      <Filter>02. Scene\00.Logo</Filter>
+    </ClCompile>
+    <ClCompile Include="BossScene.cpp">
+      <Filter>00. MainGame\00.UI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

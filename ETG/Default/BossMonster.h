@@ -39,7 +39,6 @@ private:
 	STATE			m_eCurState;
 	float			m_fDiagonal;
 	POINT			m_tPosin;
-	bool			m_bCollisionCheck;
 private:
 
 
@@ -64,5 +63,6 @@ private:
 	POINT originPosition; //현재 위치
 	POINT targetPosition; // 타겟 위치
 	bool m_bCheck;
+	DWORD m_DelayTime;
 };
 

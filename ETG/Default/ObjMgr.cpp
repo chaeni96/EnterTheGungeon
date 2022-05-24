@@ -6,6 +6,7 @@
 #include "Comando.h"
 #include "Lamp.h"
 #include "Shark.h"
+#include "SoundMgr.h"
 CObjMgr* CObjMgr::m_pInstance = nullptr;
 
 CObjMgr::CObjMgr()
@@ -64,6 +65,7 @@ void CObjMgr::Weapon_Change(TYPE _eType)
 			Safe_Delete<CObj*>(iter);
 			
 		m_ObjList[OBJ_WEAPON].clear();
+		CSoundMgr::Get_Instance()->PlaySoundW(L"Weapon_Change.wav", SOUND_EFFECT, 1.5f);
 
 		switch (m_eCurWeapon)
 		{
@@ -146,6 +148,7 @@ void CObjMgr::Late_Update(void)
 	CCollisionMgr::Collision_RectExTile(m_vecTile, m_ObjList[OBJ_PLAYER]); // 타일, 플레이어
 	CCollisionMgr::Collision_RectExTile(m_vecTile, m_ObjList[OBJ_MONSTER_BULLET]); // 타일, 몬스터 총알
 	CCollisionMgr::Collision_RectExTile(m_vecTile, m_ObjList[OBJ_BULLET]); // 타일, 플레이어 총알
+	//CCollisionMgr::Collision_RectExTile(m_vecTile, m_ObjList[OBJ_PET]); // 타일, 펫
 	CCollisionMgr::Collision_Rect(m_ObjList[OBJ_MONSTER], m_ObjList[OBJ_BULLET]); // 몬스터 총알, 플레이어
 	CCollisionMgr::Collision_RectExTile(m_vecTile, m_ObjList[OBJ_MONSTER]); // 타일, 몬스터
 	CCollisionMgr::Collision_Rect(m_ObjList[OBJ_PLAYER], m_ObjList[OBJ_ITEM]);

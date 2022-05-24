@@ -24,17 +24,21 @@ public:
 public :
 	bool		Check_Roll(void) { return m_bRoll; }
 	STATE  Get_State(void) { return m_eCurState; }
-	void   Set_CollisionCheck(void) { m_CollisionCheck = false; }
+	void   Set_PlayerCollisionCheck(void) { m_CollisionCheck = false; }
+	void   Set_MonsterCheck1(void) { m_bMonster1Check = false; }
+	void   Set_MonsterCheck2(void) { m_bMonster2Check = false; }
+
 	void	Set_HpPlus(const int& _iHp) {
-		if (m_iHp <= 50)
+		if (m_iHp <= 70)
 		{
 			m_iHp += _iHp;
-			if (m_iHp > 50)
+			if (m_iHp > 70)
 			{
-				m_iHp = 50;
+				m_iHp = 70;
 			}
 		}
 	}
+	void   Set_CollisionCheck(void) { m_bCollisionCheck = false; }
 
 	void	Set_Player(const float&  _fX, const float& _fY) { m_tInfo.fX = _fX, m_tInfo.fY = _fY; }
 private:
@@ -47,7 +51,7 @@ private:
 private:
 	float					m_fDiagonal;
 	DWORD					m_delayTime;
-	
+	DWORD					m_WalkTime;
 	STATE					m_ePreState;
 	STATE					m_eCurState;
 	bool					m_bDeadEffect;

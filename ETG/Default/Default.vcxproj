@@ -153,11 +153,13 @@
     <ClInclude Include="BossBomb.h" />
     <ClInclude Include="BossBullet.h" />
     <ClInclude Include="BossMonster.h" />
+    <ClInclude Include="BossScene.h" />
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="CollisionMgr.h" />
     <ClInclude Include="Comando.h" />
     <ClInclude Include="Default.h" />
     <ClInclude Include="Define.h" />
+    <ClInclude Include="Ending.h" />
     <ClInclude Include="Enum.h" />
     <ClInclude Include="Functor.h" />
     <ClInclude Include="GuideBullet.h" />
@@ -208,10 +210,12 @@
     <ClCompile Include="BossBomb.cpp" />
     <ClCompile Include="BossBullet.cpp" />
     <ClCompile Include="BossMonster.cpp" />
+    <ClCompile Include="BossScene.cpp" />
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="CollisionMgr.cpp" />
     <ClCompile Include="Comando.cpp" />
     <ClCompile Include="Default.cpp" />
+    <ClCompile Include="Ending.cpp" />
     <ClCompile Include="GuideBullet.cpp" />
     <ClCompile Include="Gun.cpp" />
     <ClCompile Include="Hidden.cpp" />

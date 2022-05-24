@@ -4,6 +4,7 @@
 #include "ScrollMgr.h"
 #include "Player.h"
 #include "ObjMgr.h"
+#include "SoundMgr.h"
 CMonsterBullet::CMonsterBullet()
 	:m_eCurState(NOMAL), m_ePreState(BULLET_END)
 {
@@ -26,6 +27,7 @@ void CMonsterBullet::Initialize(void)
 
 	CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Monster/Monster1/Monster1_bullet.bmp", L"Monster1_bullet");
 	CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Monster/Monster1/Monster1_effect.bmp", L"Monster1_effect");
+
 	m_pFrameKey = L"Monster1_bullet";
 }
 
@@ -68,7 +70,7 @@ void CMonsterBullet::Late_Update(void)
 
 			if (m_pTarget)
 			{
-				dynamic_cast<CPlayer*>(m_pTarget)->Set_CollisionCheck();
+				dynamic_cast<CPlayer*>(m_pTarget)->Set_PlayerCollisionCheck();
 			}
 
 			m_bDead = true;

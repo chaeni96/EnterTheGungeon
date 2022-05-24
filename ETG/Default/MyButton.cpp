@@ -3,7 +3,7 @@
 #include "BmpMgr.h"
 #include "KeyMgr.h"
 #include "SceneMgr.h"
-
+#include "SoundMgr.h"
 
 CMyButton::CMyButton()
 	: m_iDrawID(0)
@@ -18,8 +18,8 @@ CMyButton::~CMyButton()
 
 void CMyButton::Initialize(void)
 {
-	m_tInfo.fCX = 150.f;
-	m_tInfo.fCY = 150.f;
+	m_tInfo.fCX = 92.f;
+	m_tInfo.fCY = 32.f;
 
 	m_eRender = RENDER_UI;
 }
@@ -45,13 +45,18 @@ void CMyButton::Late_Update(void)
 		if (CKeyMgr::Get_Instance()->Key_Down(VK_LBUTTON))
 		{
 			if (!lstrcmp(L"Start", m_pFrameKey))
-				CSceneMgr::Get_Instance()->Scene_Change(SC_STAGE);
+			{
 
-			else if (!lstrcmp(L"Edit", m_pFrameKey))
-				CSceneMgr::Get_Instance()->Scene_Change(SC_EDIT);
+				CSceneMgr::Get_Instance()->Scene_Change(SC_STAGE);
+				CSoundMgr::Get_Instance()->PlaySoundW(L"respawn_choice.wav", SOUND_EFFECT, 1.f);
+			}
 
 			else if (!lstrcmp(L"Exit", m_pFrameKey))
+			{
 				DestroyWindow(g_hWnd);
+				CSoundMgr::Get_Instance()->PlaySoundW(L"respawn_choice.wav", SOUND_EFFECT, 1.f);
+
+			}
 
 			return;
 		}

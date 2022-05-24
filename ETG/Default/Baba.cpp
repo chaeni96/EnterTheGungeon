@@ -3,7 +3,7 @@
 #include "BmpMgr.h"
 #include "ObjMgr.h"
 #include "ScrollMgr.h"
-
+#include "SoundMgr.h"
 CBaba::CBaba()
 	:m_eCurState(IDLE), m_ePreState(END)
 {
@@ -27,6 +27,7 @@ void CBaba::Initialize(void)
 	CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Pet/baba.bmp", L"baba");
 
 	m_fDiagonal = 5.f;
+	CSoundMgr::Get_Instance()->PlaySoundW(L"baba.wav", SOUND_EFFECT, 5.f);
 
 }
 
@@ -48,47 +49,52 @@ int CBaba::Update(void)
 
 		float		fRadian = acosf(fWidth / fDiagonal);
 
-		m_fAngle = (fRadian * 180.f) / PI;
 
-		if (m_pTarget->Get_Info().fY > m_tInfo.fY) //sin으로 들어가는 값을 구하기 위해서,180도가 넘었음
-			m_fAngle *= -1.f;
+		if (m_tInfo.fY < m_pTarget->Get_Info().fY)
+			fRadian *= -1.f;
 
+		m_fAngle = fRadian * 180.f / PI;
+
+		if (fDiagonal > 110)
+		{
+
+			m_tInfo.fX += 4.f * cosf(m_fAngle * PI / 180.f);
+			m_tInfo.fY -= 4.f * sinf(m_fAngle * PI / 180.f);
+
+			if (GetAsyncKeyState('A'))
+			{
+
+				m_eCurState = LEFT;
+
+			}
+			else if (GetAsyncKeyState('D'))
+			{
+				m_eCurState = RIGHT;
+
+
+			}
+			else if (GetAsyncKeyState('W'))
+			{
+				m_eCurState = UP;
+
+
+			}
+			else if (GetAsyncKeyState('S'))
+			{
+
+				m_eCurState = DOWN;
+
+			}
+			else
+			{
+				m_eCurState = IDLE;
+			}
+		}
 
 		
 	}
 
-	if (GetAsyncKeyState('A'))
-	{
-		m_tInfo.fX -= m_fSpeed;
-		
-		m_eCurState = LEFT;
-
-	}
-	else if (GetAsyncKeyState('D'))
-	{
-		m_tInfo.fX += m_fSpeed;
-			m_eCurState = RIGHT;
-		
-
-	}
-	else if (GetAsyncKeyState('W'))
-	{
-		m_tInfo.fY -= m_fSpeed;
-			m_eCurState = UP;
 	
-
-	}
-	else if (GetAsyncKeyState('S'))
-	{
-		m_tInfo.fY += m_fSpeed;
-		
-			m_eCurState = DOWN;
-		
-	}
-	else
-	{
-		m_eCurState = IDLE;
-	}
 
 	Update_Rect();
 	return OBJ_NOEVENT;
@@ -150,6 +156,25 @@ void CBaba::OnCollision(void)
 
 void CBaba::OnCollision(DIRECTION _eDir, const float & _fX, const float & _fY)
 {
+	switch (_eDir)
+	{
+	case DIR_LEFT:
+		m_tInfo.fX -= _fX;
+		break;
+	case DIR_UP:
+		m_tInfo.fY -= _fY;
+		break;
+	case DIR_RIGHT:
+		m_tInfo.fX += _fX;
+		break;
+	case DIR_DOWN:
+		m_tInfo.fY += _fY;
+		break;
+	case DIR_END:
+		break;
+	default:
+		break;
+	}
 }
 
 bool CBaba::Get_DeadEffect(void)

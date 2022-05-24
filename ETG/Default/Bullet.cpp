@@ -4,6 +4,8 @@
 #include "ScrollMgr.h"
 #include "Player.h"
 #include "SoundMgr.h"
+#include "ObjMgr.h"
+#include "BossMonster.h"
 CBullet::CBullet()
 {
 }
@@ -30,7 +32,21 @@ void CBullet::Initialize(void)
 int CBullet::Update(void)
 {
 	if (m_bDead)
+	{
+		m_pTarget = CObjMgr::Get_Instance()->Get_Target(OBJ_BOSS, this);
+
+		if (m_pTarget)
+		{
+			m_pTarget->Set_CollisionCheck();
+		}
+		m_pTarget = CObjMgr::Get_Instance()->Get_Target(OBJ_MONSTER, this);
+
+		if (m_pTarget)
+		{
+			m_pTarget->Set_CollisionCheck();
+		}
 		return OBJ_DEAD;
+	}
 
 	m_tInfo.fX += m_fSpeed * cosf((m_fAngle * PI) / 180.f);
 	m_tInfo.fY -= m_fSpeed * sinf((m_fAngle * PI) / 180.f);
@@ -92,5 +108,9 @@ void CBullet::OnCollision(DIRECTION _eDir, const float & _fX, const float & _fY)
 	default:
 		break;
 	}
+}
+
+void CBullet::Motion_Change(void)
+{
 }
 

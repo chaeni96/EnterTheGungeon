@@ -41,6 +41,8 @@ public:
 	virtual		void	OnCollision(void)	PURE;
 	virtual		void	OnCollision(DIRECTION _eDir,const float & _fX, const float& _fY) PURE;
 	virtual		bool	Get_DeadEffect(void) PURE;
+	virtual void   Set_CollisionCheck(void) PURE;
+
 protected:
 	void		Update_Rect(void);
 	bool		Move_Frame(void);
@@ -62,5 +64,6 @@ protected:
 	bool		m_bDeadEffect;
 	RENDERID	m_eRender;
 	TYPE		m_eType;
+	bool		m_bCollisionCheck;
 };
 

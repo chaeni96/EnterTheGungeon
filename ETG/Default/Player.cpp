@@ -16,6 +16,10 @@
 #include "Monster.h"
 #include "Monster2.h"
 #include "SceneMgr.h"
+#include "Baba.h"
+#include "Junior.h"
+#include "BossScene.h"
+
 float	g_fSound = 10.f;
 
 CPlayer::CPlayer()
@@ -47,7 +51,8 @@ void CPlayer::Initialize(void)
 	m_bBossCheck = false;
 	m_bMonster1Check = false;
 	m_bMonster2Check = false;
-	m_iHp = 50;
+	m_WalkTime = GetTickCount();
+	m_iHp = 70;
 	m_pFrameKey = L"Player_RIGHT";
 	m_eRender = RENDER_GAMEOBJECT;
 	m_delayTime = GetTickCount();
@@ -62,7 +67,6 @@ void CPlayer::Initialize(void)
 	CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Player/Player_RD.bmp", L"Player_RD");
 	CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Player/Player_Ghost.bmp", L"Player_Ghost");
 
-	//CSoundMgr::Get_Instance()->PlaySoundW(L"Success.wav", SOUND_EFFECT, g_fSound);
 
 }
 
@@ -100,25 +104,85 @@ int CPlayer::Update(void)
 
 void CPlayer::Late_Update(void)
 {
-	if (m_tInfo.fX == 2822.f && m_tInfo.fY == 1720.f)
+
+
+	switch (m_eCurState)
 	{
-		if (CKeyMgr::Get_Instance()->Key_Down('Q'))
+	
+	case HIT:
+		if (m_WalkTime + 1000 < GetTickCount())
 		{
+			CSoundMgr::Get_Instance()->PlaySoundW(L"Player_hit.wav", SOUND_EFFECT, 0.7f);
+			m_WalkTime = GetTickCount();
+		}
+		break;
+	case WALK:
+		if (m_WalkTime + 300 < GetTickCount())
+		{
+			CSoundMgr::Get_Instance()->PlaySoundW(L"Player_Walk.wav", SOUND_EFFECT, 0.8f);
+			m_WalkTime = GetTickCount();
+		}
+		break;
+	case ROLL:
+		if (m_WalkTime + 500 < GetTickCount())
+		{
+			CSoundMgr::Get_Instance()->PlaySoundW(L"Player_Roll.wav", SOUND_EFFECT, 1.f);
+			m_WalkTime = GetTickCount();
+		}
+		break;
+
+	case DEAD:
+		break;
+
+	default:
+		break;
+	}
+
+
+	if (m_tInfo.fX > 3100.f && m_tInfo.fY < 1000.f  )
+	{
+		if (CKeyMgr::Get_Instance()->Key_Down('E'))
+		{
+
+			CSoundMgr::Get_Instance()->StopAll();
 			CSceneMgr::Get_Instance()->Scene_Change(SC_HIDDEN);
 
 		}
 	}
-	if (m_tInfo.fX ==  1670 && m_tInfo.fY < 850)
+
+	if  (m_tInfo.fX > 2770.f && m_tInfo.fY >= 1050.f)
 	{
-		if (m_delayTime + 4000 < GetTickCount())
+		if (CKeyMgr::Get_Instance()->Key_Down('E'))
 		{
-			if (!m_bBossCheck)
+			CSoundMgr::Get_Instance()->StopAll();
+
+			CSceneMgr::Get_Instance()->Scene_Change(SC_STAGE);
+			m_pTarget = CObjMgr::Get_Instance()->Get_Target(OBJ_PET, this);
+			if (m_pTarget)
 			{
-				CObjMgr::Get_Instance()->Add_Object(OBJ_BOSS, CAbstractFactory<CBossMonster>::Create());
+				
+				static_cast<CJunior*>(m_pTarget)->Set_Pos(3070.f, 1278.f);
+				static_cast<CBaba*>(m_pTarget)->Set_Pos(m_tInfo.fX, m_tInfo.fY);
+				m_bMonster1Check = false;
+				m_bMonster2Check = false;
+
+			}
+
+
+		
+		}
+	}
+
+	if (m_tInfo.fX ==  1680 && m_tInfo.fY < 1000)
+	{
+		if (!m_bBossCheck)
+			{
+				CObjMgr::Get_Instance()->Add_Object(OBJ_INVEN, CAbstractFactory<CBossScene>::Create());	// 플레이어 생성
 				m_bBossCheck = true;
+
 			}
 			m_delayTime = GetTickCount();
-		}
+		
 
 	}
 
@@ -154,6 +218,7 @@ void CPlayer::Late_Update(void)
 				CObjMgr::Get_Instance()->Add_Object(OBJ_MONSTER, CAbstractFactory<CMonster2>::Create(2177.f, 460.f, DIR_DOWN)); // +,+
 				CObjMgr::Get_Instance()->Add_Object(OBJ_MONSTER, CAbstractFactory<CMonster2>::Create(2384.f, 760.f, DIR_UP)); // -
 				CObjMgr::Get_Instance()->Add_Object(OBJ_MONSTER, CAbstractFactory<CMonster2>::Create(3044.f, 762.f, DIR_LEFT)); //  +
+				CObjMgr::Get_Instance()->Add_Object(OBJ_MONSTER, CAbstractFactory<CMonster2>::Create(2284.f, 760.f, DIR_UP)); // -
 
 				m_bMonster2Check = true;
 			}
@@ -192,9 +257,15 @@ void CPlayer::Late_Update(void)
 		Mouse_Sight();
 
 	}
+	
 
+	if (CKeyMgr::Get_Instance()->Key_Down(VK_RETURN))
+	{
+		CSceneMgr::Get_Instance()->Scene_Change(SC_ENDING);
 	
-	
+
+	}
+
 
 }
 
@@ -223,6 +294,7 @@ void CPlayer::Render(HDC hDC)
 }
 void CPlayer::Release(void)
 {
+	CSoundMgr::Get_Instance()->StopAll();
 
 
 }
@@ -321,6 +393,7 @@ void CPlayer::Key_Input(void)
 			if (!m_bHitEffect)
 			{
 				m_eCurState = WALK;
+
 			}
 		}
 		else if (GetAsyncKeyState('D'))
@@ -329,6 +402,7 @@ void CPlayer::Key_Input(void)
 			if (!m_bHitEffect)
 			{
 				m_eCurState = WALK;
+
 			}
 
 		}
@@ -338,6 +412,7 @@ void CPlayer::Key_Input(void)
 			if (!m_bHitEffect)
 			{
 				m_eCurState = WALK;
+
 			}
 
 		}
@@ -347,6 +422,7 @@ void CPlayer::Key_Input(void)
 			if (!m_bHitEffect)
 			{
 				m_eCurState = WALK;
+
 			}
 		}
 		
@@ -356,26 +432,22 @@ void CPlayer::Key_Input(void)
 		if (GetAsyncKeyState(0x31)) // 1번눌렀을때 일반 총
 		{
 			CObjMgr::Get_Instance()->Weapon_Change(TYPE_WEAPON_GUN);
-			m_eCurState = WALK;
 
 		}
 		
 		else if (GetAsyncKeyState(0x32)) // 2번 눌렀을때 코만도
 		{
 			CObjMgr::Get_Instance()->Weapon_Change(TYPE_WEAPON_COMANDO);
-			m_eCurState = WALK;
 
 		}
 		else if (GetAsyncKeyState(0x33)) // 3번 눌렀을때 램프
 		{
 			CObjMgr::Get_Instance()->Weapon_Change(TYPE_WEAPON_LAMP);
-			m_eCurState = WALK;
 
 		}
 		else if (GetAsyncKeyState(0x34)) // 4번 눌렀을때 램프
 		{
 			CObjMgr::Get_Instance()->Weapon_Change(TYPE_WEAPON_SHARK);
-			m_eCurState = WALK;
 
 		}
 
@@ -407,6 +479,7 @@ void CPlayer::OnCollision(void)
 {
 	if (m_eCurState != ROLL)
 	{
+
 		Hit();
 
 		if (m_iHp <= 0)

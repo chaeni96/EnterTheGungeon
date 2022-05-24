@@ -7,6 +7,7 @@
 #include "Baba.h"
 #include "HostBullet.h"
 #include "Junior.h"
+#include "SoundMgr.h"
 CHost::CHost()
 	: m_eCurState(IDLE), m_ePreState(END)
 
@@ -22,17 +23,17 @@ void CHost::Initialize(void)
 {
 	m_tInfo.fCX = 126.f;
 	m_tInfo.fCY = 104.f;
-	m_tInfo.fX = 350.f;
-	m_tInfo.fY = 480.f;
+	m_tInfo.fX = 2725.f;
+	m_tInfo.fY = 1435.f;
 	m_fSpeed = 0.8f;
-	m_iHp = 25;
+	m_iHp = 15;
 	m_fDiagonal = 12.f;
 	m_eRender = RENDER_GAMEOBJECT;
 	m_bDeadEffect = false;
 	m_pTime = GetTickCount();
 	m_DelayTime = GetTickCount();
 	CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Monster/host.bmp", L"host");
-
+	m_bCollisionCheck = false;
 }
 
 int CHost::Update(void)
@@ -48,7 +49,7 @@ int CHost::Update(void)
 			if (m_pTarget)
 			{
 
-				CObjMgr::Get_Instance()->Add_Object(OBJ_PET, CAbstractFactory<CJunior>::Create(350.f, 480.f));
+				CObjMgr::Get_Instance()->Add_Object(OBJ_PET, CAbstractFactory<CJunior>::Create(2725.f, 1443.f));
 			}
 
 			//Æê»ý¼º
@@ -143,7 +144,13 @@ void CHost::Release(void)
 
 void CHost::OnCollision(void)
 {
-	Hit();
+
+	if (!m_bCollisionCheck)
+	{
+		Hit();
+
+		m_bCollisionCheck = true;
+	}
 	if ( 0< m_iHp && m_iHp <= 5)
 	{
 		m_eCurState = FAINT;
@@ -152,8 +159,8 @@ void CHost::OnCollision(void)
 		{
 			if ( GetTickCount() - m_DelayTime > 3000)
 			{
-
-			CObjMgr::Get_Instance()->Add_Object(OBJ_PET, CAbstractFactory<CBaba>::Create(m_pTarget->Get_Info().fX - 35.f, m_pTarget->Get_Info().fY + 80.f));
+			CSoundMgr::Get_Instance()->PlaySoundW(L"host_anger.wav", SOUND_EFFECT, 5.f);
+			CObjMgr::Get_Instance()->Add_Object(OBJ_PET, CAbstractFactory<CBaba>::Create(m_pTarget->Get_Info().fX - 50.f, m_pTarget->Get_Info().fY + 80.f));
 			m_DelayTime = GetTickCount();
 			}
 		}
@@ -163,6 +170,7 @@ void CHost::OnCollision(void)
 	else if (m_iHp <= 0)
 	{
 		m_bDeadEffect = true;
+		CSoundMgr::Get_Instance()->PlaySoundW(L"host_death.wav", SOUND_EFFECT, 7.f);
 
 	}
 
@@ -254,6 +262,12 @@ void CHost::Hit()
 {
 	m_iHp -= 1;
 	m_eCurState = HIT;
+	if (m_iHp > 2)
+	{
+
+		CSoundMgr::Get_Instance()->PlaySoundW(L"host_hurt.wav", SOUND_EFFECT, 2.f);
+	}
+
 }
 
 void CHost::Attack()

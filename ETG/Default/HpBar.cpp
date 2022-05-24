@@ -48,7 +48,7 @@ void CHpBar::Late_Update(void)
 	{
 		float iHp = (float)m_pTarget->Get_Hp();
 
-		m_fGague = m_tInfo.fCX*(iHp / 50);
+		m_fGague = m_tInfo.fCX*(iHp / 70);
 	}
 }
 

@@ -7,6 +7,7 @@
 #include "BossBullet.h"
 #include "AbstractFactory.h"
 #include "Potion.h"
+#include "SoundMgr.h"
 CMonster2::CMonster2()
 	:m_eCurState(STATE_END), m_ePreState(STATE_END), m_ecurPattern(NONE)
 {
@@ -19,8 +20,8 @@ CMonster2::~CMonster2()
 
 void CMonster2::Initialize(void)
 {
-	m_tInfo.fCX = 72.f;
-	m_tInfo.fCY = 64.f;
+	m_tInfo.fCX = 144.f;
+	m_tInfo.fCY = 128.f;
 	m_fSpeed = 0.8f;
 	m_iHp = 8;
 	m_fDiagonal = 12.f;
@@ -28,8 +29,9 @@ void CMonster2::Initialize(void)
 	m_DelayTime = GetTickCount();
 	m_bDeadEffect = false;
 	m_eCurState = IDLE_DOWN;
+	m_SoundTime = GetTickCount();
 	m_pTime = GetTickCount();
-	m_bChcek = false;
+	m_bCollisionCheck = false;
 	CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Monster/Monster2/Monster2.bmp", L"Monster2");
 }
 
@@ -101,6 +103,8 @@ int CMonster2::Update(void)
 								if (m_DelayTime + 2000 < GetTickCount())
 								{
 									Smog();
+									CSoundMgr::Get_Instance()->PlaySoundW(L"gunknight_shockwave_01.wav", SOUND_EFFECT, 1.f);
+
 									m_DelayTime = GetTickCount();
 									m_ecurPattern = MOVE;
 								
@@ -167,6 +171,7 @@ int CMonster2::Update(void)
 void CMonster2::Late_Update(void)
 {
 
+
 	Motion_Change();
 	if (Move_Frame() == true)
 	{
@@ -186,7 +191,7 @@ void CMonster2::Late_Update(void)
 
 			if (m_pTarget)
 			{
-				dynamic_cast<CPlayer*>(m_pTarget)->Set_CollisionCheck();
+				dynamic_cast<CPlayer*>(m_pTarget)->Set_PlayerCollisionCheck();
 			}
 
 			m_tFrame.iFrameStart = 0;
@@ -199,7 +204,7 @@ void CMonster2::Late_Update(void)
 			
 			if (m_pTarget)
 			{
-				dynamic_cast<CPlayer*>(m_pTarget)->Set_CollisionCheck();
+				dynamic_cast<CPlayer*>(m_pTarget)->Set_PlayerCollisionCheck();
 			}
 			break;
 
@@ -207,7 +212,7 @@ void CMonster2::Late_Update(void)
 		case SMOG_RIGHT:
 			if (m_pTarget)
 			{
-				dynamic_cast<CPlayer*>(m_pTarget)->Set_CollisionCheck();
+				dynamic_cast<CPlayer*>(m_pTarget)->Set_PlayerCollisionCheck();
 			}
 			break;
 		default:
@@ -229,13 +234,13 @@ void CMonster2::Render(HDC hDC)
 	GdiTransparentBlt(hDC, 					// 복사 받을, 최종적으로 그림을 그릴 DC
 		int(m_tRect.left + iScrollX),	// 2,3 인자 :  복사받을 위치 X, Y
 		int(m_tRect.top + iScrollY),
-		int(m_tInfo.fCX + 70.f),				// 4,5 인자 : 복사받을 가로, 세로 길이
-		int(m_tInfo.fCY + 70.f),
+		int(m_tInfo.fCX),				// 4,5 인자 : 복사받을 가로, 세로 길이
+		int(m_tInfo.fCY),
 		hMemDC,							// 비트맵을 가지고 있는 DC
-		m_tFrame.iFrameStart * (int)m_tInfo.fCX,								// 비트맵 출력 시작 좌표, X,Y
-		m_tFrame.iMotion * (int)m_tInfo.fCY,
-		(int)m_tInfo.fCX ,				// 복사할 비트맵의 가로, 세로 길이
-		(int)m_tInfo.fCY ,
+		m_tFrame.iFrameStart * (int)m_tInfo.fCX * 0.5f,								// 비트맵 출력 시작 좌표, X,Y
+		m_tFrame.iMotion * (int)m_tInfo.fCY* 0.5f,
+		(int)m_tInfo.fCX* 0.5f,				// 복사할 비트맵의 가로, 세로 길이
+		(int)m_tInfo.fCY * 0.5f,
 		RGB(255, 0, 255));			// 제거하고자 하는 색상/ 제거하고자 하는 색상
 
 }
@@ -246,13 +251,21 @@ void CMonster2::Release(void)
 
 void CMonster2::OnCollision(void)
 {
-	Hit();
-
-	if (m_iHp <= 0)
+	if (!m_bCollisionCheck)
 	{
-		m_bDeadEffect = true;
+		Hit();
 
+		m_bCollisionCheck = true;
+
+		if (m_iHp <= 0)
+		{
+			m_bDeadEffect = true;
+			CSoundMgr::Get_Instance()->PlaySoundW(L"gunnut_dead.wav", SOUND_EFFECT, 1.f);
+
+		}
 	}
+
+	
 }
 
 void CMonster2::OnCollision(DIRECTION _eDir, const float & _fX, const float & _fY)
@@ -434,6 +447,8 @@ void CMonster2::Hit()
 {
 	m_iHp -= 1;
 	m_eCurState = HIT_ALL;
+	CSoundMgr::Get_Instance()->PlaySoundW(L"gunnut_hurt.wav", SOUND_EFFECT, 0.5f);
+
 }
 
 
@@ -501,6 +516,7 @@ void CMonster2::Smog()
 
 		if (m_pTarget->Get_Info().fX > (m_tInfo.fX))  //  cos 0도에서 180도 밖에 표현이 안되기때문에
 			m_eCurState = SMOG_RIGHT;
+
 		else
 			m_eCurState = SMOG_LEFT;
 
@@ -555,5 +571,8 @@ void CMonster2::AttackBullet(void)
 		m_tPosin.x = long(m_tInfo.fX + m_fDiagonal * cosf((m_fAngle * PI) / 180.f));
 		m_tPosin.y = long(m_tInfo.fY - m_fDiagonal * sinf((m_fAngle * PI) / 180.f));
 		CObjMgr::Get_Instance()->Add_Object(OBJ_MONSTER_BULLET, CAbstractFactory<BossBullet>::Create((float)m_tPosin.x, (float)m_tPosin.y, m_fAngle));
+
+		CSoundMgr::Get_Instance()->PlaySoundW(L"gunnut_swing_01.wav", SOUND_EFFECT, 1.f);
+
 	}
 }

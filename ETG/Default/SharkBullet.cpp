@@ -6,6 +6,9 @@
 #include "Player.h"
 #include "BossMonster.h"
 #include "SoundMgr.h"
+#include "Monster.h"
+#include "Monster2.h"
+
 CSharkBullet::CSharkBullet()
 	: m_eCurState(NOMAL), m_ePreState(BULLET_END)
 
@@ -26,14 +29,14 @@ void CSharkBullet::Initialize(void)
 	m_fSpeed = 3.f;
 	m_bCheckTile = false;
 
-	m_eRender = RENDER_GAMEOBJECT;
+	m_eRender = RENDER_UI;
 
 	CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Bullet/Left_Shark.bmp", L"Left_Shark");
 	CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Bullet/Right_Shark.bmp", L"Right_Shark");
 	CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Bullet/Left_SharkEffect.bmp", L"Left_SharkEffect");
 	CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Bullet/Right_SharkEffect.bmp", L"Right_SharkEffect");
 
-	CSoundMgr::Get_Instance()->PlaySoundW(L"sharkgun_shot_0.mp3", SOUND_EFFECT, 14.f);
+	CSoundMgr::Get_Instance()->PlaySoundW(L"sharkgun_shot_0.mp3", SOUND_EFFECT, 20.f);
 
 	m_SoundDelay = GetTickCount();
 }
@@ -52,14 +55,12 @@ int CSharkBullet::Update(void)
 				m_pFrameKey = L"Right_SharkEffect";
 				CSoundMgr::Get_Instance()->PlaySoundW(L"sharkgun_eat_01.wav", SOUND_EFFECT, 10.f);
 
-				m_tInfo.fX += 10.f;
 			}
 			else if (m_pFrameKey == L"Left_Shark")
 			{
 				m_pFrameKey = L"Left_SharkEffect";
 				CSoundMgr::Get_Instance()->PlaySoundW(L"sharkgun_eat_01.wav", SOUND_EFFECT, 10.f);
 
-				m_tInfo.fX -= 10.f;
 			}
 			
 			m_eCurState = BOOM;
@@ -73,9 +74,15 @@ int CSharkBullet::Update(void)
 
 				if (m_pTarget)
 				{
-					dynamic_cast<CBossMonster*>(m_pTarget)->Set_CollisionCheck();
+					m_pTarget->Set_CollisionCheck();
 				}
+				m_pTarget = CObjMgr::Get_Instance()->Get_Target(OBJ_MONSTER, this);
 
+				if (m_pTarget)
+				{
+					m_pTarget->Set_CollisionCheck();
+				}
+				
 				return OBJ_DEAD;
 
 		}
@@ -116,6 +123,19 @@ void CSharkBullet::Late_Update(void)
 
 	Motion_Change();
 
+
+	if (m_pFrameKey == L"Right_SharkEffect")
+	{
+
+		m_tInfo.fX += 1.f;
+	}
+	else if (m_pFrameKey == L"Left_SharkEffect")
+	{
+	
+		m_tInfo.fX -= 1.f;
+	}
+
+
 	if (Move_Frame() == true)
 	{
 
@@ -127,12 +147,6 @@ void CSharkBullet::Late_Update(void)
 			break;
 
 		case BOOM:
-			m_pTarget = CObjMgr::Get_Instance()->Get_Target(OBJ_PLAYER, this);
-
-			if (m_pTarget)
-			{
-				dynamic_cast<CPlayer*>(m_pTarget)->Set_CollisionCheck();
-			}
 
 			m_bDead = true;
 			break;

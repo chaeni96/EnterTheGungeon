@@ -4,10 +4,11 @@
 #include "ScrollMgr.h"
 #include "ObjMgr.h"
 #include "Player.h"
+#include "SoundMgr.h"
 CHostBullet::CHostBullet()
+
 {
 }
-
 
 CHostBullet::~CHostBullet()
 {
@@ -23,6 +24,7 @@ void CHostBullet::Initialize(void)
 	m_eRender = RENDER_GAMEOBJECT;
 
 	CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Bullet/Host_bullet.bmp", L"Host_bullet");
+	CSoundMgr::Get_Instance()->PlaySoundW(L"host_shot.wav", SOUND_EFFECT, 0.5f);
 
 }
 
@@ -30,10 +32,11 @@ int CHostBullet::Update(void)
 {
 	if (m_bDead)
 	{
+		m_pTarget = CObjMgr::Get_Instance()->Get_Target(OBJ_PLAYER, this);
 
 		if (m_pTarget)
 		{
-			dynamic_cast<CPlayer*>(m_pTarget)->Set_CollisionCheck();
+			dynamic_cast<CPlayer*>(m_pTarget)->Set_PlayerCollisionCheck();
 		}
 
 		return OBJ_DEAD;
@@ -63,7 +66,7 @@ int CHostBullet::Update(void)
 void CHostBullet::Late_Update(void)
 {
 	Update_Rect();
-	if (m_tRect.left <= 34.f || m_tRect.right >= 873.f || m_tRect.bottom >= 968.f || m_tRect.top <= 248.f)
+	if (m_tRect.left <= 2411.f || m_tRect.right >= 3218.f || m_tRect.bottom >= 1926.f || m_tRect.top <= 1284.f)
 	{
 		if (m_eDir != DIR_LEFT && m_eDir != DIR_RIGHT)
 		{
@@ -116,14 +119,35 @@ void CHostBullet::Release(void)
 void CHostBullet::OnCollision(void)
 {
 	if (m_pTarget) {
-
-		if (dynamic_cast<CPlayer*>(m_pTarget)->Get_State() != 2)
+		if (m_eDir != DIR_LEFT && m_eDir != DIR_RIGHT)
 		{
-			m_bDead = true;
+			if (dynamic_cast<CPlayer*>(m_pTarget)->Get_State() != 2)
+			{
+				m_bDead = true;
+			}
+
 		}
+		else
+			m_bDead = true;
+
 	}
 }
 
 void CHostBullet::OnCollision(DIRECTION _eDir, const float & _fX, const float & _fY)
 {
+	switch (_eDir)
+	{
+	case DIR_LEFT:
+	case DIR_UP:
+	case DIR_RIGHT:
+	case DIR_DOWN:
+		m_bDead = true;
+		break;
+	case DIR_END:
+		break;
+	default:
+		break;
+	}
 }
+
+
