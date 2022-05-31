@@ -28,8 +28,8 @@ void CJunior::Initialize(void)
 	m_eRender = RENDER_GAMEOBJECT;
 	m_DelayTime = GetTickCount();
 	m_bDeadEffect = false;
+	m_SoundTime = GetTickCount();
 	CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Pet/junior.bmp", L"junior");
-	CSoundMgr::Get_Instance()->PlaySoundW(L"junior.mp3", SOUND_EFFECT, 1.5f);
 
 	m_fDiagonal = 5.f;
 }
@@ -57,7 +57,6 @@ int CJunior::Update(void)
 		{
 			m_tInfo.fX += m_fSpeed * cosf(m_fAngle * PI / 180.f);
 			m_tInfo.fY -= m_fSpeed * sinf(m_fAngle * PI / 180.f);
-			
 
 			if (GetAsyncKeyState('A') || GetAsyncKeyState('W') || GetAsyncKeyState('D') || GetAsyncKeyState('S'))
 			{
@@ -83,6 +82,22 @@ int CJunior::Update(void)
 
 void CJunior::Late_Update(void)
 {
+
+	switch ((m_eCurState))
+	{
+		
+	case IDLE:
+		if (m_SoundTime + 1000 < GetTickCount())
+		{
+			CSoundMgr::Get_Instance()->PlaySoundW(L"junior.mp3", SOUND_EFFECT, 1.f);
+			m_SoundTime = GetTickCount();
+		}
+		break;
+
+	default:
+		break;
+
+	}
 	Motion_Change();
 
 	if (Move_Frame() == true)

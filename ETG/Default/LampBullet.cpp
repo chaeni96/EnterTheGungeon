@@ -30,7 +30,7 @@ void CLampBullet::Initialize(void)
 	CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Bullet/Left_Bullet.bmp", L"Left_Bullet");
 	CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Bullet/Right_Bullet.bmp", L"Right_Bullet");
 	CBmpMgr::Get_Instance()->Insert_Bmp(L"../Image/Bullet/Lamp_Effect.bmp", L"Lamp_Effect");
-	CSoundMgr::Get_Instance()->PlaySoundW(L"lamp_shot.wav", SOUND_EFFECT, 1.5f);
+	CSoundMgr::Get_Instance()->PlaySoundW(L"lamp_shot.wav", SC_BULLET, 1.5f);
 
 }
 

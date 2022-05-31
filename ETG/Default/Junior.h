@@ -29,5 +29,6 @@ private:
 	STATE		m_eCurState;
 	STATE		m_ePreState;
 	DWORD		m_DelayTime;
+	DWORD		m_SoundTime;
 };
 

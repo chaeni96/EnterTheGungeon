@@ -596,10 +596,10 @@ void CBossMonster::PatternNormalShot()
 void CBossMonster::OnCollision(void)
 {
 
+		m_eCurState = HIT;
 
 	if (!m_bCollisionCheck)
 	{
-		m_eCurState = HIT;
 	
 		m_iHp -= 1;
 		CSoundMgr::Get_Instance()->PlaySoundW(L"Boss_hurt.wav", SOUND_EFFECT, 0.5f);

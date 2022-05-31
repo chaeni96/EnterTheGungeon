@@ -112,21 +112,21 @@ void CPlayer::Late_Update(void)
 	case HIT:
 		if (m_WalkTime + 1000 < GetTickCount())
 		{
-			CSoundMgr::Get_Instance()->PlaySoundW(L"Player_hit.wav", SOUND_EFFECT, 0.7f);
+			CSoundMgr::Get_Instance()->PlaySoundW(L"Player_hit.wav", SOUND_PLAYER, 0.7f);
 			m_WalkTime = GetTickCount();
 		}
 		break;
 	case WALK:
-		if (m_WalkTime + 300 < GetTickCount())
+		if (m_WalkTime + 500 < GetTickCount())
 		{
-			CSoundMgr::Get_Instance()->PlaySoundW(L"Player_Walk.wav", SOUND_EFFECT, 0.8f);
+			CSoundMgr::Get_Instance()->PlaySoundW(L"Player_Walk.wav", SOUND_PLAYER, 0.8f);
 			m_WalkTime = GetTickCount();
 		}
 		break;
 	case ROLL:
 		if (m_WalkTime + 500 < GetTickCount())
 		{
-			CSoundMgr::Get_Instance()->PlaySoundW(L"Player_Roll.wav", SOUND_EFFECT, 1.f);
+			CSoundMgr::Get_Instance()->PlaySoundW(L"Player_Roll.wav", SOUND_PLAYER, 1.f);
 			m_WalkTime = GetTickCount();
 		}
 		break;
